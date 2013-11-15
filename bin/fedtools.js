@@ -6,8 +6,8 @@ var program = require('commander'),
   fs = require('fs'),
   path = require('path'),
 
-  bootstrap = require('../lib/bootstrap'),
-  build = require('../lib/wf2-build'),
+  bootstrap = require('../lib/wria2-bootstrap'),
+  build = require('../lib/wria2-build'),
   log = require('../lib/logs'),
   utilities = require('../lib/utilities'),
 
@@ -19,15 +19,15 @@ var program = require('commander'),
 
 program
   .version(version)
-  .usage('[options] wf2-init|wf2-build|wf2-solo')
+  .usage('[options] wria2-init|wria2-build|wria2-solo')
   .option('-d, --debug', 'display extra information');
 
 program.on('--help', function () {
   console.log('  Parameters:');
   console.log('');
-  console.log('    wf2-init   Bootstrap a local wria2 git repository');
-  console.log('    wf2-build  Run a full build of a local wria2 git repository');
-  console.log('    wf2-solo   Run a build for a single component (including yui and loader)');
+  console.log('    wria2-init   Bootstrap a local wria2 git repository');
+  console.log('    wria2-build  Run a full build of a local wria2 git repository');
+  console.log('                 or a single component build');
   console.log('');
   console.log('  Description:');
   console.log('');
@@ -37,8 +37,9 @@ program.on('--help', function () {
   console.log('  Examples:');
   console.log('');
   console.log('    $ cd wria2/');
-  console.log('    $ wf-tools wf2-init');
-  console.log('    $ wf-tools wf2-build');
+  console.log('    $ wf-tools wria2-init');
+  console.log('    $ cd wf2/src/wf2-balloon');
+  console.log('    $ wf-tools wria2-build');
   console.log('');
 });
 
@@ -61,31 +62,21 @@ if (program.debug) {
 /* Geronimo!       */
 /*******************/
 switch (command) {
-case 'wf2-build':
+case 'wria2-build':
   utilities.timeTracker('start');
   log.echo();
-  build.full(program.debug, function (err) {
+  build.run(program.debug, function (err) {
     if (err && err !== -1) {
       log.echo(err);
     }
-    utilities.timeTracker('stop');
+    if (!err) {
+      utilities.timeTracker('stop');
+    }
     log.echo();
   });
   break;
 
-case 'wf2-solo':
-  utilities.timeTracker('start');
-  log.echo();
-  build.solo(program.debug, function (err) {
-    if (err && err !== -1) {
-      log.echo(err);
-    }
-    utilities.timeTracker('stop');
-    log.echo();
-  });
-  break;
-
-case 'wf2-init':
+case 'wria2-init':
   log.echo();
   bootstrap.run(function (err) {
     if (err) {
