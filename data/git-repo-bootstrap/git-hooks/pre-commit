@@ -1,0 +1,58 @@
+#!/bin/sh
+
+##
+# This script is used to lint files that are being committed (git commit).
+# To prevent a commit, it returns non-zero.
+#
+# This script calls a node.js script with one argument: a file
+# that should be used to log jshint errors. Once the node
+# script is done, this script will
+#  - check the return value
+#  - if the return value is not 0, it will display the content
+#    of the afore-mentioned log file.
+#  - return 0 or 1 depending on the nodejs return value
+#
+# Q: Why call this script instead of calling directly the nodejs one?
+# A: Because some Git client cannot find the node binary, no matter what
+#    shebang is used (!#/usr/bin/env node or !#/usr/local/bin/node)
+#    This script helps setting the PATH and finding node!
+#
+# Q: Why dump jshint errors into a log file instead of displaying them
+#    directly in the nodejs script?
+# A: For some reason, writing/reading to the standard output breaks once the
+#    nodejs script is terminated (via process.exit). Furthermore, some Git
+#    clients cannot display the standard output from a node script, but
+#    manage to display one coming from a standard bash script.
+
+OS=$(uname)
+if [ "$OS" == "Darwin" -o "$OS" == "Linux" ]; then
+  export PATH=/usr/bin:/bin:/sbin:/usr/local/bin:/usr/sbin
+fi
+
+NODE_BIN=`which node`
+JSHINT_LOGS='.git/hooks/jshint-out.log'
+NODE_MODULES_DIR='.git/hooks/node_modules'
+rm -rf $JSHINT_LOGS
+
+if [ -d "$NODE_MODULES_DIR" ]; then
+  "$NODE_BIN" ".git/hooks/pre-commit.js" $JSHINT_LOGS
+  RETURN_CODE=$?
+
+  if [ $RETURN_CODE -ne 0 ]; then
+    if [ -f $JSHINT_LOGS ]; then
+      echo
+      cat $JSHINT_LOGS
+      rm -rf $JSHINT_LOGS
+    fi
+    exit 1
+  fi
+  rm -rf $JSHINT_LOGS
+  exit 0
+else
+  echo
+  echo "Some node modules are missing to commit your code."
+  echo "Run the following command ONCE at the root of your repository:"
+  echo "cd .git/hooks;npm install;cd -"
+  echo
+  exit 1
+fi

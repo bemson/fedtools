@@ -1,0 +1,46 @@
+{
+  "name": "wf-tools",
+  "version": "0.0.1",
+  "description": "Set of tools for FEDs",
+  "author": "Arno Versini",
+  "bin": {
+    "wf-tools": "./bin/wf-tools.js"
+  },
+  "files": [
+    "bin",
+    "lib",
+    "data"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/aversini/wf-tools.git"
+  },
+  "bugs": {
+    "url": "https://github.com/aversini/wf-tools/issues"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "preferGlobal": true,
+  "dependencies": {
+    "commander": "*",
+    "glob": "*",
+    "path": "*",
+    "async": "*",
+    "underscore": "*",
+    "path": "*",
+    "moment": "*",
+    "promptly": "*",
+    "ncp": "*",
+    "shelljs": "*",
+    "cli-color": "*",
+    "sprintf": "*"
+  },
+  "keywords": [
+    "wria",
+    "wria2",
+    "fed",
+    "build",
+    "bootstrap"
+  ]
+}

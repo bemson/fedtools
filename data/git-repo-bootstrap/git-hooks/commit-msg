@@ -1,0 +1,11 @@
+#!/bin/sh
+
+OS=$(uname)
+if [ "$OS" == "Darwin" -o "$OS" == "Linux" ]; then
+  export PATH=/usr/bin:/bin:/sbin:/usr/local/bin:/usr/sbin
+fi
+
+NODE_BIN=`which node`
+"$NODE_BIN" ".git/hooks/commit-msg.js" "$1"
+
+exit $?

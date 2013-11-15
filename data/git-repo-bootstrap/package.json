@@ -1,0 +1,18 @@
+{
+  "name": "wria2",
+  "version": "2.0.0",
+  "config": {
+    "srcHooksDir": "./hooks/",
+    "dstHooksDir": "../.git/hooks"
+  },
+  "scripts": {
+    "postinstall": "cat README"
+  },
+  "devDependencies": {
+    "grunt": "*",
+    "grunt-contrib-copy": "*",
+    "load-grunt-tasks": "*",
+    "glob": "*",
+    "path": "*"
+  }
+}

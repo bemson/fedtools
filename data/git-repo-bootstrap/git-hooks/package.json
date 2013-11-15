@@ -1,0 +1,11 @@
+{
+  "dependencies": {
+    "underscore": "*",
+    "async": "*",
+    "jshint": "*",
+    "mustache": "*",
+    "glob": "*",
+    "rimraf": "*",
+    "mkdirp": "*"
+  }
+}

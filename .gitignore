@@ -1,0 +1,8 @@
+.DS_Store
+.*.swp
+.svn
+*~
+.com.apple.timemachine.supported
+node_modules
+npm-debug.log
+
