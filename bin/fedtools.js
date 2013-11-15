@@ -13,9 +13,10 @@ var program = require('commander'),
 
   debug = false,
   command = '',
+  binaryName = '',
   packageFile = path.join(__dirname, '../package.json'),
-  version = JSON.parse(fs.readFileSync(packageFile, 'utf8')).version;
-
+  version = JSON.parse(fs.readFileSync(packageFile, 'utf8')).version,
+  binaryName = path.basename(process.argv[1]);
 
 program
   .version(version)
@@ -37,9 +38,9 @@ program.on('--help', function () {
   console.log('  Examples:');
   console.log('');
   console.log('    $ cd wria2/');
-  console.log('    $ wf-tools wria2-init');
+  console.log('    $ ' + binaryName + ' wria2-init');
   console.log('    $ cd wf2/src/wf2-balloon');
-  console.log('    $ wf-tools wria2-build');
+  console.log('    $ ' + binaryName + ' wria2-build');
   console.log('');
 });
 
