@@ -38,3 +38,4 @@ This will essentially:
 
   - Build wf2-simplemenu
   - Rebuild yui and loader to take any meta configuration changes into account
+
