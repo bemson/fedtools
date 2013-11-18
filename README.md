@@ -2,8 +2,13 @@
 
 ## Installation
 
+Mac/Linux
 ```
-sudo -E npm install -g https://github.com/aversini/fedtools/blob/master/archive/fedtools.tgz?raw=true
+sudo -E npm install -g fedtools
+```
+Windows
+```
+npm install -g fedtools
 ```
 
 ## Usage
