@@ -8,6 +8,7 @@ var program = require('commander'),
 
   bootstrap = require('../lib/wria2-bootstrap'),
   build = require('../lib/wria2-build'),
+  yui3Utils = require('../lib/yui3-utils'),
   log = require('../lib/logs'),
   utilities = require('../lib/utilities'),
 
@@ -26,6 +27,9 @@ var program = require('commander'),
     },
     'wria2-build': {
       'description': 'Run a full wria2 build or a single component build depending on the current path.'
+    },
+    'wria2-yui3': {
+      'description': 'Synchronize a local repository with the latest YUI3 code (provided by wria).'
     }
   };
 
@@ -124,6 +128,16 @@ case 'wria2-build':
 case 'wria2-init':
   log.echo();
   bootstrap.run(program.debug, pkgConfig, function (err) {
+    if (err) {
+      log.error(err);
+    }
+    log.echo();
+  });
+  break;
+
+case 'wria2-yui3':
+  log.echo();
+  yui3Utils.run(program.debug, pkgConfig, {}, function (err) {
     if (err) {
       log.error(err);
     }
