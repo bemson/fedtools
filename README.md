@@ -10,16 +10,23 @@ sudo -E npm install -g https://github.com/aversini/fedtools/blob/master/archive/
 
 ### Bootstrap a WF-RIA2 repository
 
-Assuming that you just cloned a fresh WF-RIA2 git repository under `~/projects/wria2-git`, you can run the following command to bootstrap your copy:
-
 ```
-cd ~/projects/wria2-git
+cd ~/projects
 fedtools wria2-init
 ```
 This will essentially:
 
-  - Install WF-RIA2 Git hooks to lint your code at commit time
-  - Do other stuff that are not there yet :)
+  - Ask for several options:
+    - Do you want to clone or use an existing repository
+    - Where do you want to clone (if you choose to clone)
+    - Where is the local repository (if you choose not to clone)
+    - Which branch do you want to checkout
+    - Provide an alternative URL to the repo (if you choose to clone)
+  - It will then bootstrap a wria2 repository:
+    - Clone under the path you chose if you decided to clone
+    - Install git hooks to lint your code at commit time
+    - Switch to the branch you provided
+    - Copy YUI3 source files into your repository
 
 ### Build a full WF-RIA2 repository
 
