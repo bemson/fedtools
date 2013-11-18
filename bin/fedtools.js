@@ -11,16 +11,18 @@ var program = require('commander'),
   log = require('../lib/logs'),
   utilities = require('../lib/utilities'),
 
+  cwd = process.cwd(),
   debug = false,
   command = '',
   binaryName = '',
-  packageFile = path.join(__dirname, '../package.json'),
-  version = JSON.parse(fs.readFileSync(packageFile, 'utf8')).version,
+  packageFileJson = JSON.parse(fs.readFileSync(path.join(__dirname, '../package.json'), 'utf8')),
+  pkgVersion = packageFileJson.version,
+  pkgConfig = packageFileJson.config,
   binaryName = path.basename(process.argv[1]);
 
 program
-  .version(version)
-  .usage('[options] wria2-init|wria2-build|wria2-solo')
+  .version(pkgVersion)
+  .usage('[options] wria2-init|wria2-build')
   .option('-d, --debug', 'display extra information');
 
 program.on('--help', function () {
@@ -79,7 +81,7 @@ case 'wria2-build':
 
 case 'wria2-init':
   log.echo();
-  bootstrap.run(function (err) {
+  bootstrap.run(program.debug, pkgConfig, function (err) {
     if (err) {
       log.error(err);
     }
@@ -88,7 +90,9 @@ case 'wria2-init':
   break;
 
 case 'test':
-  utilities.getCurrentBranch(function (err, branch) {
+  utilities.getCurrentBranch({
+    cwd: cwd
+  }, function (err, branch) {
     if (!err) {
       console.log('==> branch: ', branch);
     }
