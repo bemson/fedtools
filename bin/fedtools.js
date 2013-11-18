@@ -14,43 +14,84 @@ var program = require('commander'),
   cwd = process.cwd(),
   debug = false,
   command = '',
-  binaryName = '',
   packageFileJson = JSON.parse(fs.readFileSync(path.join(__dirname, '../package.json'), 'utf8')),
   pkgVersion = packageFileJson.version,
   pkgConfig = packageFileJson.config,
-  binaryName = path.basename(process.argv[1]);
+  binaryName = path.basename(process.argv[1]),
+
+  commandList = [],
+  fedToolsCommands = {
+    'wria2-init': {
+      'description': 'Bootstrap a local wria2 git repository (clone, hooks, yui3, etc.)'
+    },
+    'wria2-build': {
+      'description': 'Run a full wria2 build or a single component build depending on the current path.'
+    }
+  };
+
+for (var prop in fedToolsCommands) {
+  if (fedToolsCommands.hasOwnProperty(prop) && prop) {
+    commandList.push(prop);
+  }
+}
+commandList.sort();
 
 program
   .version(pkgVersion)
-  .usage('[options] wria2-init|wria2-build')
-  .option('-d, --debug', 'display extra information');
+  .usage('[options] ' + commandList.join('|'))
+  .option('-d, --debug', 'display extra information')
+  .option('-e, --examples', 'print out usage examples of this tool')
+  .on('--help', function () {
+    console.log('  Parameters:');
+    console.log('');
+    var i, len = commandList.length;
+    for (i = 0; i < len; i += 1) {
+      console.log('    ' + commandList[i] + '\t   ' +
+        fedToolsCommands[commandList[i]].description);
+    }
+    console.log('');
+    console.log('  Description:');
+    console.log('');
+    console.log(
+      '    This script is designed to help build P17N components and to handle various other actions for FED.'
+    );
+    console.log('');
+    console.log('');
 
-program.on('--help', function () {
-  console.log('  Parameters:');
-  console.log('');
-  console.log('    wria2-init   Bootstrap a local wria2 git repository');
-  console.log('    wria2-build  Run a full build of a local wria2 git repository');
-  console.log('                 or a single component build');
-  console.log('');
-  console.log('  Description:');
-  console.log('');
-  console.log('    This script is designed to help build P17N components');
-  console.log('    and to handle various other actions for FED.');
-  console.log('');
-  console.log('  Examples:');
-  console.log('');
-  console.log('    $ cd wria2/');
-  console.log('    $ ' + binaryName + ' wria2-init');
-  console.log('    $ cd wf2/src/wf2-balloon');
-  console.log('    $ ' + binaryName + ' wria2-build');
-  console.log('');
-});
+  });
 
 program.parse(process.argv);
 
 /*******************/
 /* Parsing options */
 /*******************/
+if (program.examples) {
+  log.echo();
+  log.title('EXAMPLE 1:');
+  log.blue('Starts the process of cloning and bootstrapping a wria2 repository.');
+  log.blue('It relies on user input though default options are always offered.');
+  log.blue('Cloning can be bypassed if a valid existing repository is provided.');
+  log.echo(' $ cd ~/projects');
+  log.echo(' $ ' + binaryName + ' wria2-init');
+  log.echo('');
+  log.title('EXAMPLE 2:');
+  log.blue('Starts a complete build of the framework. This command relies on the');
+  log.blue('current directory. ' + binaryName + ' will detect if the current path');
+  log.blue('is a valid wria2 path.');
+  log.echo(' $ cd wria2git');
+  log.echo(' $ ' + binaryName + ' wria2-build');
+  log.echo('');
+  log.title('EXAMPLE 3:');
+  log.blue('Starts a build of a single component. This command relies on the');
+  log.blue('current directory. ' + binaryName + ' will detect if the current path');
+  log.blue('is a valid wria2 path AND a component path. It will not only run shifter');
+  log.blue('for the component but also for yui and loader, to maintain dependencies.');
+  log.echo(' $ cd wria2git/wf2/src/wf2-simplemenu');
+  log.echo(' $ ' + binaryName + ' wria2-build');
+  log.echo('');
+  process.exit(0);
+}
+
 if (program.args.length !== 1) {
   program.help();
 } else {
@@ -60,6 +101,7 @@ if (program.args.length !== 1) {
 if (program.debug) {
   debug = true;
 }
+
 
 /*******************/
 /* Geronimo!       */
