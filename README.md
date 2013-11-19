@@ -2,11 +2,6 @@
 
 ## Installation
 
-Mac/Linux
-```
-sudo -E npm install -g fedtools
-```
-Windows
 ```
 npm install -g fedtools
 ```
@@ -37,14 +32,14 @@ This will essentially:
 
 ```
 cd ~/projects/wria2-git
-fedtools wria2-buid
+fedtools wria2-build
 ```
 
 ### Build a single component
 
 ```
 cd ~/projects/wria2-git/wf2/src/wf2-simplemenu
-fedtools wria2-buid
+fedtools wria2-build
 ```
 This will essentially:
 
