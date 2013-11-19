@@ -69,6 +69,14 @@ program.parse(process.argv);
 /*******************/
 /* Parsing options */
 /*******************/
+if (program.boring) {
+  log.setBoring();
+}
+
+if (program.debug) {
+  debug = true;
+}
+
 if (program.examples) {
   log.echo();
   log.title('EXAMPLE 1:');
@@ -100,14 +108,6 @@ if (program.args.length !== 1) {
   program.help();
 } else {
   command = program.args[0];
-}
-
-if (program.debug) {
-  debug = true;
-}
-
-if (program.boring) {
-  log.setBoring();
 }
 
 /*******************/
