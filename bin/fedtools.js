@@ -12,7 +12,6 @@ var program = require('commander'),
   log = require('../lib/logs'),
   utilities = require('../lib/utilities'),
 
-  cwd = process.cwd(),
   debug = false,
   command = '',
   packageFileJson = JSON.parse(fs.readFileSync(path.join(__dirname, '../package.json'), 'utf8')),
@@ -43,6 +42,7 @@ commandList.sort();
 program
   .version(pkgVersion)
   .usage('[options] ' + commandList.join('|'))
+  .option('-b, --boring', 'do not use color output')
   .option('-d, --debug', 'display extra information')
   .option('-e, --examples', 'print out usage examples of this tool')
   .on('--help', function () {
@@ -106,6 +106,9 @@ if (program.debug) {
   debug = true;
 }
 
+if (program.boring) {
+  log.setBoring();
+}
 
 /*******************/
 /* Geronimo!       */
@@ -146,13 +149,13 @@ case 'wria2-yui3':
   break;
 
 case 'test':
-  utilities.getCurrentBranch({
-    cwd: cwd
-  }, function (err, branch) {
-    if (!err) {
-      console.log('==> branch: ', branch);
-    }
-  });
+  log.blue('==> this is a test 1');
+  log.info('==> this an info 1');
+  log.title('==> this is a title');
+  log.setBoring();
+  log.blue('==> this is a test 2');
+  log.info('==> this an info 2');
+  log.title('==> this is a title');
   break;
 
 default:
