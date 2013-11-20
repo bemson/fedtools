@@ -151,7 +151,14 @@ case 'wria2-yui3':
 
 case 'test':
   log.blue('==> this is a blue test');
-  yigo.run('wf2-simplemenu', function () {});
+  yigo.run(function () {
+    console.log('==> done');
+    // utilities.parseTree('/tmp/wria2git/wf2/src/wf2-arno',
+    // '/tmp/wria2git', function (
+    // tree) {
+    // console.log('==> tree: ', tree);
+    // });
+  });
   break;
 
 default:

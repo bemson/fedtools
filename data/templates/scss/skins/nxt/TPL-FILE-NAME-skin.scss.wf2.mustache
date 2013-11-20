@@ -1,0 +1,15 @@
+// Forcing the name of the skin class
+$skin-name: "nxt";
+
+// Overriding some properties
+// your overrides here
+
+// Loading the NXT sass helpers (taking precedence, before the ones from nx)
+@import "../../wf2-base-css/scss/skins/nxt/wf2-sass-skin-helpers";
+
+// Finally loading the nx skin definition
+@import "../nx/{{moduleName}}-skin.scss";
+
+.{{moduleName}} {
+  // specific code for NXT here
+}

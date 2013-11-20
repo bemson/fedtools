@@ -1,15 +1,26 @@
 YUI.add('module-tests', function(Y) {
 
-    var suite = new Y.Test.Suite('wf2-arno-widget');
+  var suite;
 
-    suite.add(new Y.Test.Case({
-        name: 'Automated Tests',
-        'test is empty': function() {
-            Y.Assert.fail('No Tests Provided For This Module');
-        }
-    }));
+  suite = new Y.Test.Suite('{{moduleName}}');
 
-    Y.Test.Runner.add(suite);
+  suite.add(new Y.Test.Case({
+    name: 'Basic API Tests',
 
+    setUp: function() {
+      this.m = new Y.WF2.{{className}}();
+    },
 
-},'', { requires: [ 'test' ] });
+    tearDown: function() {
+      this.m.destroy();
+      delete this.m;
+    },
+
+    'testInstantiation': function() {
+      Assert.isTrue(this.m instanceof Y.WF2.{{className}});
+    }
+  }));
+
+  Y.Test.Runner.add(suite);
+
+});

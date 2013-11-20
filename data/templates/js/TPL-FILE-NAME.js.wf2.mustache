@@ -2,7 +2,7 @@
  * Provides the `{{namespace}}.{{className}}` module.
  *
  * @class {{className}}
- * @extends {Widget}
+ * @extends {{moduleExtends}}
  * @module {{moduleName}}
  * @namespace {{namespace}}
  */
@@ -10,7 +10,7 @@
 var CSS_PREFIX = '{{moduleName}}';
 
 Y.namespace('{{namespace}}').{{className}} = Y.Base.create(
-  '{{baseName}}', Y.Widget, [], {
+  '{{baseName}}', {{moduleExtends}}, [], {
     initializer: function () {
 
     },

@@ -1,24 +1,38 @@
 <!doctype html>
 <html>
 <head>
-    <title>wf2-arno-widget</title>
-    <script src="/build/yui/yui.js"></script>
+    <title>{{className}}</title>
+    <script src="../../../../build/yui/yui-min.js"> </script>
     <script src="js/tests.js"></script>
     <meta charset="utf-8" />
 </head>
-<body class="yui3-skin-sam">
-<div id="logger"></div>
-
+<body class="yui3-skin-sam" style="margin:8px;">
+  <div class="wf2-skin-nx wf2-skin-nxt example">
+  </div>
+  <div id="logger"></div>
 <script>
 YUI({
-    coverage: ['wf2-arno-widget'],
-    filter: (window.location.search.match(/[?&]filter=([^&]+)/) || [])[1] || 'raw'
-}).use('test-console', 'test', 'module-tests', function(Y) {
-    
-    (new Y.Test.Console()).render('#logger');
-
-    Y.Test.Runner.setName('wf2-arno-widget');
-    Y.Test.Runner.run();
+  combine: false,
+  skin: {
+    overrides: {
+      'test-console': ['sam'],
+      'console': ['sam'],
+      'console-filters': ['sam']
+    }
+  },
+  coverage: ['{{moduleName}}'],
+  filter: (window.location.search.match(/[?&]filter=([^&]+)/) || [])[1] || 'raw',
+  allowRollup: false,
+  modules: {
+    '{{moduleName}}-tests': {
+        fullpath: './js/tests.js',
+        requires: ['{{moduleName}}', 'test']
+    }
+  }
+}).use('{{moduleName}}-tests', 'test-console', 'test', 'module-tests', function(Y) {
+  (new Y.Test.Console({filters: {pass:true}})).render('#logger');
+  Y.Test.Runner.setName('{{moduleName}}');
+  Y.Test.Runner.run();
 });
 </script>
 </body>

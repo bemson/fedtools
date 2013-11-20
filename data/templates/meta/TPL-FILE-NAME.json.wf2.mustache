@@ -1,3 +1,4 @@
+{{#widget}}
 {
   "{{moduleName}}": {
     "requires": [
@@ -7,3 +8,14 @@
     "skinnable": true
   }
 }
+{{/widget}}
+
+{{^widget}}
+{
+  "{{moduleName}}": {
+    "requires": [
+      "yui-base"
+    ]
+  }
+}
+{{/widget}}
