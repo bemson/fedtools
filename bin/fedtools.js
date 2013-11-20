@@ -11,6 +11,7 @@ var program = require('commander'),
   yui3Utils = require('../lib/yui3-utils'),
   log = require('../lib/logs'),
   utilities = require('../lib/utilities'),
+  yigo = require('../lib/yigo'),
 
   debug = false,
   command = '',
@@ -149,13 +150,10 @@ case 'wria2-yui3':
   break;
 
 case 'test':
-  log.blue('==> this is a test 1');
-  log.info('==> this an info 1');
-  log.title('==> this is a title');
-  log.setBoring();
-  log.blue('==> this is a test 2');
-  log.info('==> this an info 2');
-  log.title('==> this is a title');
+  log.blue('==> this is a blue test');
+  yigo.run('wf2-simplemenu', function () {
+    console.log('==> done');
+  });
   break;
 
 default:
