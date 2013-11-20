@@ -151,9 +151,7 @@ case 'wria2-yui3':
 
 case 'test':
   log.blue('==> this is a blue test');
-  yigo.run('wf2-simplemenu', function () {
-    console.log('==> done');
-  });
+  yigo.run('wf2-simplemenu', function () {});
   break;
 
 default:
