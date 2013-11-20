@@ -30,6 +30,9 @@ var program = require('commander'),
     },
     'wria2-yui3': {
       'description': 'Synchronize a local repository with the latest YUI3 code (provided by wria).'
+    },
+    'wria2-yogi': {
+      'description': 'Create a new module (skeleton code, including unit tests and documentation)'
     }
   };
 
@@ -147,6 +150,11 @@ case 'wria2-yui3':
     }
     log.echo();
   });
+  break;
+
+case 'wria2-yogi':
+  log.echo();
+  yigo.run(function () {});
   break;
 
 case 'test':
