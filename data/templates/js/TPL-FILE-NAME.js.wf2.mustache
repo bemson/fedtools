@@ -7,9 +7,11 @@
  * @namespace {{namespace}}
  */
 
+var CSS_PREFIX = '{{moduleName}}';
+
 Y.namespace('{{namespace}}').{{className}} = Y.Base.create(
   '{{baseName}}', Y.Widget, [], {
-    initializer: function (config) {
+    initializer: function () {
 
     },
     bindUI: function () {
@@ -30,4 +32,4 @@ Y.namespace('{{namespace}}').{{className}} = Y.Base.create(
 
     }
   }
-});
+);
