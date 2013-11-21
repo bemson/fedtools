@@ -119,6 +119,7 @@ if (program.args.length !== 1) {
 /*******************/
 switch (command) {
 case 'wria2-build':
+case 'wb': // hidden menu
   utilities.timeTracker('start');
   log.echo();
   build.run(program.debug, function (err) {
@@ -133,6 +134,7 @@ case 'wria2-build':
   break;
 
 case 'wria2-init':
+case 'wi': // hidden menu
   log.echo();
   bootstrap.run(program.debug, pkgConfig, function (err) {
     if (err) {
@@ -143,6 +145,7 @@ case 'wria2-init':
   break;
 
 case 'wria2-yui3':
+case 'wy': // hidden menu
   log.echo();
   yui3Utils.run(program.debug, pkgConfig, {}, function (err) {
     if (err) {
@@ -153,6 +156,7 @@ case 'wria2-yui3':
   break;
 
 case 'wria2-mod':
+case 'wm': // hidden menu
   log.echo();
   mods.run(function () {});
   break;
