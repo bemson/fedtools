@@ -40,6 +40,10 @@
     "treeify": "~1.0.1",
     "underscore": "~1.5.2"
   },
+  "devDependencies": {
+    "grunt": "*",
+    "grunt-release": "*"
+  },
   "keywords": [
     "wria",
     "wria2",
