@@ -8,10 +8,10 @@ var program = require('commander'),
 
   bootstrap = require('../lib/wria2-bootstrap'),
   build = require('../lib/wria2-build'),
+  mods = require('../lib/wria2-modules'),
   yui3Utils = require('../lib/yui3-utils'),
   log = require('../lib/logs'),
   utilities = require('../lib/utilities'),
-  yigo = require('../lib/yigo'),
 
   debug = false,
   command = '',
@@ -32,7 +32,7 @@ var program = require('commander'),
       'description': 'Synchronize a local repository with the latest YUI3 code (provided by wria).'
     },
     'wria2-mod': {
-      'description': 'Create a new module (skeleton code, including unit tests and documentation)'
+      'description': 'Create a new module (skeleton code, including unit tests and documentation).'
     }
   };
 
@@ -154,12 +154,12 @@ case 'wria2-yui3':
 
 case 'wria2-mod':
   log.echo();
-  yigo.run(function () {});
+  mods.run(function () {});
   break;
 
 case 'test':
   log.blue('==> this is a blue test');
-  yigo.run(function () {
+  mods.run(function () {
     console.log('==> done');
     // utilities.parseTree('/tmp/wria2git/wf2/src/wf2-arno',
     // '/tmp/wria2git', function (
