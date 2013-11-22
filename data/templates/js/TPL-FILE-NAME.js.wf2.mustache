@@ -10,7 +10,7 @@
 var CSS_PREFIX = '{{moduleName}}';
 
 Y.namespace('{{namespace}}').{{className}} = Y.Base.create(
-  '{{baseName}}', {{moduleExtends}}, [], {
+  '{{baseName}}', {{moduleExtends}}, [/* array of mixins */], {
     initializer: function () {
       /*
        * Base's init method, which is invoked by Base's constructor, will invoke
