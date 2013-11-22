@@ -61,10 +61,12 @@ Y.namespace('{{namespace}}').{{className}} = Y.Base.create(
     CSS_PREFIX: CSS_PREFIX,
     ATTRS: {
       /*
-       * Static property  defining the attributes which make up your widget.
-       * This interface adds `get` and `set` methods to your class to retrieve and
-       * store attribute values, as well as support for change events that can be
-       * used to listen for changes in attribute values.
+       * The ATTRS static property is an associative array (an object with attribute
+       * name/configuration pairs) which is used to define the default set of
+       * attributes that your class adds to each instance. This interface adds `get`
+       * and `set` methods to your class to retrieve and store attribute values, as
+       * well as support for change events that can be used to listen for changes in
+       * attribute values.
        * See http://yuilibrary.com/yui/docs/attribute/
        */
     },
