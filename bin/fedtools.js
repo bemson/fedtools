@@ -123,7 +123,8 @@ case 'wb': // hidden menu
   utilities.timeTracker('start');
   log.echo();
   build.run(program.debug, {
-    cwd: process.cwd()
+    cwd: process.cwd(),
+    prompt: true
   }, function (err) {
     if (err && err !== -1) {
       log.echo(err);
