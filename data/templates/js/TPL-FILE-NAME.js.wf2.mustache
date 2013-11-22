@@ -12,24 +12,70 @@ var CSS_PREFIX = '{{moduleName}}';
 Y.namespace('{{namespace}}').{{className}} = Y.Base.create(
   '{{baseName}}', {{moduleExtends}}, [], {
     initializer: function () {
-
-    },
-    bindUI: function () {
-
-    },
-    syncUI: function () {
-
+      /*
+       * Base's init method, which is invoked by Base's constructor, will invoke
+       * the initializer method for each class in the hierarchy — starting from
+       * the Base class first and ending with the subclass being instantiated.
+       * The initializer method for each class is invoked after its attributes have
+       * been initialized (as discussed above) and will receive the configuration
+       * object literal passed to the init method.
+       * See http://yuilibrary.com/yui/docs/base/#initdestroy
+       */
     },
     destructor: function () {
-
+      /*
+       * Base's destroy method, when called, will invoke the destructor method for
+       *  each class in the hierarchy — starting from the subclass instantiated to
+       *  create the instance and ending with the Base class (the opposite of
+       * initialization).
+       * See http://yuilibrary.com/yui/docs/base/#initdestroy
+       */
+    },
+    bindUI: function () {
+      /*
+       * This method is responsible for attaching event listeners which bind the
+       * UI to the widget state. These listeners are generally attribute change
+       * listeners — used to update the state of the UI in response to changes in
+       * the attribute's value. It also attaches DOM event listeners to the UI to
+       * map user interactions to the widget's API.
+       * See http://yuilibrary.com/yui/docs/widget/#widgets-renderer-method
+       */
+    },
+    syncUI: function () {
+      /*
+       * This method is responsible for setting the initial state of the UI based
+       * on the current state of the widget at the time of rendering.
+       * See http://yuilibrary.com/yui/docs/widget/#widgets-renderer-method
+       */
+    },
+    renderUI: function () {
+      /*
+       * This method is responsible for creating and adding the nodes which
+       * the widget needs into the document (or modifying existing nodes, in
+       * the case of progressive enhancement). It is usually the point at which
+       * the DOM is first modified by the widget.
+       * See http://yuilibrary.com/yui/docs/widget/#widgets-renderer-method
+       */
     }
   }, {
     CSS_PREFIX: CSS_PREFIX,
     ATTRS: {
-
+      /*
+       * Static property  defining the attributes which make up your widget.
+       * This interface adds `get` and `set` methods to your class to retrieve and
+       * store attribute values, as well as support for change events that can be
+       * used to listen for changes in attribute values.
+       * See http://yuilibrary.com/yui/docs/attribute/
+       */
     },
     HTML_PARSER: {
-
+      /*
+       * Static property, used to define a hash of selectors or functions that are
+       * responsible for (a) parsing content for the widget from existing DOM
+       * elements and (b) extracting attribute configuration values for use during
+       * initialization.
+       * See http://yuilibrary.com/yui/docs/widget/#progressive
+       */
     }
   }
 );
