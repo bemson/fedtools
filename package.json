@@ -1,6 +1,6 @@
 {
   "name": "fedtools",
-  "version": "0.0.18",
+  "version": "0.0.21",
   "description": "Set of tools for FEDs",
   "author": "Arno Versini",
   "bin": {
@@ -35,7 +35,7 @@
     "path": "~0.4.9",
     "promptly": "~0.2.0",
     "rimraf": "~2.2.2",
-    "shifter": "https://github.com/aversini/shifter/tarball/fix-gear-lib-dependencies",
+    "shifter": "~0.4.3",
     "shelljs": "~0.2.6",
     "simple-boilerplate": "~0.0.1",
     "sprintf": "~0.1.3",
