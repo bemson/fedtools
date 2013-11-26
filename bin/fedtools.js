@@ -28,6 +28,9 @@ var program = require('commander'),
     'wria2-build': {
       'description': 'Run a full wria2 build or a single component build depending on the current path.'
     },
+    'wria2-watch': {
+      'description': 'Watch and compile a full wria2 source tree or a single component depending on the current path.'
+    },
     'wria2-yui3': {
       'description': 'Synchronize a local repository with the latest YUI3 code (provided by wria).'
     },
@@ -118,13 +121,28 @@ if (program.args.length !== 1) {
 /* Geronimo!       */
 /*******************/
 switch (command) {
+case 'wria2-watch':
+case 'ww': // hidden menu
+  log.echo();
+  build.run(program.debug, {
+    cwd: process.cwd(),
+    prompt: true,
+    type: build.TYPE_WATCH
+  }, function (err) {
+    if (err && err !== -1) {
+      log.echo(err);
+    }
+  });
+  break;
+
 case 'wria2-build':
 case 'wb': // hidden menu
   utilities.timeTracker('start');
   log.echo();
   build.run(program.debug, {
     cwd: process.cwd(),
-    prompt: true
+    prompt: true,
+    type: build.TYPE_BUILD
   }, function (err) {
     if (err && err !== -1) {
       log.echo(err);
