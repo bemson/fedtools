@@ -1,6 +1,6 @@
 {
   "name": "fedtools",
-  "version": "0.0.23",
+  "version": "0.0.24",
   "description": "Set of tools for FEDs",
   "author": "Arno Versini",
   "bin": {
@@ -28,6 +28,9 @@
     "commander": "~2.0.0",
     "findit": "~1.1.0",
     "glob": "~3.2.7",
+    "grunt": "~0.4.2",
+    "grunt-cli": "~0.1.11",
+    "grunt-contrib-watch": "*",
     "mkdirp": "~0.3.5",
     "moment": "~2.4.0",
     "mustache": "~0.7.3",
@@ -44,7 +47,6 @@
     "yogi": "~0.1.11"
   },
   "devDependencies": {
-    "grunt": "*",
     "grunt-release": "*"
   },
   "keywords": [
