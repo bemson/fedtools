@@ -1,6 +1,6 @@
 {
   "name": "fedtools",
-  "version": "0.0.24",
+  "version": "0.0.25",
   "description": "Set of tools for FEDs",
   "author": "Arno Versini",
   "bin": {
@@ -58,6 +58,7 @@
     "bootstrap"
   ],
   "config": {
+    "defaultGitlabId": "wf",
     "defaultBranch": "dev-2.x",
     "wria2gitname": "wria2git",
     "wria2giturl": "git@wnl-svr167.wellsfargo.com:{{gitlabId}}/wria2.git",
