@@ -9,6 +9,7 @@ if (process.argv && process.argv.length === 3) {
   if (!message || (message.indexOf('PN-') === -1 && message.indexOf('NO TICKET') === -1)) {
     console.error();
     console.error('No commit message or commit message does not reference a JIRA ticket.');
+    console.error('Please fix your commit message and try again.');
     console.error();
     setTimeout(function () {
       process.exit(1);
