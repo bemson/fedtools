@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 
-/*jshint node:true*/
+/*jshint node:true, unused:true*/
 
 var program = require('commander'),
   fs = require('fs'),
@@ -22,19 +22,24 @@ var program = require('commander'),
 
   commandList = [],
   fedToolsCommands = {
-    'wria2-init': {
-      'description': 'Bootstrap a local wria2 git repository (clone, hooks, yui3, etc.)'
+    'wi': {
+      'full': 'wria2-init',
+      'description': 'Bootstrap a local wria2 git repository (clone, hooks, synchornize with yui3, etc.)'
     },
-    'wria2-build': {
+    'wb': {
+      'full': 'wria2-build',
       'description': 'Run a full wria2 build or a single component build depending on the current path.'
     },
-    'wria2-watch': {
+    'ww': {
+      'full': 'wria2-watch',
       'description': 'Watch and compile a full wria2 source tree or a single component depending on the current path.'
     },
-    'wria2-yui3': {
+    'wy': {
+      'full': 'wria2-yui3',
       'description': 'Synchronize a local repository with the latest YUI3 code (provided by wria).'
     },
-    'wria2-mod': {
+    'wm': {
+      'full': 'wria2-mod',
       'description': 'Create a new module (skeleton code, including unit tests and documentation).'
     }
   };
@@ -51,25 +56,50 @@ program
   .usage('[options] ' + commandList.join('|'))
   .option('-b, --boring', 'do not use color output')
   .option('-d, --debug', 'display extra information')
-  .option('-e, --examples', 'print out usage examples of this tool')
-  .on('--help', function () {
-    console.log('  Parameters:');
-    console.log('');
-    var i, len = commandList.length;
-    for (i = 0; i < len; i += 1) {
-      console.log('    ' + commandList[i] + '\t   ' +
-        fedToolsCommands[commandList[i]].description);
-    }
-    console.log('');
-    console.log('  Description:');
-    console.log('');
-    console.log(
-      '    This script is designed to help build P17N components and to handle various other actions for FED.'
-    );
-    console.log('');
-    console.log('');
+  .option('-e, --examples', 'print out usage examples of this tool');
 
-  });
+
+program.on('--help', function () {
+  console.log('  Parameters:');
+  console.log('');
+
+  var cmdtmp, cmdtmplen, cmdt, cmdl, cmdd, cmddlen, i, j,
+    len = commandList.length,
+    descArray, descArrayLen,
+    buffer = '',
+    CMD_PRE_BUFFER = '    ',
+    CMD_MAX_LEN = 22,
+    CMD_DESC_MAX = 50;
+
+  for (i = 0; i < len; i += 1) {
+    cmdt = commandList[i];
+    cmdl = fedToolsCommands[commandList[i]].full;
+    cmdd = fedToolsCommands[commandList[i]].description;
+
+    cmdtmp = CMD_PRE_BUFFER + cmdt + ' (' + cmdl + ')';
+    cmdtmplen = cmdtmp.length;
+    cmddlen = cmdd.length;
+
+    buffer = cmdtmp + new Array(CMD_MAX_LEN - cmdtmplen + 1).join(' ');
+    descArray = utilities.wordWrap(cmdd, CMD_DESC_MAX);
+
+    console.log(buffer + descArray[0]);
+    descArrayLen = descArray.length;
+    for (j = 1; j < descArrayLen; j += 1) {
+      console.log(new Array(CMD_MAX_LEN + 1).join(' ') + descArray[j]);
+    }
+  }
+
+  console.log('');
+  console.log('  Description:');
+  console.log('');
+  console.log(
+    '    This script is designed to help build P17N components and to handle');
+  console.log(
+    '    various other actions for FED.');
+  console.log('');
+  console.log('');
+});
 
 program.parse(process.argv);
 
@@ -182,16 +212,33 @@ case 'wm': // hidden menu
   mods.run(function () {});
   break;
 
-case 'test':
-  log.blue('==> this is a blue test');
-  mods.run(function () {
-    console.log('==> done');
-    // utilities.parseTree('/tmp/wria2git/wf2/src/wf2-arno',
-    // '/tmp/wria2git', function (
-    // tree) {
-    // console.log('==> tree: ', tree);
-    // });
-  });
+  // case 'test':
+case 'wt':
+  log.blue('==> this is a b-b-blue test');
+  log.success(
+    'This is a success message that should be cut off because it is too long to fit before the status'
+  );
+
+  // var cmd = require('../lib/commands.js'),
+  //   gruntfile = path.join(__dirname, '..', 'data', 'wria2', 'gruntfile-widget.js');
+
+  // if (process.platform === 'win32') {
+  //   process.env.PATH = path.join(__dirname, '..', 'node_modules', '.bin') + ';' +
+  //     process.env.PATH;
+  // } else {
+  //   process.env.PATH = path.join(__dirname, '..', 'node_modules', '.bin') + ':' +
+  //     process.env.PATH;
+  // }
+
+  // cmd.run('grunt --gruntfile ' + gruntfile + ' watch', {
+  //   pwd: process.cwd(),
+  //   silent: true,
+  //   inherit: true
+  // }, function (err, data) {
+  //   console.log('==> err: ', err);
+  //   console.log('==> data: ', data);
+  // });
+
   break;
 
 default:
