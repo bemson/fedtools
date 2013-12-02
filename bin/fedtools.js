@@ -22,6 +22,10 @@ var program = require('commander'),
 
   commandList = [],
   fedToolsCommands = {
+    'ws': {
+      'full': 'wria2-soy',
+      'description': 'Build all the Soy templates.'
+    },
     'wi': {
       'full': 'wria2-init',
       'description': 'Bootstrap a local wria2 git repository (clone, hooks, synchornize with yui3, etc.)'
@@ -151,6 +155,20 @@ if (program.args.length !== 1) {
 /* Geronimo!       */
 /*******************/
 switch (command) {
+case 'wria2-soy':
+case 'ws': // hidden menu
+  log.echo();
+  build.run(program.debug, {
+    cwd: process.cwd(),
+    prompt: true,
+    type: build.TYPE_SOY
+  }, function (err) {
+    if (err && err !== -1) {
+      log.echo(err);
+    }
+  });
+  break;
+
 case 'wria2-watch':
 case 'ww': // hidden menu
   log.echo();
