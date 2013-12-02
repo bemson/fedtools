@@ -26,6 +26,7 @@
     "async": "~0.2.9",
     "cli-color": "~0.2.3",
     "commander": "~2.0.0",
+    "fedtools-logs": "*",
     "findit": "~1.1.0",
     "glob": "~3.2.7",
     "grunt": "~0.4.2",

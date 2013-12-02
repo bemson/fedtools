@@ -5,12 +5,12 @@
 var program = require('commander'),
   fs = require('fs'),
   path = require('path'),
+  log = require('fedtools-logs'),
 
   bootstrap = require('../lib/wria2-bootstrap'),
   build = require('../lib/wria2-build'),
   mods = require('../lib/wria2-modules'),
   yui3Utils = require('../lib/yui3-utils'),
-  log = require('../lib/logs'),
   utilities = require('../lib/utilities'),
 
   debug = false,
