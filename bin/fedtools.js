@@ -22,6 +22,10 @@ var program = require('commander'),
 
   commandList = [],
   fedToolsCommands = {
+    'wss': {
+      'full': 'wria2-sel',
+      'description': 'Start Selleck to serve example pages for the wria2 framework.'
+    },
     'ws': {
       'full': 'wria2-soy',
       'description': 'Build all the Soy templates.'
@@ -155,6 +159,16 @@ if (program.args.length !== 1) {
 /* Geronimo!       */
 /*******************/
 switch (command) {
+case 'wria2-selleck':
+case 'wria2-sel':
+case 'wss': // hidden menu
+  log.echo();
+  build.run(program.debug, {
+    type: build.TYPE_SERVER,
+    server: build.SERVER_TYPE_SELLECK
+  }, function () {});
+  break;
+
 case 'wria2-soy':
 case 'ws': // hidden menu
   log.echo();
@@ -233,30 +247,6 @@ case 'wm': // hidden menu
   // case 'test':
 case 'wt':
   log.blue('==> this is a b-b-blue test');
-  log.success(
-    'This is a success message that should be cut off because it is too long to fit before the status'
-  );
-
-  // var cmd = require('../lib/commands.js'),
-  //   gruntfile = path.join(__dirname, '..', 'data', 'wria2', 'gruntfile-widget.js');
-
-  // if (process.platform === 'win32') {
-  //   process.env.PATH = path.join(__dirname, '..', 'node_modules', '.bin') + ';' +
-  //     process.env.PATH;
-  // } else {
-  //   process.env.PATH = path.join(__dirname, '..', 'node_modules', '.bin') + ':' +
-  //     process.env.PATH;
-  // }
-
-  // cmd.run('grunt --gruntfile ' + gruntfile + ' watch', {
-  //   pwd: process.cwd(),
-  //   silent: true,
-  //   inherit: true
-  // }, function (err, data) {
-  //   console.log('==> err: ', err);
-  //   console.log('==> data: ', data);
-  // });
-
   break;
 
 default:
