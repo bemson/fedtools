@@ -57,7 +57,6 @@ module.exports = function (grunt) {
 
   // register running tasks
   grunt.registerTask('default', ['help']);
-  grunt.registerTask('publish', ['release', 'check']);
 
   grunt.registerTask('pack', 'Create package', function () {
     var done = this.async();
@@ -134,8 +133,7 @@ module.exports = function (grunt) {
 
   grunt.registerTask('help', 'Display help usage', function () {
     console.log();
-    console.log('Type "grunt publish" to:');
-
+    console.log('Type "grunt release" to:');
     console.log(' - bump the version in package.json file.');
     console.log(' - stage the package.json file\'s change.');
     console.log(' - commit that change.');
@@ -143,6 +141,8 @@ module.exports = function (grunt) {
     console.log(' - push the changes out to github.');
     console.log(' - push the new tag out to github.');
     console.log(' - publish the new version to npm.');
+    console.log();
+    console.log('Then type "grunt check" to:');
     console.log(' - check if the newly published package is valid.');
   });
 };
