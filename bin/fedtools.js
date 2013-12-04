@@ -91,21 +91,13 @@ program.on('--help', function () {
     buffer = cmdtmp + new Array(CMD_MAX_LEN - cmdtmplen + 1).join(' ');
     descArray = utilities.wordWrap(cmdd, CMD_DESC_MAX);
 
-    console.log(buffer + descArray[0]);
+    console.log(log.strToColor('cyan', buffer) + descArray[0]);
     descArrayLen = descArray.length;
     for (j = 1; j < descArrayLen; j += 1) {
       console.log(new Array(CMD_MAX_LEN + 1).join(' ') + descArray[j]);
     }
   }
 
-  console.log('');
-  console.log('  Description:');
-  console.log('');
-  console.log(
-    '    This script is designed to help build P17N components and to handle');
-  console.log(
-    '    various other actions for FED.');
-  console.log('');
   console.log('');
 });
 
