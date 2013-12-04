@@ -26,6 +26,10 @@ var program = require('commander'),
       'full': 'wria2-sel',
       'description': 'Start Selleck to serve example pages for the wria2 framework.'
     },
+    'wa': {
+      'full': 'wria2-api',
+      'description': 'Start YUIDoc Server Mode to View API Docs of the wria2 framework.'
+    },
     'ws': {
       'full': 'wria2-soy',
       'description': 'Build all the Soy templates.'
@@ -166,6 +170,15 @@ case 'wss': // hidden menu
   build.run(program.debug, {
     type: build.TYPE_SERVER,
     server: build.SERVER_TYPE_SELLECK
+  }, function () {});
+  break;
+
+case 'wria2-api':
+case 'wa': // hidden menu
+  log.echo();
+  build.run(program.debug, {
+    type: build.TYPE_SERVER,
+    server: build.SERVER_TYPE_YUIDOC
   }, function () {});
   break;
 
