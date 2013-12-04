@@ -49,7 +49,11 @@
     "yogi": "~0.1.11"
   },
   "devDependencies": {
-    "grunt-release": "*"
+    "grunt-release": "*",
+    "grunt-curl": "*",
+    "grunt-contrib-clean": "*",
+    "grunt-contrib-copy": "*",
+    "grunt-mkdir": "*"
   },
   "keywords": [
     "wria",
