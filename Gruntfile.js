@@ -112,10 +112,8 @@ module.exports = function (grunt) {
     }, function (err, data) {
       if (data.stdout) {
         console.log('\n', data.stdout);
-        done();
-      } else {
-        done(err);
       }
+      done(err);
     });
   });
 
