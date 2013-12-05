@@ -73,7 +73,6 @@ program
 
 program.on('--help', function () {
   console.log('  Parameters:');
-  console.log('');
 
   var cmdtmp, cmdtmplen, cmdt, cmdl, cmdd, cmddlen, i, j,
     len = commandList.length,
@@ -82,6 +81,7 @@ program.on('--help', function () {
     CMD_PRE_BUFFER = '    ',
     CMD_MAX_LEN = 22,
     CMD_DESC_MAX = 50;
+  console.log(new Array(CMD_MAX_LEN + CMD_DESC_MAX + 1).join('─'));
 
   for (i = 0; i < len; i += 1) {
     cmdt = commandList[i];
@@ -100,9 +100,8 @@ program.on('--help', function () {
     for (j = 1; j < descArrayLen; j += 1) {
       console.log(new Array(CMD_MAX_LEN + 1).join(' ') + descArray[j]);
     }
+    console.log(new Array(CMD_MAX_LEN + CMD_DESC_MAX + 1).join('─'));
   }
-
-  console.log('');
 });
 
 program.parse(process.argv);
