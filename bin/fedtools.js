@@ -28,7 +28,7 @@ var program = require('commander'),
     },
     'wa': {
       'full': 'wria2-api',
-      'description': 'Start YUIDoc Server Mode to View API Docs of the wria2 framework.'
+      'description': 'Start YUIDoc server to view API docs of the wria2 framework.'
     },
     'ws': {
       'full': 'wria2-soy',
