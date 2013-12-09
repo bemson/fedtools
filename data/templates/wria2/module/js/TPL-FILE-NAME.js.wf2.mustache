@@ -7,7 +7,7 @@
  * @namespace {{namespace}}
  */
 
-var CSS_PREFIX = '{{moduleName}}';
+{{#widget}}var CSS_PREFIX = '{{moduleName}}';{{/widget}}
 
 Y.namespace('{{namespace}}').{{className}} = Y.Base.create(
   '{{baseName}}', {{moduleExtends}}, [/* array of mixins */], {
@@ -58,7 +58,6 @@ Y.namespace('{{namespace}}').{{className}} = Y.Base.create(
        */
     }{{/widget}}
   }, {
-    CSS_PREFIX: CSS_PREFIX,
     ATTRS: {
       /*
        * The ATTRS static property is an associative array (an object with attribute
@@ -70,6 +69,7 @@ Y.namespace('{{namespace}}').{{className}} = Y.Base.create(
        * See http://yuilibrary.com/yui/docs/attribute/
        */
     }{{#widget}},
+    CSS_PREFIX: CSS_PREFIX,
     HTML_PARSER: {
       /*
        * Static property, used to define a hash of selectors or functions that are
