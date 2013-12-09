@@ -30,7 +30,7 @@ Y.namespace('{{namespace}}').{{className}} = Y.Base.create(
        * initialization).
        * See http://yuilibrary.com/yui/docs/base/#initdestroy
        */
-    },
+    }{{#widget}},
     bindUI: function () {
       /*
        * This method is responsible for attaching event listeners which bind the
@@ -56,7 +56,7 @@ Y.namespace('{{namespace}}').{{className}} = Y.Base.create(
        * the DOM is first modified by the widget.
        * See http://yuilibrary.com/yui/docs/widget/#widgets-renderer-method
        */
-    }
+    }{{/widget}}
   }, {
     CSS_PREFIX: CSS_PREFIX,
     ATTRS: {
@@ -69,7 +69,7 @@ Y.namespace('{{namespace}}').{{className}} = Y.Base.create(
        * attribute values.
        * See http://yuilibrary.com/yui/docs/attribute/
        */
-    },
+    }{{#widget}},
     HTML_PARSER: {
       /*
        * Static property, used to define a hash of selectors or functions that are
@@ -78,6 +78,6 @@ Y.namespace('{{namespace}}').{{className}} = Y.Base.create(
        * initialization.
        * See http://yuilibrary.com/yui/docs/widget/#progressive
        */
-    }
+    }{{/widget}}
   }
 );
