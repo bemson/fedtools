@@ -2,6 +2,23 @@
 
 module.exports = function (grunt) {
 
+  var moment = require('moment'),
+    mustache = require('mustache'),
+    PUBLISH_COMMIT_MSG = 'Publishing npm release';
+
+  // load plugins
+  require('load-grunt-tasks')(grunt);
+
+  // helper callback for shell task
+  function writeHistory(err, stdout, stderr, cb) {
+    var version = grunt.config.get('pkg').version,
+      now = moment(new Date()).format('MM-DD-YYYY HH:mm');
+    console.log('==> date: ', now);
+    console.log('==> version: ', version);
+    console.log('==> stdout: ', stdout);
+    cb();
+  }
+
   // project configuration
   grunt.initConfig({
     pkg: grunt.file.readJSON('package.json'),
@@ -41,6 +58,16 @@ module.exports = function (grunt) {
       },
     },
 
+    shell: {
+      getHistory: {
+        command: 'git log <%=pkg.version%>..HEAD --pretty=format:\'* [ %an ] %s\' --no-merges | grep -v "' +
+          PUBLISH_COMMIT_MSG + '"',
+        options: {
+          callback: writeHistory
+        }
+      }
+    },
+
     release: {
       options: {
         bump: true,
@@ -49,17 +76,11 @@ module.exports = function (grunt) {
         tag: true,
         push: true,
         pushTags: true,
-        npm: true
+        npm: true,
+        commitMessage: PUBLISH_COMMIT_MSG + ' <%= version %>'
       }
     }
   });
-
-  // load plugins
-  grunt.loadNpmTasks('grunt-release');
-  grunt.loadNpmTasks('grunt-curl');
-  grunt.loadNpmTasks('grunt-contrib-clean');
-  grunt.loadNpmTasks('grunt-contrib-copy');
-  grunt.loadNpmTasks('grunt-mkdir');
 
   // register running tasks
   grunt.registerTask('default', ['help']);
