@@ -155,3 +155,7 @@ Release 0.0.44
 * [ Arno V ] &quot;Updating HISTORY&quot;
 * [ Arno V ] work in progress
 * [ Arno V ] Adding HISTORY.md
+
+##Release 0.0.47 ~ Dec 10 2013 12:24
+* [ Arno V ] Fix history versioning with the latest tag
+* [ Arno V ] Fixing history version
