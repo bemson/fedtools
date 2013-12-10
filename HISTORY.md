@@ -150,7 +150,7 @@ Release 0.0.44
 * [ Arno V ] Externalizing 'installLocalNpmPackages' to utilities
 * [ Arno V ] Refining help page a little bit
 
-##Release 0.0.45 ~ Dec 10 2013 12:10
+##Release 0.0.46 ~ Dec 10 2013 12:10
 * [ Arno V ] Adding commit history grunt task
 * [ Arno V ] &quot;Updating HISTORY&quot;
 * [ Arno V ] work in progress
