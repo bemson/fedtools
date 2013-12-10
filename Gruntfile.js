@@ -43,7 +43,7 @@ module.exports = function (grunt) {
           } else {
             grunt.util.spawn({
               cmd: 'git',
-              args: ['commit', '-m', '"Updating HISTORY"']
+              args: ['commit', '-m', 'Updating HISTORY']
             }, function (err) {
               if (err) {
                 grunt.fail.fatal('Unable to run "git commit" ' + err);
