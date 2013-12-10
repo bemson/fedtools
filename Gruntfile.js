@@ -2,6 +2,71 @@
 
 module.exports = function (grunt) {
 
+  var moment = require('moment'),
+    mustache = require('mustache'),
+    fs = require('fs'),
+    historyFile = 'HISTORY.md',
+    PUBLISH_COMMIT_MSG = 'Publishing npm release',
+    TPL_HISTORY_ENTRY = '\n##Release {{version}} ~ {{date}}\n' +
+      '{{history}}';
+
+  // load plugins
+  require('load-grunt-tasks')(grunt);
+
+  // helper callback for shell task
+  // - Update the HISTORY.md file with the latest logs
+  // - Stage, commit and publish the HISTORY.md file
+  function postGetLatestLogs(err, stdout, stderr, cb) {
+    var buffer,
+      version = grunt.config.get('pkg').version,
+      date = moment(new Date()).format('MMM DD YYYY HH:mm');
+
+    if (stdout) {
+      buffer = mustache.render(TPL_HISTORY_ENTRY, {
+        version: version,
+        date: date,
+        history: stdout
+      });
+      if (buffer) {
+        fs.appendFileSync(historyFile, buffer);
+
+        grunt.util.spawn({
+          cmd: 'git',
+          args: ['add', historyFile]
+        }, function (err) {
+          if (err) {
+            grunt.fail.fatal('Unable to run "git add" ' + err);
+            cb();
+          } else {
+            grunt.util.spawn({
+              cmd: 'git',
+              args: ['commit', '-m', '"Updating HISTORY"']
+            }, function (err) {
+              if (err) {
+                grunt.fail.fatal('Unable to run "git commit" ' + err);
+                cb();
+              } else {
+                grunt.util.spawn({
+                  cmd: 'git',
+                  args: ['push']
+                }, function (err) {
+                  if (err) {
+                    grunt.fail.fatal('Unable to run "git push" ' + err);
+                  }
+                  cb();
+                });
+              }
+            });
+          }
+        });
+      } else {
+        cb();
+      }
+    } else {
+      cb();
+    }
+  }
+
   // project configuration
   grunt.initConfig({
     pkg: grunt.file.readJSON('package.json'),
@@ -41,6 +106,16 @@ module.exports = function (grunt) {
       },
     },
 
+    shell: {
+      getHistory: {
+        command: 'git log <%=pkg.version%>..HEAD --pretty=format:\'* [ %an ] %s\' --no-merges | grep -v "' +
+          PUBLISH_COMMIT_MSG + '"',
+        options: {
+          callback: postGetLatestLogs
+        }
+      }
+    },
+
     release: {
       options: {
         bump: true,
@@ -49,20 +124,15 @@ module.exports = function (grunt) {
         tag: true,
         push: true,
         pushTags: true,
-        npm: true
+        npm: true,
+        commitMessage: PUBLISH_COMMIT_MSG + ' <%= version %>'
       }
     }
   });
 
-  // load plugins
-  grunt.loadNpmTasks('grunt-release');
-  grunt.loadNpmTasks('grunt-curl');
-  grunt.loadNpmTasks('grunt-contrib-clean');
-  grunt.loadNpmTasks('grunt-contrib-copy');
-  grunt.loadNpmTasks('grunt-mkdir');
-
   // register running tasks
   grunt.registerTask('default', ['help']);
+  grunt.registerTask('publish', ['shell', 'release']);
 
   grunt.registerTask('pack', 'Create package', function () {
     var done = this.async();
@@ -141,7 +211,7 @@ module.exports = function (grunt) {
 
   grunt.registerTask('help', 'Display help usage', function () {
     console.log();
-    console.log('Type "grunt release" to:');
+    console.log('Type "grunt publish" to:');
     console.log(' - bump the version in package.json file.');
     console.log(' - stage the package.json file\'s change.');
     console.log(' - commit that change.');

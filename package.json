@@ -53,7 +53,9 @@
     "grunt-curl": "*",
     "grunt-contrib-clean": "*",
     "grunt-contrib-copy": "*",
-    "grunt-mkdir": "*"
+    "grunt-mkdir": "*",
+    "grunt-shell": "*",
+    "load-grunt-tasks": "*"
   },
   "keywords": [
     "wria",
