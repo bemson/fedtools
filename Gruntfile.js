@@ -5,6 +5,8 @@ module.exports = function (grunt) {
   var moment = require('moment'),
     mustache = require('mustache'),
     fs = require('fs'),
+    semver = require('semver'),
+
     historyFile = 'HISTORY.md',
     PUBLISH_COMMIT_MSG = 'Publishing npm release',
     TPL_HISTORY_ENTRY = '\n##Release {{version}} ~ {{date}}\n' +
@@ -18,7 +20,7 @@ module.exports = function (grunt) {
   // - Stage, commit and publish the HISTORY.md file
   function postGetLatestLogs(err, stdout, stderr, cb) {
     var buffer,
-      version = grunt.config.get('pkg').version,
+      version = semver.inc(grunt.config.get('pkg').version, 'patch'),
       date = moment(new Date()).format('MMM DD YYYY HH:mm');
 
     if (stdout) {
@@ -27,6 +29,7 @@ module.exports = function (grunt) {
         date: date,
         history: stdout
       });
+
       if (buffer) {
         fs.appendFileSync(historyFile, buffer);
 

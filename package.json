@@ -55,7 +55,8 @@
     "grunt-contrib-copy": "*",
     "grunt-mkdir": "*",
     "grunt-shell": "*",
-    "load-grunt-tasks": "*"
+    "load-grunt-tasks": "*",
+    "semver": "*"
   },
   "keywords": [
     "wria",
