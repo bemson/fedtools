@@ -159,3 +159,7 @@ Release 0.0.44
 ##Release 0.0.47 ~ Dec 10 2013 12:24
 * [ Arno V ] Fix history versioning with the latest tag
 * [ Arno V ] Fixing history version
+
+##Release 0.0.48 ~ Dec 10 2013 16:36
+* [ Arno V ] Bundling shifter and yogi to try to ease the installation part of fedtools
+* [ Arno V ] fix typo
