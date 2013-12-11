@@ -168,3 +168,6 @@ Release 0.0.44
 * [ Arno V ] fixing script to detect shifter and yogi
 * [ Arno V ] missing script to check for yogi&#x2F;shifter
 * [ Arno V ] Removing shifter and yogi dependency - just error message if not installed
+
+##Release 0.0.50 ~ Dec 10 2013 21:22
+* [ Arno V ] Cleaning up package dependencies
