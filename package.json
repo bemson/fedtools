@@ -32,9 +32,6 @@
     "fedtools-logs": "*",
     "findit": "~1.1.0",
     "glob": "~3.2.7",
-    "grunt": "~0.4.2",
-    "grunt-cli": "~0.1.11",
-    "grunt-contrib-watch": "*",
     "mkdirp": "~0.3.5",
     "moment": "~2.4.0",
     "mustache": "~0.7.3",
@@ -49,6 +46,9 @@
     "underscore": "~1.5.2"
   },
   "devDependencies": {
+    "grunt": "~0.4.2",
+    "grunt-cli": "~0.1.11",
+    "grunt-contrib-watch": "*",
     "grunt-release": "*",
     "grunt-curl": "*",
     "grunt-contrib-clean": "*",
