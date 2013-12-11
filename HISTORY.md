@@ -163,3 +163,8 @@ Release 0.0.44
 ##Release 0.0.48 ~ Dec 10 2013 16:36
 * [ Arno V ] Bundling shifter and yogi to try to ease the installation part of fedtools
 * [ Arno V ] fix typo
+
+##Release 0.0.49 ~ Dec 10 2013 21:17
+* [ Arno V ] fixing script to detect shifter and yogi
+* [ Arno V ] missing script to check for yogi&#x2F;shifter
+* [ Arno V ] Removing shifter and yogi dependency - just error message if not installed
