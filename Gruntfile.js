@@ -112,7 +112,7 @@ module.exports = function (grunt) {
     shell: {
       getHistory: {
         command: 'git log <%=pkg.version%>..HEAD' +
-          ' --pretty=format:\'* [ %an ] %s (commit: %h)\' --no-merges | grep -v "' +
+          ' --pretty=format:\'* [ %an ] %s (commit: %H)\' --no-merges | grep -v "' +
           PUBLISH_COMMIT_MSG + '"',
         options: {
           callback: postGetLatestLogs
