@@ -171,3 +171,7 @@ Release 0.0.44
 
 ##Release 0.0.50 ~ Dec 10 2013 21:22
 * [ Arno V ] Cleaning up package dependencies
+
+##Release 0.0.51 ~ Dec 10 2013 21:30
+* [ Arno V ] Removing debug from Gruntfile (commit: 24056fe)
+* [ Arno V ] Adding abbreviated commit hash to HISTORY logs (commit: dbaab82)
