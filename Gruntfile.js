@@ -31,38 +31,37 @@ module.exports = function (grunt) {
       });
 
       if (buffer) {
-        console.log('==> buffer: ', buffer);
-        // fs.appendFileSync(historyFile, buffer);
+        fs.appendFileSync(historyFile, buffer);
 
-        // grunt.util.spawn({
-        //   cmd: 'git',
-        //   args: ['add', historyFile]
-        // }, function (err) {
-        //   if (err) {
-        //     grunt.fail.fatal('Unable to run "git add" ' + err);
-        //     cb();
-        //   } else {
-        //     grunt.util.spawn({
-        //       cmd: 'git',
-        //       args: ['commit', '-m', 'Updating HISTORY']
-        //     }, function (err) {
-        //       if (err) {
-        //         grunt.fail.fatal('Unable to run "git commit" ' + err);
-        //         cb();
-        //       } else {
-        //         grunt.util.spawn({
-        //           cmd: 'git',
-        //           args: ['push']
-        //         }, function (err) {
-        //           if (err) {
-        //             grunt.fail.fatal('Unable to run "git push" ' + err);
-        //           }
-        //           cb();
-        //         });
-        //       }
-        //     });
-        //   }
-        // });
+        grunt.util.spawn({
+          cmd: 'git',
+          args: ['add', historyFile]
+        }, function (err) {
+          if (err) {
+            grunt.fail.fatal('Unable to run "git add" ' + err);
+            cb();
+          } else {
+            grunt.util.spawn({
+              cmd: 'git',
+              args: ['commit', '-m', 'Updating HISTORY']
+            }, function (err) {
+              if (err) {
+                grunt.fail.fatal('Unable to run "git commit" ' + err);
+                cb();
+              } else {
+                grunt.util.spawn({
+                  cmd: 'git',
+                  args: ['push']
+                }, function (err) {
+                  if (err) {
+                    grunt.fail.fatal('Unable to run "git push" ' + err);
+                  }
+                  cb();
+                });
+              }
+            });
+          }
+        });
       } else {
         cb();
       }
@@ -112,7 +111,8 @@ module.exports = function (grunt) {
 
     shell: {
       getHistory: {
-        command: 'git log <%=pkg.version%>..HEAD --pretty=format:\'* [ %an ] %s rev %h\' --no-merges | grep -v "' +
+        command: 'git log <%=pkg.version%>..HEAD' +
+          ' --pretty=format:\'* [ %an ] %s (commit: %h)\' --no-merges | grep -v "' +
           PUBLISH_COMMIT_MSG + '"',
         options: {
           callback: postGetLatestLogs
