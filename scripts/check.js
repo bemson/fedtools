@@ -4,7 +4,7 @@ var exec = require('child_process').exec,
   shifterFlag = false,
   yogiFlag = false;
 
-exec('shifter', {}, function (err1) {
+exec('shifter -v', {}, function (err1) {
   if (err1) {
     shifterFlag = true;
     console.log('*************************************************************');
@@ -15,7 +15,7 @@ exec('shifter', {}, function (err1) {
     console.log('*************************************************************');
     console.log();
   }
-  exec('yogi', {}, function (err2) {
+  exec('yogi -v', {}, function (err2) {
     if (err2) {
       yogiFlag = true;
       console.log('*************************************************************');
