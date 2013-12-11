@@ -48,6 +48,7 @@
     "underscore": "~1.5.2",
     "yogi": "~0.1.11"
   },
+  "bundledDependencies": ["shifter", "yogi"],
   "devDependencies": {
     "grunt-release": "*",
     "grunt-curl": "*",
