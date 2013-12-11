@@ -1,5 +1,4 @@
 
-
 Release 0.0.11
 --------------
 * [ Arno V ] Updating release task
@@ -177,4 +176,4 @@ Release 0.0.44
 * [ Arno V ] Adding abbreviated commit hash to HISTORY logs (commit: dbaab82)
 
 ##Release 0.0.52 ~ Dec 10 2013 21:33
-* [ Arno V ] using full commit hash so that Github is happy (commit: 3e802df3ae61e6a3ade450db5f21bb10efc8a749)
+* [ Arno V ] using full commit hash so that Github is happy - commit: 3e802df3ae61e6a3ade450db5f21bb10efc8a749
