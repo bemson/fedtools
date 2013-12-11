@@ -1,6 +1,6 @@
 {
   "name": "fedtools",
-  "version": "0.0.47",
+  "version": "0.0.48",
   "description": "Set of tools for FEDs",
   "author": "Arno Versini",
   "bin": {
@@ -48,7 +48,10 @@
     "underscore": "~1.5.2",
     "yogi": "~0.1.11"
   },
-  "bundledDependencies": ["shifter", "yogi"],
+  "bundledDependencies": [
+    "shifter",
+    "yogi"
+  ],
   "devDependencies": {
     "grunt-release": "*",
     "grunt-curl": "*",
