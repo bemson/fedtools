@@ -207,6 +207,12 @@ case 'ww': // hidden menu
 
 case 'wria2-war':
 case 'war': // hidden menu
+
+  // disabling until the code to handle this local
+  // build is ready in the wria2 branches
+  log.notice('WAR generation is not available yet');
+  process.exit(0);
+
   if (process.platform === 'win32') {
     // Temporary notice until I can make it work on Windows
     log.notice('WAR generation is only available on Mac/Linux...');
