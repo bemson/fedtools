@@ -177,3 +177,15 @@ Release 0.0.44
 
 ##Release 0.0.52 ~ Dec 10 2013 21:33
 * [ Arno V ] using full commit hash so that Github is happy - commit: 3e802df3ae61e6a3ade450db5f21bb10efc8a749
+
+##Release 0.0.53 ~ Dec 14 2013 09:50
+* [ Arno V ] Temporarily disabling WAR generation for Windows
+* [ Arno V ] Using os specific tmp directory
+* [ Arno V ] ignoring sublime project files
+* [ Arno V ] making windows happy (gawk vs awk and \r\n vs \n)
+* [ Arno V ] Better wording for WAR build
+* [ Arno V ] Adding WAR generation as a new fedtools command
+* [ Venkataguru Mitta ] Fixing issue#14
+* [ Arno V ] Adding name and version to package to fix issue #15
+* [ Arno V ] Removing hash from HISTORY... doesn&#39;t show up in github
+* [ Arno V ] Update HISTORY.md
