@@ -6,3 +6,7 @@
 node_modules
 npm-debug.log
 tmp
+
+*.sublime-workspace
+
+*.sublime-project
