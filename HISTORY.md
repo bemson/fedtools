@@ -189,3 +189,6 @@ Release 0.0.44
 * [ Arno V ] Adding name and version to package to fix issue #15
 * [ Arno V ] Removing hash from HISTORY... doesn&#39;t show up in github
 * [ Arno V ] Update HISTORY.md
+
+##Release 0.0.54 ~ Dec 14 2013 10:17
+* [ Arno V ] Disabling WAR génération completely (wria2 repo is not ready)
