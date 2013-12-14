@@ -22,6 +22,10 @@ var program = require('commander'),
 
   commandList = [],
   fedToolsCommands = {
+    'war': {
+      'full': 'wria2-war',
+      'description': 'Generate a local wria2 WAR file ready to be deployed to a CI server or to your own JSP container.'
+    },
     'wss': {
       'full': 'wria2-sel',
       'description': 'Start Selleck to serve example pages for the wria2 framework.'
@@ -199,6 +203,31 @@ case 'ww': // hidden menu
       log.echo(err);
     }
   });
+  break;
+
+case 'wria2-war':
+case 'war': // hidden menu
+  if (process.platform === 'win32') {
+    // Temporary notice until I can make it work on Windows
+    log.notice('WAR generation is only available on Mac/Linux...');
+    log.echo();
+  } else {
+    utilities.timeTracker('start');
+    log.echo();
+    build.run(program.debug, {
+      cwd: process.cwd(),
+      prompt: true,
+      type: build.TYPE_WAR
+    }, function (err) {
+      if (err && err !== -1) {
+        log.echo(err);
+      }
+      if (!err) {
+        utilities.timeTracker('stop');
+      }
+      log.echo();
+    });
+  }
   break;
 
 case 'wria2-build':
