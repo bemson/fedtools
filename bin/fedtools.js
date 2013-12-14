@@ -207,21 +207,27 @@ case 'ww': // hidden menu
 
 case 'wria2-war':
 case 'war': // hidden menu
-  utilities.timeTracker('start');
-  log.echo();
-  build.run(program.debug, {
-    cwd: process.cwd(),
-    prompt: true,
-    type: build.TYPE_WAR
-  }, function (err) {
-    if (err && err !== -1) {
-      log.echo(err);
-    }
-    if (!err) {
-      utilities.timeTracker('stop');
-    }
+  if (process.platform === 'win32') {
+    // Temporary notice until I can make it work on Windows
+    log.notice('WAR generation is only available on Mac/Linux...');
     log.echo();
-  });
+  } else {
+    utilities.timeTracker('start');
+    log.echo();
+    build.run(program.debug, {
+      cwd: process.cwd(),
+      prompt: true,
+      type: build.TYPE_WAR
+    }, function (err) {
+      if (err && err !== -1) {
+        log.echo(err);
+      }
+      if (!err) {
+        utilities.timeTracker('stop');
+      }
+      log.echo();
+    });
+  }
   break;
 
 case 'wria2-build':
