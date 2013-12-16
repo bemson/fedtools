@@ -192,3 +192,10 @@ Release 0.0.44
 
 ##Release 0.0.54 ~ Dec 14 2013 10:17
 * [ Arno V ] Disabling WAR génération completely (wria2 repo is not ready)
+
+##Release 0.0.56 ~ Dec 16 2013 01:05
+* [ Arno V ] Updating README to talk about module creation
+* [ Arno V ] Adding gitignore file per created module
+* [ Arno V ] Fix module creation if not wria2 repo
+* [ Arno V ] Fixing module creation issue #18
+* [ Arno V ] If combo is disabled, default is to continue disabled
