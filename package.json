@@ -69,7 +69,7 @@
   ],
   "config": {
     "defaultGitlabId": "wf",
-    "defaultBranch": "dev-2.x",
+    "defaultBranch": "develop",
     "wria2gitname": "wria2git",
     "wria2giturl": "git@wnl-svr167.wellsfargo.com:{{gitlabId}}/wria2.git",
     "wria2yui3giturl": "https://github.com/wf2/yui3"
