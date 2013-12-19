@@ -199,3 +199,17 @@ Release 0.0.44
 * [ Arno V ] Fix module creation if not wria2 repo
 * [ Arno V ] Fixing module creation issue #18
 * [ Arno V ] If combo is disabled, default is to continue disabled
+
+##Release 0.0.58 ~ Dec 18 2013 22:44
+* [ Arno V ] Minor typo
+* [ Arno V ] Enabling WAR for linux&#x2F;Mac
+* [ Arno V ] Using &#39;utilities.getTemporaryDir()&#39;
+* [ Arno V ] Creating API to create temporary dir for fedtools
+* [ Arno V ] typo
+* [ Arno V ] Adding YUI3 clone to the WAR creation process
+* [ Arno V ] Optimizing YUI3 clone (shallow copy instead of full)
+* [ Arno V ] Fixing git clone helper: trailing space was breaking the parsing
+* [ Arno V ] Refactoring WAR creation
+* [ Arno V ] Adding the option to have no default value from a prompt by passing undefined as the default value!
+* [ Arno V ] Adding extra options to git clone
+* [ Arno V ] Default branch is now &#39;develop&#39;
