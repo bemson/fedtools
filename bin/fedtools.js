@@ -207,12 +207,6 @@ case 'ww': // hidden menu
 
 case 'wria2-war':
 case 'war': // hidden menu
-
-  // disabling until the code to handle this local
-  // build is ready in the wria2 branches
-  log.notice('WAR generation is not available yet');
-  process.exit(0);
-
   if (process.platform === 'win32') {
     // Temporary notice until I can make it work on Windows
     log.notice('WAR generation is only available on Mac/Linux...');
@@ -221,6 +215,7 @@ case 'war': // hidden menu
     utilities.timeTracker('start');
     log.echo();
     build.run(program.debug, {
+      pkgConfig: pkgConfig,
       cwd: process.cwd(),
       prompt: true,
       type: build.TYPE_WAR
