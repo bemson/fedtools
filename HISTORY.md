@@ -213,3 +213,7 @@ Release 0.0.44
 * [ Arno V ] Adding the option to have no default value from a prompt by passing undefined as the default value!
 * [ Arno V ] Adding extra options to git clone
 * [ Arno V ] Default branch is now &#39;develop&#39;
+
+##Release 0.0.60 ~ Dec 19 2013 09:31
+* [ Arno V ] Enabling WAR creation for poor windows users
+* [ Arno V ] Making windows commands happy
