@@ -217,3 +217,6 @@ Release 0.0.44
 ##Release 0.0.60 ~ Dec 19 2013 09:31
 * [ Arno V ] Enabling WAR creation for poor windows users
 * [ Arno V ] Making windows commands happy
+
+##Release 0.0.62 ~ Dec 19 2013 09:49
+* [ Arno V ] Fix for Mac&#x2F;Linux (bleed from windows previous fix…)
