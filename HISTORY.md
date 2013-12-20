@@ -220,3 +220,6 @@ Release 0.0.44
 
 ##Release 0.0.62 ~ Dec 19 2013 09:49
 * [ Arno V ] Fix for Mac&#x2F;Linux (bleed from windows previous fix…)
+
+##Release 0.0.63 ~ Dec 20 2013 15:35
+* [ Arno V ] Adding utilities.wria2bump to increase the version of the framework
