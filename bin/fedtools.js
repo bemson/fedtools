@@ -158,6 +158,13 @@ if (program.args.length !== 1) {
 /* Geronimo!       */
 /*******************/
 switch (command) {
+case 'wria2-bump':
+case 'bump':
+case 'wbp': // hidden menu
+  log.echo();
+  utilities.wria2bump(program.debug, function () {});
+  break;
+
 case 'wria2-selleck':
 case 'wria2-sel':
 case 'wss': // hidden menu
