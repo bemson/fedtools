@@ -1,0 +1,304 @@
+/**
+ * A minimal Gruntfile.js file to demonstrate the invocation of
+ * Grunt tasks from Maven using the fedtools-maven-plugin.
+ *
+ * @param grunt
+ */
+module.exports = function(grunt) {
+
+  grunt.loadNpmTasks('grunt-contrib-clean');
+  grunt.loadNpmTasks('grunt-contrib-concat');
+  grunt.loadNpmTasks('grunt-contrib-jshint');
+  grunt.loadNpmTasks('grunt-contrib-uglify');
+  grunt.loadNpmTasks('grunt-jsbeautifier');
+  grunt.loadNpmTasks('grunt-markdown');
+
+ var pack = grunt.file.readJSON('package.json');
+
+  /**
+   * The properties.json should be shared between Maven
+   * and Grunt to avoid redefining names/versions in each
+   * build system.
+   *
+   * IMPORTANT: All tasks defined in initConfig are temporary implementations
+   *            that will be replaced by Grunt plugins we will author that will
+   *            contain the actual implementation of the 'build api'.
+   *
+   *            The current implementation in initConfig are purely for initial
+   *            demonstration purpose.
+   *
+   */
+  grunt.initConfig({
+
+    pkg: grunt.file.readJSON('package.json'),
+
+    clean: ['<%=pkg.js.buildmin%>', '<%=pkg.js.buildmod%>'],
+    /**
+     *  TODO: This is a placeholder task for the 'fedtools' beautifier task.
+     *        Currently, this task will process all js files in the src dir,
+     *        and directly update those files.
+     */
+    "jsbeautifier" : {
+      files : ['<%=pkg.js.src%>/**/*.js'],
+      options : {
+        js: {
+          braceStyle: "collapse",
+          breakChainedMethods: false,
+          e4x: false,
+          evalCode: false,
+          indentChar: " ",
+          indentLevel: 0,
+          indentSize: 2,
+          indentWithTabs: false,
+          jslintHappy: false,
+          keepArrayIndentation: false,
+          keepFunctionIndentation: false,
+          maxPreserveNewlines: 10,
+          preserveNewlines: true,
+          spaceBeforeConditional: true,
+          spaceInParen: false,
+          unescapeStrings: false,
+          wrapLineLength: 0
+        }
+      }
+    },
+    /**
+     * TODO: This is a palceholder task for the 'fedtools' linter task.
+     * Currently, this task is checking all src and test src js files and
+     * the Grunt build file.
+     */
+    jshint: {
+      files: ['Gruntfile.js', '<%=pkg.js.testsrc%>/**/*.js','<%=pkg.js.src%>/**/*.js']
+    },
+    /**
+     * TODO: This is a placeholder task for the 'fedtools' minification task.
+     * Currently, this task is minifying all js in the source directory and
+     * placing the minified files in the maven output folder
+     */
+    uglify: {
+      build: {
+        files: [{
+          expand: true,
+          cwd: '<%=pkg.js.src%>',
+          src: '**/*.js',
+          dest: '<%=pkg.js.buildmin%>',
+          ext: '-v<%=pkg.version%>-min.js'
+        }]
+      }
+    },
+    /**
+     * TODO: This is a placeholder for the 'fedtools' concatination task.
+     * Currently this task is treating each directory under the src/main/js
+     * directory as a module, and will procide a concatinated version of
+     * all js files within the 'module' directory.
+     *
+     * This approach is not robust/flexible, but works for demo.
+     */
+    concat:{
+      options: {
+        stripBanners: true,
+        banner: '/*! <%= pkg.name %> - v<%= pkg.version %> - ' +
+          '<%= grunt.template.today("yyyy-mm-dd") %> */'
+      }
+    },
+    /**
+     * TODO: This is a placeholder task for the 'fedtools' yuidoc task.
+     *
+     */
+    yuidoc: {
+      compile: {
+        name: '<%=pkg.name%>',
+        description: '<%=pkg.description%>',
+        version: 'version from pom',
+        url: 'wf.com',
+        options: {
+          paths: '<%=pkg.js.src%>',
+          //themedir: 'path/to/custom/theme/',
+          outdir: '<%=pkg.js.apidocs%>'
+        }
+      }
+    },
+    /**
+     * TODO: This is a placeholder for the 'fedtools' unit testing task.
+     *
+     * This is not a long term solution, just for demo.
+     */
+    //nodeunit: {
+    //  all: ['<%=pkg.js.testsrc%>/**/*.js']
+    //},
+    /**
+     * TODO: This is a placeholder for the 'fedtools' general documentation
+     *       builder. Currently, this task will compile all md files in the
+     *       src/site/js directory and place them in the target/site/js
+     *       directory. Maven uses the target/site directory for its own
+     *       site generation.
+     */
+    markdown: {
+      all: {
+        files: [
+          {
+            cwd: '<%=pkg.js.docsrc%>/',
+            expand: true,
+            src: '*.md',
+            dest: '<%=pkg.js.docdest%>/',
+            ext: '.html'
+          }
+        ],
+        options: {
+          markdownOptions: {
+            gfm: true
+          }
+        }
+      }
+    },
+    /**
+     * TODO: Delete, this is for demonstration of a Grunt task with a target,
+     * that can have a Maven goal assigned to it.
+     */
+    log: {
+      foo: 'I am from the "foo" target <%= pkg.name %>',
+      bar: 'I am from the "bar" target'
+    },
+    /**
+     * TODO: This is a placeholder task for the 'fedtools' 'serve' task.
+     *
+     * Currently, this task starts up a connect server to serve static assets
+     * from both the source directory and the build directory.
+     *
+     * NOTE: I dont like serving directly from source, I think all static
+     * content we server should HAVE to go through the build process to ensure
+     * it is formatted, linted etc.. (ie - lets remove src/main/js are make
+     * sure we are creating a -debug version in output folder)
+     */
+    connect: {
+      server: {
+        options: {
+          port: 9090,
+          protocol:'http',
+          debug:true,
+          base: ['src/main/js','target/js']
+        }
+      }
+    }
+
+    //add tasks to be executes by 'api' tasks registered below.
+
+  });
+
+
+
+  grunt.registerTask('jsclean', 'Delete the built source files', function() {
+    grunt.log.subhead('Grunt [ ' +this.name.cyan+' ]');
+    grunt.task.run('clean');
+    grunt.log.ok(this.name+' completed');
+  });
+
+  // The 'api' tasks invoked as part of the Maven lifecycle.
+  /**
+   * Reformat any source code according to
+   * standards (indentation, line length, etc.)
+   */
+  grunt.registerTask('beautify', 'Running a beautifier on source', function() {
+    grunt.log.subhead('Grunt [ ' +this.name.cyan+' ]');
+    grunt.task.run('jsbeautifier');
+    grunt.log.ok(this.name+' completed');
+  });
+
+  /**
+   * Lint all source code to check for undesirable source.
+   */
+  grunt.registerTask('lint', 'Running a linter on source', function() {
+    grunt.log.subhead(' Grunt [ ' +this.name.cyan+' ]');
+    grunt.task.run('jshint');
+    grunt.log.ok(this.name+' completed');
+  });
+
+  /**
+   * Generate minified version of all source code
+   */
+  grunt.registerTask('min', 'Running minification of source code', function() {
+    grunt.log.subhead('Grunt [ ' +this.name.cyan+' ]');
+    grunt.task.run('uglify');
+    grunt.log.ok(this.name+' completed');
+  });
+
+  /**
+   *
+   */
+  grunt.registerTask("concat-modules", "your description", function() {
+
+    grunt.file.expand({cwd:pack.js.buildmin+'/'},'*').forEach(function (dir) {
+
+      var concat = grunt.config.get('concat') || {};
+
+      concat[dir] = {
+        src: [ pack.js.buildmin + '/' + dir + '/*.js' ],
+        dest:  pack.js.buildmod + '/' + dir + '-v' + pack.version + '-min.js'
+      };
+
+      concat.options.banner = '/*! ' + dir + '<%= pkg.name %> - v<%= pkg.version %> - ' +
+      '<%= grunt.template.today("yyyy-mm-dd") %> */';
+
+      grunt.config.set('concat', concat);
+
+    });
+
+    grunt.task.run('concat');
+
+
+
+  });
+
+  /**
+   * Generate minified version of all source code
+   */
+  grunt.registerTask('test', 'Running unit tests', function() {
+    grunt.log.subhead('Grunt [ ' +this.name.cyan+' ]');
+    //grunt.task.run('nodeunit');
+    grunt.log.ok(this.name+' completed');
+  });
+
+  /**
+   * Generate api documentation for all source code.
+   */
+  grunt.registerTask('api', 'Generating source docs', function() {
+    grunt.log.subhead('Grunt [ ' +this.name.cyan+' ]');
+    grunt.task.run('yuidoc');
+    grunt.log.ok(this.name+' completed');
+  });
+
+  /**
+   * Generate general documentation (markdown) and place resulting html files
+   * in the output directory.
+   */
+  grunt.registerTask('docs', 'Generate general docs (markdown)', function() {
+    grunt.log.subhead('Grunt [ ' +this.name.cyan+' ]');
+    grunt.task.run('markdown');
+    grunt.log.ok(this.name+' completed');
+  });
+
+  /**
+   * An example multitask to validate execution from Maven.
+   */
+  grunt.registerMultiTask('log', 'Log stuff.', function() {
+    grunt.log.subhead('Grunt [ ' +this.name.cyan+' ]');
+    grunt.log.writeln(this.target + ': ' + this.data);
+  });
+
+  /**
+   * An example multitask to validate execution from Maven.
+   */
+  grunt.registerTask('init', 'Create project from template.', function() {
+    grunt.log.subhead('Grunt [ ' +this.name.cyan+' ]');
+    grunt.log.ok(this.name+' completed');
+  });
+
+  /**
+   * For now, just print a message
+   */
+  grunt.registerTask('default', 'Print informitive message', function() {
+    grunt.log.subhead('Grunt [ ' +this.name.cyan+' ]');
+    grunt.log.ok(this.name + ' completed');
+  });
+
+};

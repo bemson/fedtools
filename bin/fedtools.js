@@ -10,6 +10,7 @@ var program = require('commander'),
   bootstrap = require('../lib/wria2-bootstrap'),
   build = require('../lib/wria2-build'),
   mods = require('../lib/wria2-modules'),
+  app = require('../lib/app-bootstrap'),
   yui3Utils = require('../lib/yui3-utils'),
   utilities = require('../lib/utilities'),
 
@@ -22,6 +23,10 @@ var program = require('commander'),
 
   commandList = [],
   fedToolsCommands = {
+    'ai': {
+      'full': 'app-init',
+      'description': 'Generates a webapp skeleton from scratch.'
+    },
     'war': {
       'full': 'wria2-war',
       'description': 'Generate a local wria2 WAR file ready to be deployed to a CI server or to your own JSP container.'
@@ -158,6 +163,16 @@ if (program.args.length !== 1) {
 /* Geronimo!       */
 /*******************/
 switch (command) {
+case 'app-init':
+case 'ai': // hidden menu
+  log.echo();
+  app.run(app.TYPE_APP, function (err) {
+    if (err && err !== -1) {
+      log.echo(err);
+    }
+  });
+  break;
+
 case 'wria2-bump':
 case 'bump':
 case 'wbp': // hidden menu
