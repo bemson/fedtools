@@ -223,3 +223,13 @@ Release 0.0.44
 
 ##Release 0.0.63 ~ Dec 20 2013 15:35
 * [ Arno V ] Adding utilities.wria2bump to increase the version of the framework
+
+##Release 0.0.65 ~ Jan 01 2014 19:35
+* [ Arno V ] Better wording at the end of a WAR build
+* [ Arno V ] Fixing WAR build: new war location
+* [ Arno V ] Some cleanup
+* [ Arno V ] Add a new git helper command: getCurrent SHA
+* [ Arno V ] WAR: asking for branch and yui3 branch
+* [ Arno V ] work in progress: trying to externalize wf2 build from maven
+* [ Arno V ] WAR: asking for branch and yui3 branch
+* [ Arno V ] work in progress: trying to externalize wf2 build from maven
