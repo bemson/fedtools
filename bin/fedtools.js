@@ -23,6 +23,10 @@ var program = require('commander'),
 
   commandList = [],
   fedToolsCommands = {
+    'af': {
+      'full': 'app-flow',
+      'description': 'Generates a webapp\'s flow skeleton from scratch'
+    },
     'ai': {
       'full': 'app-init',
       'description': 'Generates a webapp skeleton from scratch.'
@@ -163,6 +167,16 @@ if (program.args.length !== 1) {
 /* Geronimo!       */
 /*******************/
 switch (command) {
+case 'app-flow':
+case 'af': // hidden menu
+  log.echo();
+  app.run(app.TYPE_FLOW, function (err) {
+    if (err && err !== -1) {
+      log.echo(err);
+    }
+  });
+  break;
+
 case 'app-init':
 case 'ai': // hidden menu
   log.echo();

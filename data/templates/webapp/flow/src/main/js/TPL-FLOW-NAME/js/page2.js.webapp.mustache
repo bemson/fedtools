@@ -1,0 +1,45 @@
+/**
+ * Provides the `fedtools-webapp.page2` module.
+ *
+ * @class Page2
+ * @extends Y.Base
+ * @module webapp-page2
+ * @namespace fedtools-webapp
+ */
+
+Y.namespace('fedtools-webapp').Page2 = Y.Base.create(
+  'webappPage2', Y.Base, [ /* array of mixins */ ], {
+    initializer: function() {
+      /*
+       * Base's init method, which is invoked by Base's constructor, will invoke
+       * the initializer method for each class in the hierarchy — starting from
+       * the Base class first and ending with the subclass being instantiated.
+       * The initializer method for each class is invoked after its attributes have
+       * been initialized (as discussed above) and will receive the configuration
+       * object literal passed to the init method.
+       * See http://yuilibrary.com/yui/docs/base/#initdestroy
+       */
+    },
+    destructor: function() {
+      /*
+       * Base's destroy method, when called, will invoke the destructor method for
+       *  each class in the hierarchy — starting from the subclass instantiated to
+       *  create the instance and ending with the Base class (the opposite of
+       * initialization).
+       * See http://yuilibrary.com/yui/docs/base/#initdestroy
+       */
+    }
+  }, {
+    ATTRS: {
+      /*
+       * The ATTRS static property is an associative array (an object with attribute
+       * name/configuration pairs) which is used to define the default set of
+       * attributes that your class adds to each instance. This interface adds `get`
+       * and `set` methods to your class to retrieve and store attribute values, as
+       * well as support for change events that can be used to listen for changes in
+       * attribute values.
+       * See http://yuilibrary.com/yui/docs/attribute/
+       */
+    }
+  }
+);
