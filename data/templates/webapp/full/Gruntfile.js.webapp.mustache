@@ -34,14 +34,16 @@ module.exports = function (grunt) {
 
     pkg: grunt.file.readJSON('package.json'),
 
-    clean: ['<%=pkg.js.shifterbuild%>', '<%=pkg.js.build%>'],
+    clean: ['<%=pkg.jspath.shifterbuild%>', '<%=pkg.jspath.build%>'],
     /**
      * TODO: This is a palceholder task for the 'fedtools' linter task.
      * Currently, this task is checking all src and test src js files and
      * the Grunt build file.
      */
     jshint: {
-      files: ['Gruntfile.js', '<%=pkg.js.testsrc%>/**/*.js', '<%=pkg.js.src%>/**/*.js']
+      files: ['Gruntfile.js', '<%=pkg.jspath.testsrc%>/**/*.js',
+        '<%=pkg.jspath.src%>/**/*.js'
+      ]
     },
     /**
      * TODO: This is a placeholder task for the 'fedtools' minification task.
@@ -51,24 +53,24 @@ module.exports = function (grunt) {
     'fedtools-min': {
       common: {
         files: {
-          '<%=pkg.js.build%>/common-bootstrap-min.js': [
-            '<%=pkg.js.shifterbuild%>/common/common.js',
-            '<%=pkg.js.bootstrap%>/common.js'
+          '<%=pkg.jspath.build%>/common-bootstrap-min.js': [
+            '<%=pkg.jspath.shifterbuild%>/common/common.js',
+            '<%=pkg.jspath.bootstrap%>/common.js'
           ]
         }
       },
       flows: {
         files: {
-          '<%=pkg.js.build%>/{{FLOWNAME}}-bootstrap-min.js': [
-            '<%=pkg.js.shifterbuild%>/{{FLOWNAME}}/{{FLOWNAME}}.js',
-            '<%=pkg.js.bootstrap%>/{{FLOWNAME}}.js'
+          '<%=pkg.jspath.build%>/{{FLOWNAME}}-bootstrap-min.js': [
+            '<%=pkg.jspath.shifterbuild%>/{{FLOWNAME}}/{{FLOWNAME}}.js',
+            '<%=pkg.jspath.bootstrap%>/{{FLOWNAME}}.js'
           ]
         }
       }
     },
     watch: {
       flows: {
-        files: ['<%=pkg.js.flows%>/**/*.js'],
+        files: ['<%=pkg.jspath.flows%>/**/*.js'],
         tasks: ['build'],
         options: {
           spawn: false
@@ -101,9 +103,9 @@ module.exports = function (grunt) {
         version: 'version from pom',
         url: 'wf.com',
         options: {
-          paths: '<%=pkg.js.src%>',
+          paths: '<%=pkg.jspath.src%>',
           //themedir: 'path/to/custom/theme/',
-          outdir: '<%=pkg.js.apidocs%>'
+          outdir: '<%=pkg.jspath.apidocs%>'
         }
       }
     },
@@ -113,7 +115,7 @@ module.exports = function (grunt) {
      * This is not a long term solution, just for demo.
      */
     //nodeunit: {
-    //  all: ['<%=pkg.js.testsrc%>/**/*.js']
+    //  all: ['<%=pkg.jspath.testsrc%>/**/*.js']
     //},
     /**
      * TODO: This is a placeholder for the 'fedtools' general documentation
@@ -125,10 +127,10 @@ module.exports = function (grunt) {
     markdown: {
       all: {
         files: [{
-          cwd: '<%=pkg.js.docsrc%>/',
+          cwd: '<%=pkg.jspath.docsrc%>/',
           expand: true,
           src: '*.md',
-          dest: '<%=pkg.js.docdest%>/',
+          dest: '<%=pkg.jspath.docdest%>/',
           ext: '.html'
         }],
         options: {
@@ -185,9 +187,9 @@ module.exports = function (grunt) {
     grunt.log.subhead('Grunt [ ' + self.name.cyan + ' ]');
     pkg = grunt.config('pkg');
     cfg = {
-      cwd: path.join(process.cwd(), pkg.js.flows),
+      cwd: path.join(process.cwd(), pkg.jspath.flows),
       walk: true,
-      'build-dir': path.join(process.cwd(), pkg.js.shifterbuild)
+      'build-dir': path.join(process.cwd(), pkg.jspath.shifterbuild)
     };
     shifter.init(cfg, function () {
       grunt.log.ok(self.name + ' completed');
