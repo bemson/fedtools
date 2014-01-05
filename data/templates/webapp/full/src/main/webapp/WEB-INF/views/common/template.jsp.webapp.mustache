@@ -12,47 +12,16 @@
 
   <wt2:appnav open="true" id="app-nav-container" sticky="true">
 
-        <wt2:appnav-item label="Item4" open="true">
-            <wt2:appnav-item label="test" href="#"/>
-            <wt2:appnav-item label="newNode" href="#"/>
-        </wt2:appnav-item>
+    <wt2:appnav-item label="Home" href="/{{appName}}-{{appVersion}}/flow/home/page/page1" open="true" expandable="false"/>
 
-        <wt2:appnav-item label="Item 1" open="false">
-            <wt2:appnav-item label="Item1-1">
-                <wt2:appnav-item label="Item1-1-1" disabled="true">
-                    <wt2:appnav-item label="not visible"/>
-                </wt2:appnav-item>
-                <wt2:appnav-item label="Item1-1-2" href="#"/>
-            </wt2:appnav-item>
+    <wt2:appnav-item label="Pending Decisions" href="/{{appName}}-{{appVersion}}/flow/decisions/page/page1" open="true" expandable="false"/>
 
-            <wt2:appnav-item label="Item-2">
-                <wt2:appnav-item label="Item-3" open="true">
-                    <wt2:appnav-item label="Item-4"/>
-                    <wt2:appnav-item label="Item-5"/>
-                </wt2:appnav-item>
-                <wt2:appnav-item label="Item-4"/>
-            </wt2:appnav-item>
-        </wt2:appnav-item>
+    <wt2:appnav-footer></wt2:appnav-footer>
 
-        <wt2:appnav-item label="Item2" disabled="true"/>
-        <wt2:appnav-item label="Testitem3" href="http://www.wellsfargo.com" open="true" expandable="false">
-            <wt2:appnav-item label="Item3-1" open="true" expandable="false">
-                <wt2:appnav-item label="Item3-1-1" open="true" expandable="false">
-                    <wt2:appnav-item label="Item3-1-1-1-1" open="true" expandable="false">
-                        <wt2:appnav-item label="Item3-1-1-1-1-1" href="http://www.wellsfargo.com">
-                        </wt2:appnav-item>
-                    </wt2:appnav-item>
-                    <wt2:appnav-item label="Item3-1-1-1-2testesttesttesttest" href="http://wf.com"/>
-                </wt2:appnav-item>
-            </wt2:appnav-item>
-        </wt2:appnav-item>
+  </wt2:appnav>
 
-        <wt2:appnav-footer><h3>Footer</h3><p>Footer content</p></wt2:appnav-footer>
-    </wt2:appnav>
-
-    <wt2:appnav-main>
-      <tiles:insertAttribute name="body" defaultValue="" />
-    </wt2:appnav-main>
-
+  <wt2:appnav-main>
+    <tiles:insertAttribute name="body" defaultValue="" />
+  </wt2:appnav-main>
 
 </wt2:page>
