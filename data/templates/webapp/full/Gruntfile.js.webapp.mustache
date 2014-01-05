@@ -10,9 +10,13 @@ module.exports = function (grunt) {
   // load plugins
   require('load-grunt-tasks')(grunt);
 
+  // load fedtools grunt tasks
+  grunt.loadTasks('tasks');
+
   var pack = grunt.file.readJSON('package.json'),
     shifter = require('shifter'),
     path = require('path');
+
   /**
    * The properties.json should be shared between Maven
    * and Grunt to avoid redefining names/versions in each
@@ -30,36 +34,7 @@ module.exports = function (grunt) {
 
     pkg: grunt.file.readJSON('package.json'),
 
-    clean: ['<%=pkg.js.buildmin%>', '<%=pkg.js.buildmod%>'],
-    /**
-     *  TODO: This is a placeholder task for the 'fedtools' beautifier task.
-     *        Currently, this task will process all js files in the src dir,
-     *        and directly update those files.
-     */
-    'jsbeautifier': {
-      files: ['<%=pkg.js.src%>/**/*.js'],
-      options: {
-        js: {
-          braceStyle: 'collapse',
-          breakChainedMethods: false,
-          e4x: false,
-          evalCode: false,
-          indentChar: ' ',
-          indentLevel: 0,
-          indentSize: 2,
-          indentWithTabs: false,
-          jslintHappy: false,
-          keepArrayIndentation: false,
-          keepFunctionIndentation: false,
-          maxPreserveNewlines: 10,
-          preserveNewlines: true,
-          spaceBeforeConditional: true,
-          spaceInParen: false,
-          unescapeStrings: false,
-          wrapLineLength: 0
-        }
-      }
-    },
+    clean: ['<%=pkg.js.shifterbuild%>', '<%=pkg.js.build%>'],
     /**
      * TODO: This is a palceholder task for the 'fedtools' linter task.
      * Currently, this task is checking all src and test src js files and
@@ -73,15 +48,31 @@ module.exports = function (grunt) {
      * Currently, this task is minifying all js in the source directory and
      * placing the minified files in the maven output folder
      */
-    uglify: {
-      build: {
-        files: [{
-          expand: true,
-          cwd: '<%=pkg.js.src%>',
-          src: '**/*.js',
-          dest: '<%=pkg.js.buildmin%>',
-          ext: '-v<%=pkg.version%>-min.js'
-        }]
+    'fedtools-min': {
+      common: {
+        files: {
+          '<%=pkg.js.build%>/common-bootstrap-min.js': [
+            '<%=pkg.js.shifterbuild%>/common/common.js',
+            '<%=pkg.js.bootstrap%>/common.js'
+          ]
+        }
+      },
+      flows: {
+        files: {
+          '<%=pkg.js.build%>/{{FLOWNAME}}-bootstrap-min.js': [
+            '<%=pkg.js.shifterbuild%>/{{FLOWNAME}}/{{FLOWNAME}}.js',
+            '<%=pkg.js.bootstrap%>/{{FLOWNAME}}.js'
+          ]
+        }
+      }
+    },
+    watch: {
+      flows: {
+        files: ['<%=pkg.js.flows%>/**/*.js'],
+        tasks: ['build'],
+        options: {
+          spawn: false
+        }
       }
     },
     /**
@@ -180,18 +171,28 @@ module.exports = function (grunt) {
     //add tasks to be executes by 'api' tasks registered below.
   });
 
-  grunt.registerTask('shifter', 'Running shifter ', function () {
-    var cfg, done = this.async();
+  grunt.registerTask('build', 'Running a full build ', function () {
     grunt.log.subhead('Grunt [ ' + this.name.cyan + ' ]');
-    // do shifter goodness
+    grunt.task.run('fedtools-shifter');
+    grunt.task.run('fedtools-min');
+  });
+
+  grunt.registerTask('fedtools-shifter', 'Running shifter build ', function () {
+    var pkg, cfg,
+      self = this,
+      done = self.async();
+
+    grunt.log.subhead('Grunt [ ' + self.name.cyan + ' ]');
+    pkg = grunt.config('pkg');
     cfg = {
-      cwd: path.join(process.cwd(), 'src', 'main', 'js'),
+      cwd: path.join(process.cwd(), pkg.js.flows),
       walk: true,
-      'build-dir': path.join(process.cwd(),
-        'src', 'main', 'webapp', 'resources', 'build')
+      'build-dir': path.join(process.cwd(), pkg.js.shifterbuild)
     };
-    shifter.init(cfg, done);
-    grunt.log.ok(this.name + ' completed');
+    shifter.init(cfg, function () {
+      grunt.log.ok(self.name + ' completed');
+      done();
+    });
   });
 
   grunt.registerTask('jsclean', 'Delete the built source files', function () {
@@ -217,15 +218,6 @@ module.exports = function (grunt) {
   grunt.registerTask('lint', 'Running a linter on source', function () {
     grunt.log.subhead(' Grunt [ ' + this.name.cyan + ' ]');
     grunt.task.run('jshint');
-    grunt.log.ok(this.name + ' completed');
-  });
-
-  /**
-   * Generate minified version of all source code
-   */
-  grunt.registerTask('min', 'Running minification of source code', function () {
-    grunt.log.subhead('Grunt [ ' + this.name.cyan + ' ]');
-    grunt.task.run('uglify');
     grunt.log.ok(this.name + ' completed');
   });
 
