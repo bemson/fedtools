@@ -179,10 +179,14 @@ case 'af': // hidden menu
 
 case 'app-init':
 case 'ai': // hidden menu
+  utilities.timeTracker('start');
   log.echo();
   app.run(app.TYPE_APP, function (err) {
     if (err && err !== -1) {
       log.echo(err);
+    }
+    if (err !== -1) {
+      utilities.timeTracker('stop');
     }
   });
   break;
