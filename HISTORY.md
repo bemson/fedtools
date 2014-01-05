@@ -233,3 +233,35 @@ Release 0.0.44
 * [ Arno V ] work in progress: trying to externalize wf2 build from maven
 * [ Arno V ] WAR: asking for branch and yui3 branch
 * [ Arno V ] work in progress: trying to externalize wf2 build from maven
+
+##Release 0.0.67 ~ Jan 05 2014 15:10
+* [ Arno V ] webapp: adding an extended flow to showcase containers and grids
+* [ Arno V ] webapp: adding a few default css rules
+* [ Arno V ] webapp: add scss to grunt watch
+* [ Arno V ] webapp: grunt watch update
+* [ Arno V ] webapp: renaming pagex.js into modulex.js
+* [ Arno V ] webapp: some cleanup for flow creation
+* [ Arno V ] webapp: preventing creation of flow named &#39;common&#39;
+* [ Arno V ] webapp: adding custom CSS support
+* [ Arno V ] webapp: change &lt;head title&gt; to name-version of app
+* [ Arno V ] webapp: better final wording during skeleton bootstrap
+* [ Arno V ] webapp: moving common js script from common template to flows (that need it)
+* [ Arno V ] webapp: grunt-minifier more generic
+* [ Arno V ] Adding a special option for &#39;fedtools bump&#39;: build or combo
+* [ Arno V ] Fixing fedtools bump (invalid path option)
+* [ Arno V ] Fixing json file update (to keep indentation instead of flattening the file)
+* [ Arno V ] webapp: fixing utf8 trailing character
+* [ Arno V ] webapp: including &#39;mvn clean&#39; to bootstrap
+* [ Arno V ] webapp: renaming default first flow to &#39;home&#39;
+* [ Arno V ] webapp: adding build time information
+* [ Arno V ] webapp: cleanup appnav example
+* [ Arno V ] webapp: fix multiple flows minification
+* [ Arno V ] webapp: fix flow dependency
+* [ Arno V ] webapp: removing duplicate
+* [ Arno V ] webapp: Fix existing flow detection
+* [ Arno V ] webapp: removing extra page
+* [ Arno V ] webapp: small cleanup
+* [ Arno V ] webapp: update
+* [ Arno V ] webapp work in progress
+* [ Arno V ] work in progress
+* [ Arno V ] First commit for webapp
