@@ -1,0 +1,86 @@
+<%@ taglib uri="http://wellsfargo.com/wt2" prefix="wt2"%>
+
+<div class="{{appName}}" style="display:none;">
+
+  <wt2:cssrgrid>
+
+    <wt2:cssrgrid-unit>
+      <wt2:container srcNode="ipp">
+        <wt2:container-header>Positive Pay</wt2:container-header>
+
+        <div class="container-body-head-left left"> 6 exceptions </div>
+        <div class="right">$2,430.00</div>
+        <div class="clear"></div>
+        <div class="container-body-content-left">
+          <div>4 due in 3 hrs 10 min</div>
+          <div>1 due in 4 hrs 10 min</div>
+          <div>1 due in 5 hrs 10 min</div>
+        </div>
+        <div class="container-body-content-alert left"></div>
+        <div class="left"> 150 of 200 accounts have processed. </div>
+        <div class="clear"></div>
+
+        <wt2:container-footer>
+          <a href="#">Add check issues</a>
+        </wt2:container-footer>
+      </wt2:container>
+    </wt2:cssrgrid-unit>
+
+    <wt2:cssrgrid-unit>
+      <wt2:container srcNode="ach">
+        <wt2:container-header>ACH Exceptions</wt2:container-header>
+
+        <div class="container-body-head-left left"> 5 exceptions </div>
+        <div class="right">$600.00 DR</div>
+        <div class="clear"></div>
+        <div class="right">$84.00 CR</div>
+        <div class="clear"></div>
+        <div class="container-body-content-left">
+          <div>1 due in 10 hrs 10 min</div>
+          <div>4 due in 34 hrs 10 min</div>
+        </div>
+
+        <wt2:container-footer>
+          <div>
+            <a href="#">Manage preauthorizations</a>|
+            <a href="#">View stopped items</a>
+          </div>
+        </wt2:container-footer>
+      </wt2:container>
+    </wt2:cssrgrid-unit>
+
+    <wt2:cssrgrid-unit>
+      <wt2:container srcNode="rpp">
+        <wt2:container-header>Reverse Positive Pay</wt2:container-header>
+
+        <div class="container-row odd">
+          <div class="container-body-head-left left"> 20 suspected payments </div>
+          <div class="right">$600.00</div>
+          <div class="clear"></div>
+        </div>
+        <div class="container-row even">
+          <div class="container-body-head-left left"> 265 payments </div>
+          <div class="right">$2,650.00</div>
+          <div class="clear"></div>
+        </div>
+        <div class="container-row odd">
+          <div class="container-body-head-left left"> 12 late posted payments </div>
+          <div class="right">$250.00</div>
+          <div class="clear"></div>
+        </div>
+        <div class="container-body-content-left">
+          <div>Decisions due in 3 hrs 10 min</div>
+        </div>
+
+        <wt2:container-footer>
+          <a href="#">Search these payments</a>
+        </wt2:container-footer>
+      </wt2:container>
+    </wt2:cssrgrid-unit>
+
+  </wt2:cssrgrid>
+
+</div>
+
+<wt2:script src="build/common-bootstrap-min.js"/>
+<wt2:script src="build/{{flowName}}-bootstrap-min.js"/>
