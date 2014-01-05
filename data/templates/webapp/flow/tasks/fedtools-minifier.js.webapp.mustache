@@ -21,9 +21,9 @@ module.exports = function (grunt) {
 
     if (self.target === 'common') {
       _uglify({
-        configName: 'uglify.common.files',
+        configName: 'uglify.' + self.target + '.files',
         configData: self.data.files,
-        target: 'common'
+        target: self.target
       });
     }
 
@@ -59,11 +59,11 @@ module.exports = function (grunt) {
       });
       // and then call uglify
       _uglify({
-        configName: 'uglify.flow',
+        configName: 'uglify.' + self.target,
         configData: {
           files: cfg
         },
-        target: 'flow'
+        target: self.target
       });
     }
   });
