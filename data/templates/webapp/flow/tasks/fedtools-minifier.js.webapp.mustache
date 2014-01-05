@@ -30,14 +30,15 @@ module.exports = function (grunt) {
     if (self.target === 'flows') {
       dst = _.keys(self.data.files)[0];
       srcArray = self.data.files[dst];
+      cfg = {};
 
       // Loop through each flows declared
       // in the package.json under 'flows'
       _.each(flows, function (flow) {
-        var bufferDst, bufferSrc = [];
-        cfg = {
-          'files': {}
-        };
+        var bufferDst,
+          obj = {},
+          bufferSrc = [];
+
         bufferDst = mustache.render(dst, {
           FLOWNAME: flow
         });
@@ -50,14 +51,19 @@ module.exports = function (grunt) {
         });
 
         // dynamically build a grunt-contrib-uglify configuration
-        cfg.files[bufferDst] = bufferSrc;
+        obj = {};
+        obj[bufferDst] = bufferSrc;
 
-        // and then call uglify
-        _uglify({
-          configName: 'uglify.flow',
-          configData: cfg,
-          target: 'flow'
-        });
+        // and append it with all the previous flows
+        cfg = _.extend(cfg, obj);
+      });
+      // and then call uglify
+      _uglify({
+        configName: 'uglify.flow',
+        configData: {
+          files: cfg
+        },
+        target: 'flow'
       });
     }
   });
