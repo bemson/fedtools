@@ -89,7 +89,9 @@ module.exports = function (grunt) {
     },
     watch: {
       flows: {
-        files: ['<%=pkg.paths.flows%>/**/*.js'],
+        files: ['<%=pkg.paths.flows%>/**/*.js',
+          '<%=pkg.paths.bootstrap%>/**/*.js'
+        ],
         tasks: ['build'],
         options: {
           spawn: false
