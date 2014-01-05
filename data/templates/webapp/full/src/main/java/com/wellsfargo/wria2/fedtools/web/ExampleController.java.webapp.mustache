@@ -1,0 +1,49 @@
+package com.wellsfargo.wria2.fedtools.web;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+
+/**
+ * A simple controller for initial testing.
+ */
+@Controller
+public class ExampleController {
+
+  private static final Logger LOG = LoggerFactory.
+    getLogger(ExampleController.class);
+
+  /**
+   * A root controller.
+   *
+   * @return The view to render
+   */
+  @RequestMapping(value = "/", method = RequestMethod.GET)
+  public String index() {
+
+    if(LOG.isDebugEnabled())
+      LOG.debug("controller handling request");
+
+    return "flow1";
+  }
+
+  /**
+   *
+   * @param flow The name of the flow requested
+   * @param page The name of the page requested
+   *
+   * @return The flow/page view name
+   */
+  @RequestMapping(value = "/flow/{flow}/page/{page}", method = RequestMethod.GET)
+  public String page(@PathVariable String flow, @PathVariable String page) {
+
+    if(LOG.isDebugEnabled())
+      LOG.debug("controller handling request for flow {} and page {}",
+        flow, page);
+    return String.format("%s/%s",flow,page);
+
+  }
+}

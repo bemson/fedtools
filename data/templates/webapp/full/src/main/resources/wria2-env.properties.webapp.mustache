@@ -1,0 +1,24 @@
+# indicates the current running environment. valid options are
+#
+# loc   - a local url for individual developer
+# ci    - WRIA internal use.
+# itn   - wellsfargo ITN environment for internal testing
+# dev   - development environment
+# sit   - system integration environment
+# uat   - user acceptance testing environment
+# fix   - production fix environment
+# prd   - production environment
+# bcp   - business continuity plan environment
+environment=loc
+
+# cdnBase is the path to your application specific assets for the current
+# environment.
+# Typically an application will serve application specific assets from your
+# application server in non production environment. For non production environment,
+# use https://application_domain.com/application/assets. For production/bcp
+# environment your application should be serving assets from a CDN (Akamai). The
+# prd and bcp environments should use the Akamai URL for cdnBase;
+# https://application_cdn.com/your/cdn/path/assets
+# cdnBase is a required property for using the <wt2:script> and <wt2:stylesheet>
+# tags
+cdnBase=http://localhost:8080/{{appName}}-{{appVersion}}/resources

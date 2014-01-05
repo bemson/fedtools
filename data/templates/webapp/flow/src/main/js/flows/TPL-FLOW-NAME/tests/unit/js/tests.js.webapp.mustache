@@ -1,0 +1,27 @@
+YUI.add('module-tests', function(Y) {
+
+  var suite,
+    Assert = Y.Assert;
+
+  suite = new Y.Test.Suite('wf2-toto');
+
+  suite.add(new Y.Test.Case({
+    name: 'Basic API Tests',
+
+    setUp: function() {
+      this.m = new Y.WF2.Toto();
+    },
+
+    tearDown: function() {
+      this.m.destroy();
+      delete this.m;
+    },
+
+    'testInstantiation': function() {
+      Assert.isTrue(this.m instanceof Y.WF2.Toto);
+    }
+  }));
+
+  Y.Test.Runner.add(suite);
+
+});

@@ -1,0 +1,27 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ taglib uri="http://tiles.apache.org/tags-tiles" prefix="tiles"%>
+<%@ taglib uri="http://tiles.apache.org/tags-tiles-extras" prefix="tilesx"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn"%>
+<%@ taglib uri="http://www.springframework.org/tags" prefix="s"%>
+<%@ taglib uri="http://wellsfargo.com/wt2" prefix="wt2"%>
+
+<wt2:page>
+
+  <wt2:script src="build/common-bootstrap-min.js"/>
+
+  <wt2:appnav open="true" id="app-nav-container" sticky="true">
+
+    <wt2:appnav-item label="Home" href="/{{appName}}-{{appVersion}}/flow/home/page/page1" open="true" expandable="false"/>
+
+    <wt2:appnav-item label="Pending Decisions" href="/{{appName}}-{{appVersion}}/flow/decisions/page/page1" open="true" expandable="false"/>
+
+    <wt2:appnav-footer></wt2:appnav-footer>
+
+  </wt2:appnav>
+
+  <wt2:appnav-main>
+    <tiles:insertAttribute name="body" defaultValue="" />
+  </wt2:appnav-main>
+
+</wt2:page>

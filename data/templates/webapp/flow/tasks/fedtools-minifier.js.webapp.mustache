@@ -1,0 +1,70 @@
+module.exports = function (grunt) {
+
+  var _ = require('underscore'),
+    fs = require('fs'),
+    mustache = require('mustache');
+
+  var _uglify = function (options) {
+    // need to generate the actual uglify config
+    grunt.config(options.configName, options.configData);
+    // and then run the task
+    grunt.task.run('uglify:' + options.target);
+  };
+
+  grunt.registerMultiTask('fedtools-min', 'description', function (arg) {
+
+    var self = this,
+      flows = grunt.config('pkg').flows,
+      common, dst, srcArray, cfg;
+
+    grunt.log.subhead('Grunt [ ' + self.name.cyan + ' ]');
+
+    if (self.target === 'common') {
+      _uglify({
+        configName: 'uglify.common.files',
+        configData: self.data.files,
+        target: 'common'
+      });
+    }
+
+    if (self.target === 'flows') {
+      dst = _.keys(self.data.files)[0];
+      srcArray = self.data.files[dst];
+      cfg = {};
+
+      // Loop through each flows declared
+      // in the package.json under 'flows'
+      _.each(flows, function (flow) {
+        var bufferDst,
+          obj = {},
+          bufferSrc = [];
+
+        bufferDst = mustache.render(dst, {
+          FLOWNAME: flow
+        });
+        // Loop through source files
+        _.each(srcArray, function (src) {
+          var buffer = mustache.render(src, {
+            FLOWNAME: flow
+          });
+          bufferSrc.push(buffer);
+        });
+
+        // dynamically build a grunt-contrib-uglify configuration
+        obj = {};
+        obj[bufferDst] = bufferSrc;
+
+        // and append it with all the previous flows
+        cfg = _.extend(cfg, obj);
+      });
+      // and then call uglify
+      _uglify({
+        configName: 'uglify.flow',
+        configData: {
+          files: cfg
+        },
+        target: 'flow'
+      });
+    }
+  });
+};
