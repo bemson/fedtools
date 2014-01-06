@@ -1,0 +1,86 @@
+# Prototype for Maven / Frontend build system
+
+## Convention
+
+### JSP
+
+#### Commons
+* Common application level JSP files should be located under:
+
+        src/main/webapp/WEB-INF/views/common
+
+* Common JSP files can be included by any flow pages.
+* Common JSP files should __NOT__ include any script files (e.g. via `<wt2:script src="..." />` or `<script src="..."></script>`.)
+
+#### Flows
+* A flow's jsp directory lives in `src/main/webapp/WEB-INF/views/`. Only one directory should exist per flow. E.g.
+
+        src/main/webapp/WEB-INF/views/flow1
+
+* A flow may need common jsp files (a.k.a. includes) to be included by pages within the flow. These should live in the flow's `common` subdirectory. E.g.
+
+        src/main/webapp/WEB-INF/views/flow1/common
+
+#### Pages
+* One page is one JSP
+* The page's JSP file lives inside its flow's directory. E.g.
+
+        src/main/webapp/WEB-INF/views/flow1/page1.jsp
+
+* A page JSP may include any of its flow's common JSP files and any application level common JSP files. A page JSP __CANNOT__ include another page JSP.
+
+
+### JS
+
+#### Flows
+* A flow's js module directory lives in `src/main/js/flows`. Only one js module directory should exist per flow. E.g.
+
+        src/main/js/flows/flow1
+
+* A module folder replicates YUI3/WF-RIA2 module folders so that a module can be built via shifter, leveraging linter and minification.
+
+* A flow's bootstrap file resides under `src/main/js/bootstrap` and is named as the flow. E.g.
+
+        src/main/js/bootstrap/flow1.js
+
+* A bootsrap file is the one that contains the YUI().use statement for that flow.
+* There is a common bootrap file call `bootstrap/common.js` that can be invoked by all flows.
+
+#### Directory structure
+
+      bootrap
+        |-- common.js
+        |-- flow1.js
+
+      flows
+        |-- flow1
+        |   |-- README.md
+        |   |-- build.json
+        |   |-- js
+        |   |   |-- module1.js
+        |   |   `-- module2.js
+        |   |-- meta
+        |   |   `-- flow1.json
+        |   `-- tests
+        |       `-- unit
+        |           |-- index.html
+        |           `-- js
+        |               `-- tests.js
+
+
+### CSS
+
+#### Common CSS
+
+* Application level CSS should be limited to a strict minimum.
+* To leverage WF-RIA2 skinning patterns (skin NX for desktop and NXT for touch devices), SASS and Compass are recommended. SASS files resides under `src/main/css/scss`.
+
+#### Directory structure
+
+      scss
+        |-- common-css-core.scss
+        `-- skins
+            |-- nx
+            |   `-- common-css-skin.scss
+            `-- nxt
+                `-- common-css-skin.scss
