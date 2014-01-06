@@ -265,3 +265,7 @@ Release 0.0.44
 * [ Arno V ] webapp work in progress
 * [ Arno V ] work in progress
 * [ Arno V ] First commit for webapp
+
+##Release 0.0.68 ~ Jan 05 2014 18:54
+* [ Arno V ] webapp: default tags are now 2.2.0-SNAPSHOT
+* [ Arno V ] webapp: refactoring the extended flow
