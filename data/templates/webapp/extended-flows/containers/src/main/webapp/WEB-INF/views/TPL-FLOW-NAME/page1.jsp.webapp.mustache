@@ -1,3 +1,4 @@
+<%@ taglib uri="http://www.springframework.org/tags" prefix="s"%>
 <%@ taglib uri="http://wellsfargo.com/wt2" prefix="wt2"%>
 
 <div class="{{appName}}" style="visibility:hidden;">
@@ -8,14 +9,14 @@
         <div id="ipp" class="wf2-container-loading account-balances wf2-container-theme-portal">
           <div class="yui3-widget-hd">
             <div class="primary">
-              <div class="label">Positive Pay</div>
+              <div class="label"><s:message code="affair.positivepay"/></div>
             </div>
           </div>
           <div class="yui3-widget-bd">
             <ul id="acct-balances-data" class="container-row">
               <li class="line-item">
                 <div class="label-column left">
-                  <div class="label exceptions">6 exceptions</div>
+                  <div class="label exceptions">6 <s:message code="affair.exceptions"/></div>
                 </div>
                 <div class="label-column right">
                   <div class="balance">$2430.00</div>
@@ -28,13 +29,15 @@
               </li>
               <li class="line-item">
                 <div class="container-body-content-alert left"></div>
-                <div class="left"> 150 of 200 accounts have processed. </div>
+                <div class="left"> 150 of 200 <s:message code="affair.accountshaveprocessed"/></div>
                 <div class="clear"></div>
               </li>
             </ul>
           </div>
           <div class="yui3-widget-ft">
-            <a href="#" class="container-footer-link">Add check issues</a>
+            <a href="#" class="container-footer-link">
+              <s:message code="affair.addcheckissues"/>
+            </a>
           </div>
         </div>
       </div>
@@ -43,14 +46,16 @@
         <div id="ach" class="wf2-container-loading account-balances wf2-container-theme-portal">
           <div class="yui3-widget-hd">
             <div class="primary">
-              <div class="label">ACH Exceptions</div>
+              <div class="label">
+                <s:message code="affair.achexceptions"/>
+              </div>
             </div>
           </div>
           <div class="yui3-widget-bd">
             <ul id="acct-balances-data" class="container-row">
               <li class="line-item">
                 <div class="label-column left">
-                  <div class="label exceptions">5 exceptions</div>
+                  <div class="label exceptions">5 <s:message code="affair.exceptions"/></div>
                 </div>
                 <div class="label-column right">
                   <div class="balance">$600.00 DR</div>
@@ -64,9 +69,13 @@
             </ul>
           </div>
           <div class="yui3-widget-ft">
-            <a href="#" class="container-footer-link">Manage preauthorizations</a>
+            <a href="#" class="container-footer-link">
+              <s:message code="affair.managepreauth"/>
+            </a>
             <span  class="container-footer-link">&nbsp;|&nbsp;</span>
-            <a href="#" class="container-footer-link">View stopped items</a>
+            <a href="#" class="container-footer-link">
+              <s:message code="affair.viewstoppeditems"/>
+            </a>
           </div>
         </div>
       </div>
@@ -75,14 +84,16 @@
         <div id="rpp" class="wf2-container-loading account-balances wf2-container-theme-portal">
           <div class="yui3-widget-hd">
             <div class="primary">
-              <div class="label">Reverse Positive Pay</div>
+              <div class="label">
+                <s:message code="affair.rpp"/>
+              </div>
             </div>
           </div>
           <div class="yui3-widget-bd">
             <ul id="acct-balances-data" class="container-row">
               <li class="line-item">
                 <div class="label-column left">
-                  <div class="label exceptions">20 suspected payments</div>
+                  <div class="label exceptions">20 <s:message code="affair.suspectedpayments"/></div>
                 </div>
                 <div class="label-column right">
                   <div class="balance">$600.00</div>
@@ -90,7 +101,7 @@
               </li>
               <li class="line-item odd">
                 <div class="label-column left">
-                  <div class="label exceptions">265 payments</div>
+                  <div class="label exceptions">265 <s:message code="affair.payments"/></div>
                 </div>
                 <div class="label-column right">
                   <div class="balance">$2650.00</div>
@@ -98,7 +109,7 @@
               </li>
               <li class="line-item">
                 <div class="label-column left">
-                  <div class="label exceptions">12 late posted payments</div>
+                  <div class="label exceptions">12 <s:message code="affair.latepostedpayments"/></div>
                 </div>
                 <div class="label-column right">
                   <div class="balance">$250.00</div>
@@ -106,13 +117,15 @@
               </li>
               <li class="line-item">
                 <div class="container-body-content left">
-                  <div>Decisions due in 3 hrs 10 min</div>
+                  <div><s:message code="affair.decisionduein"/> 3 hrs 10 min</div>
                 </div>
               </li>
             </ul>
           </div>
           <div class="yui3-widget-ft">
-            <a href="#" class="container-footer-link">Search these payments</a>
+            <a href="#" class="container-footer-link">
+              <s:message code="affair.searchthesepayments"/>
+            </a>
           </div>
         </div>
       </div>
