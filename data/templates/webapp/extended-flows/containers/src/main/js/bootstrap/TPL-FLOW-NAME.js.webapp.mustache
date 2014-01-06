@@ -1,28 +1,26 @@
 /*
  * This file is used to load modules that are needed
- * for the flow called {{flowName}}
+ * for the flow called {{appName}}
  */
 
-YUI().use('{{flowName}}', /*'wf2-gridsmanager',*/ 'wf2-container', 'wf2-base-css-icons', function (Y) {
-  // ready to use {{flowName}}
-  Y.log('ready...');
-
+YUI().use('wf2-gridsmanager', 'wf2-container', 'wf2-button', 'wf2-cssrgrids','{{appName}}', function (Y) {
   var i,
     containerNodes = ['#ipp', '#ach', '#rpp'],
     len = containerNodes.length;
 
   for (i = 0; i < len; i += 1) {
     new Y.WF2.Container({
+      theme: Y.WF2.Container.THEMES.PORTAL,
       srcNode: containerNodes[i]
     }).render();
   }
 
   Y.one('.container-body-content-alert').addClass(Y.WF2.ICONS.SMALL.WARNING.className);
 
-  Y.one('.wf2-g-r').set('id', 'grids');
-  Y.one('.{{appName}}').show();
+  // Instantiate 'GridsManager' for auto height-adjustment.
+  new Y.WF2.GridsManager({
+    gridsContainer: '#grids'
+  });
 
-  // new Y.WF2.GridsManager({
-  //   gridsContainer: '#grids'
-  // });
+  Y.one('.{{appName}}').setStyle('visibility', 'visible');
 });

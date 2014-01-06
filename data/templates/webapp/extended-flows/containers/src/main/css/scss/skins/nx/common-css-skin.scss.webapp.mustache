@@ -5,24 +5,31 @@ $skin-name: "nx" !default;
 .wf2-skin-#{$skin-name} {
 
   .{{appName}} {
-    // your code here
     .hero-unit {
       color: green;
     }
-    // .container-row{
-    //   &.odd {
-    //     background-color: red;
-    //   }
-    //   &.even {
-    //     background-color: #eee;
-    //   }
-    // }
-    .container-body-head-left {
-      font-weight: bold;
-    }
-    .container-body-content-left {
+    .container-body-content {
       padding-top: 20px;
       padding-bottom: 20px;
+    }
+    .container-row {
+      li {
+        padding: 10px;
+        overflow: hidden;
+        &.odd {
+          background-color: #f6f6f6;
+        }
+        .label-column {
+          font-weight: bold;
+          font-size: 16px;
+        }
+        .exceptions {
+          color: #0955a7;
+        }
+      }
+    }
+    .container-footer-link {
+      font-size: 12px;
     }
   }
 }

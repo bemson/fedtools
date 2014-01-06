@@ -1,84 +1,123 @@
 <%@ taglib uri="http://wellsfargo.com/wt2" prefix="wt2"%>
 
-<div class="{{appName}}" style="display:none;">
+<div class="{{appName}}" style="visibility:hidden;">
 
-  <wt2:cssrgrid>
-
-    <wt2:cssrgrid-unit>
-      <wt2:container srcNode="ipp">
-        <wt2:container-header>Positive Pay</wt2:container-header>
-
-        <div class="container-body-head-left left"> 6 exceptions </div>
-        <div class="right">$2,430.00</div>
-        <div class="clear"></div>
-        <div class="container-body-content-left">
-          <div>4 due in 3 hrs 10 min</div>
-          <div>1 due in 4 hrs 10 min</div>
-          <div>1 due in 5 hrs 10 min</div>
-        </div>
-        <div class="container-body-content-alert left"></div>
-        <div class="left"> 150 of 200 accounts have processed. </div>
-        <div class="clear"></div>
-
-        <wt2:container-footer>
-          <a href="#">Add check issues</a>
-        </wt2:container-footer>
-      </wt2:container>
-    </wt2:cssrgrid-unit>
-
-    <wt2:cssrgrid-unit>
-      <wt2:container srcNode="ach">
-        <wt2:container-header>ACH Exceptions</wt2:container-header>
-
-        <div class="container-body-head-left left"> 5 exceptions </div>
-        <div class="right">$600.00 DR</div>
-        <div class="clear"></div>
-        <div class="right">$84.00 CR</div>
-        <div class="clear"></div>
-        <div class="container-body-content-left">
-          <div>1 due in 10 hrs 10 min</div>
-          <div>4 due in 34 hrs 10 min</div>
-        </div>
-
-        <wt2:container-footer>
-          <div>
-            <a href="#">Manage preauthorizations</a>|
-            <a href="#">View stopped items</a>
+  <div class="wf2-g-r" id="grids">
+    <div class="wf2-tablet-small-1 wf2-tablet-1 wf2-tablet-landscape-2 wf2-desktop-3">
+      <div class="wf2-u">
+        <div id="ipp" class="wf2-container-loading account-balances wf2-container-theme-portal">
+          <div class="yui3-widget-hd">
+            <div class="primary">
+              <div class="label">Positive Pay</div>
+            </div>
           </div>
-        </wt2:container-footer>
-      </wt2:container>
-    </wt2:cssrgrid-unit>
-
-    <wt2:cssrgrid-unit>
-      <wt2:container srcNode="rpp">
-        <wt2:container-header>Reverse Positive Pay</wt2:container-header>
-
-        <div class="container-row odd">
-          <div class="container-body-head-left left"> 20 suspected payments </div>
-          <div class="right">$600.00</div>
-          <div class="clear"></div>
+          <div class="yui3-widget-bd">
+            <ul id="acct-balances-data" class="container-row">
+              <li class="line-item">
+                <div class="label-column left">
+                  <div class="label exceptions">6 exceptions</div>
+                </div>
+                <div class="label-column right">
+                  <div class="balance">$2430.00</div>
+                </div>
+              </li>
+              <li class="line-item">
+                <div>4 due in 3 hrs 10 min</div>
+                <div>1 due in 4 hrs 10 min</div>
+                <div>1 due in 5 hrs 10 min</div>
+              </li>
+              <li class="line-item">
+                <div class="container-body-content-alert left"></div>
+                <div class="left"> 150 of 200 accounts have processed. </div>
+                <div class="clear"></div>
+              </li>
+            </ul>
+          </div>
+          <div class="yui3-widget-ft">
+            <a href="#" class="container-footer-link">Add check issues</a>
+          </div>
         </div>
-        <div class="container-row even">
-          <div class="container-body-head-left left"> 265 payments </div>
-          <div class="right">$2,650.00</div>
-          <div class="clear"></div>
-        </div>
-        <div class="container-row odd">
-          <div class="container-body-head-left left"> 12 late posted payments </div>
-          <div class="right">$250.00</div>
-          <div class="clear"></div>
-        </div>
-        <div class="container-body-content-left">
-          <div>Decisions due in 3 hrs 10 min</div>
-        </div>
+      </div>
 
-        <wt2:container-footer>
-          <a href="#">Search these payments</a>
-        </wt2:container-footer>
-      </wt2:container>
-    </wt2:cssrgrid-unit>
+      <div class="wf2-u">
+        <div id="ach" class="wf2-container-loading account-balances wf2-container-theme-portal">
+          <div class="yui3-widget-hd">
+            <div class="primary">
+              <div class="label">ACH Exceptions</div>
+            </div>
+          </div>
+          <div class="yui3-widget-bd">
+            <ul id="acct-balances-data" class="container-row">
+              <li class="line-item">
+                <div class="label-column left">
+                  <div class="label exceptions">5 exceptions</div>
+                </div>
+                <div class="label-column right">
+                  <div class="balance">$600.00 DR</div>
+                  <div class="balance">$84.00 CR</div>
+                </div>
+              </li>
+              <li class="line-item">
+                <div>1 due in 10 hrs 10 min</div>
+                <div>4 due in 34 hrs 10 min</div>
+              </li>
+            </ul>
+          </div>
+          <div class="yui3-widget-ft">
+            <a href="#" class="container-footer-link">Manage preauthorizations</a>
+            <span  class="container-footer-link">&nbsp;|&nbsp;</span>
+            <a href="#" class="container-footer-link">View stopped items</a>
+          </div>
+        </div>
+      </div>
 
-  </wt2:cssrgrid>
+      <div class="wf2-u">
+        <div id="rpp" class="wf2-container-loading account-balances wf2-container-theme-portal">
+          <div class="yui3-widget-hd">
+            <div class="primary">
+              <div class="label">Reverse Positive Pay</div>
+            </div>
+          </div>
+          <div class="yui3-widget-bd">
+            <ul id="acct-balances-data" class="container-row">
+              <li class="line-item">
+                <div class="label-column left">
+                  <div class="label exceptions">20 suspected payments</div>
+                </div>
+                <div class="label-column right">
+                  <div class="balance">$600.00</div>
+                </div>
+              </li>
+              <li class="line-item odd">
+                <div class="label-column left">
+                  <div class="label exceptions">265 payments</div>
+                </div>
+                <div class="label-column right">
+                  <div class="balance">$2650.00</div>
+                </div>
+              </li>
+              <li class="line-item">
+                <div class="label-column left">
+                  <div class="label exceptions">12 late posted payments</div>
+                </div>
+                <div class="label-column right">
+                  <div class="balance">$250.00</div>
+                </div>
+              </li>
+              <li class="line-item">
+                <div class="container-body-content left">
+                  <div>Decisions due in 3 hrs 10 min</div>
+                </div>
+              </li>
+            </ul>
+          </div>
+          <div class="yui3-widget-ft">
+            <a href="#" class="container-footer-link">Search these payments</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
 
 </div>
 
