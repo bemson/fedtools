@@ -41,8 +41,36 @@ module.exports = function (grunt) {
      * the Grunt build file.
      */
     jshint: {
-      files: ['Gruntfile.js', '<%=pkg.paths.testsrc%>/**/*.js',
-        '<%=pkg.paths.src%>/**/*.js'
+      options: {
+        'bitwise': true,
+        'browser': true,
+        'camelcase': true,
+        'curly': true,
+        'eqeqeq': true,
+        'es3': false,
+        'expr': false,
+        'forin': true,
+        'immed': true,
+        'indent': 2,
+        'latedef': true,
+        'maxlen': 120,
+        'newcap': true,
+        'node': true,
+        'noarg': true,
+        'noempty': true,
+        'nonew': true,
+        'onevar': true,
+        'plusplus': true,
+        'quotmark': 'single',
+        'undef': true,
+        'unused': true,
+        'strict': false,
+        'trailing': true,
+        'yui': true
+      },
+      files: ['Gruntfile.js',
+        '<%=pkg.paths.flows%>/**/*.js',
+        '<%=pkg.paths.bootstrap%>/**/*.js'
       ]
     },
     compass: {
