@@ -25,11 +25,11 @@ var program = require('commander'),
   fedToolsCommands = {
     'af': {
       'full': 'app-flow',
-      'description': 'Generates a webapp\'s flow skeleton from scratch'
+      'description': 'Generates a single webapp flow skeleton from scratch.'
     },
     'ai': {
       'full': 'app-init',
-      'description': 'Generates a webapp skeleton from scratch.'
+      'description': 'Generates a full webapp skeleton from scratch.'
     },
     'war': {
       'full': 'wria2-war',
