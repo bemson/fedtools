@@ -92,11 +92,7 @@ module.exports = function (grunt) {
         }
       }
     },
-    /**
-     * TODO: This is a placeholder task for the 'fedtools' minification task.
-     * Currently, this task is minifying all js in the source directory and
-     * placing the minified files in the maven output folder
-     */
+
     'fedtools-min': {
       common: {
         files: {
@@ -115,6 +111,25 @@ module.exports = function (grunt) {
         }
       }
     },
+    'fedtools-debug': {
+      common: {
+        files: {
+          '<%=pkg.paths.build%>/common-bootstrap-debug.js': [
+            '<%=pkg.paths.shifterbuild%>/common/common.js',
+            '<%=pkg.paths.bootstrap%>/common.js'
+          ]
+        }
+      },
+      flows: {
+        files: {
+          '<%=pkg.paths.build%>/{{FLOWNAME}}-bootstrap-debug.js': [
+            '<%=pkg.paths.shifterbuild%>/{{FLOWNAME}}/{{FLOWNAME}}.js',
+            '<%=pkg.paths.bootstrap%>/{{FLOWNAME}}.js'
+          ]
+        }
+      }
+    },
+
     watch: {
       flows: {
         files: ['<%=pkg.paths.flows%>/**/*.js',
@@ -227,6 +242,7 @@ module.exports = function (grunt) {
     grunt.log.subhead('Grunt [ ' + this.name.cyan + ' ]');
     grunt.task.run('fedtools-shifter');
     grunt.task.run('fedtools-min');
+    grunt.task.run('fedtools-debug');
     grunt.task.run('compass');
     grunt.task.run('cssmin');
   });

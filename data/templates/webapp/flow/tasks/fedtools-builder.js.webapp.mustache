@@ -1,0 +1,77 @@
+module.exports = function (grunt) {
+
+  var _ = require('underscore'),
+    mustache = require('mustache');
+
+  grunt.registerMultiTask('fedtools-min', 'description', function () {
+    grunt.log.subhead('Grunt [ ' + this.name.cyan + ' ]');
+    _prepareConfigurationAndRunTask('uglify', this.target, this.data.files);
+  });
+
+  grunt.registerMultiTask('fedtools-debug', 'description', function () {
+    grunt.log.subhead('Grunt [ ' + this.name.cyan + ' ]');
+    _prepareConfigurationAndRunTask('concat', this.target, this.data.files);
+  });
+
+  function _runTask(task, options) {
+    // need to generate the actual task config
+    grunt.config(options.configName, options.configData);
+    // and then run the task
+    grunt.task.run(task + ':' + options.target);
+  }
+
+  function _prepareConfigurationAndRunTask(task, target, files) {
+
+    var flows = grunt.config('pkg').flows,
+      dst, srcArray, cfg;
+
+    if (target === 'common') {
+      _runTask(task, {
+        configName: task + '.' + target + '.files',
+        configData: files,
+        target: target
+      });
+    }
+
+    if (target === 'flows') {
+      dst = _.keys(files)[0];
+      srcArray = files[dst];
+      cfg = {};
+
+      // Loop through each flows declared
+      // in the package.json under 'flows'
+      _.each(flows, function (flow) {
+        var bufferDst,
+          obj = {},
+          bufferSrc = [];
+
+        bufferDst = mustache.render(dst, {
+          FLOWNAME: flow
+        });
+        // Loop through source files
+        _.each(srcArray, function (src) {
+          var buffer = mustache.render(src, {
+            FLOWNAME: flow
+          });
+          bufferSrc.push(buffer);
+        });
+
+        // dynamically build a grunt-contrib-uglify configuration
+        obj = {};
+        obj[bufferDst] = bufferSrc;
+
+        // and append it with all the previous flows
+        cfg = _.extend(cfg, obj);
+      });
+      // and then call uglify
+      _runTask(task, {
+        configName: task + '.' + target,
+        configData: {
+          files: cfg
+        },
+        target: target
+      });
+    }
+  }
+
+};
