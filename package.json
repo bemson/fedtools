@@ -20,7 +20,6 @@
     "url": "https://github.com/aversini/fedtools/issues"
   },
   "scripts": {
-    "preinstall": "node scripts/check.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "preferGlobal": true,
