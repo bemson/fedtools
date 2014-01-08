@@ -70,6 +70,8 @@
     "defaultGitlabId": "wf",
     "defaultBranch": "develop",
     "wria2gitname": "wria2git",
+    "jenkinshostname": "wnl-svr017c.wellsfargo.com",
+    "jenkinsusername": "warbuilder",
     "wria2giturl": "git@wnl-svr167.wellsfargo.com:{{gitlabId}}/wria2.git",
     "wria2yui3giturl": "https://github.com/wf2/yui3"
   }

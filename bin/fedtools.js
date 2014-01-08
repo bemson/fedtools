@@ -262,6 +262,7 @@ case 'war': // hidden menu
   }, function (err) {
     if (err && err !== -1) {
       log.echo(err);
+      process.exit(127);
     }
     if (!err) {
       utilities.timeTracker('stop');
