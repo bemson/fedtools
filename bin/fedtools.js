@@ -81,8 +81,10 @@ program
   .usage('[options] ' + commandList.join('|'))
   .option('-b, --boring', 'do not use color output')
   .option('-d, --debug', 'display extra information')
-  .option('-e, --examples', 'print out usage examples of this tool');
-
+  .option('-e, --examples', 'print out usage examples of this tool')
+  .option('-u, --username [name]', 'username - if provided, will not be prompted')
+  .option('-w, --wria-branch [branch]', 'branch - if provided, will not be prompted')
+  .option('-y, --yui-branch [branch]', 'wf2-yui3 branch - if provided, will not be prompted');
 
 program.on('--help', function () {
   console.log('  Parameters:');
@@ -250,6 +252,9 @@ case 'war': // hidden menu
   utilities.timeTracker('start');
   log.echo();
   build.run(program.debug, {
+    username: program.username,
+    wriaBranch: program.wriaBranch,
+    yuiBranch: program.yuiBranch,
     pkgConfig: pkgConfig,
     cwd: process.cwd(),
     prompt: true,
@@ -263,7 +268,6 @@ case 'war': // hidden menu
     }
     log.echo();
   });
-  // }
   break;
 
 case 'wria2-build':
@@ -316,6 +320,11 @@ case 'wm': // hidden menu
   // case 'test':
 case 'wt':
   log.blue('==> this is a b-b-blue test');
+
+  console.log('==> program.username: ', program.username);
+  console.log('==> program.wria-branch: ', program.wriaBranch);
+  console.log('==> program.yui-branch: ', program.yuiBranch);
+
   break;
 
 default:
