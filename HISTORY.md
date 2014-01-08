@@ -269,3 +269,15 @@ Release 0.0.44
 ##Release 0.0.68 ~ Jan 05 2014 18:54
 * [ Arno V ] webapp: default tags are now 2.2.0-SNAPSHOT
 * [ Arno V ] webapp: refactoring the extended flow
+
+##Release 0.0.69 ~ Jan 07 2014 20:35
+* [ Arno V ] Fixing lint errors!
+* [ Arno V ] Removing obsolete script
+* [ Arno V ] Making sure that shifter, yogi and maven are installed to actually run a WAR build
+* [ Arno V ] Adding &#39;isAppInstalled&#39; to utilities and removing the script that was used to check yogi&#x2F;shifter at installation time. This fixes issue #19
+* [ Arno V ] webapp: fedtools helper update
+* [ Arno V ] webapp: adding debug js files generation at build time (on top of min)
+* [ Arno V ] webapp: using fedtools-maven-plugin 0.0.3
+* [ Arno V ] webapp: updating jshint and calling it from &#39;build&#39;
+* [ Arno V ] webapp: i18n java side
+* [ Arno V ] webapp: first pass at README.md
