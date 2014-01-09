@@ -15,6 +15,7 @@ var program = require('commander'),
   utilities = require('../lib/utilities'),
 
   debug = false,
+  remote = false,
   command = '',
   packageFileJson = JSON.parse(fs.readFileSync(path.join(__dirname, '../package.json'), 'utf8')),
   pkgVersion = packageFileJson.version,
@@ -82,6 +83,7 @@ program
   .option('-b, --boring', 'do not use color output')
   .option('-d, --debug', 'display extra information')
   .option('-e, --examples', 'print out usage examples of this tool')
+  .option('-r, --remote [flag]', 'flag to indicate if running remotely or not')
   .option('-u, --username [name]', 'username - if provided, will not be prompted')
   .option('-w, --wria-branch [branch]', 'branch - if provided, will not be prompted')
   .option('-y, --yui-branch [branch]', 'wf2-yui3 branch - if provided, will not be prompted');
@@ -130,6 +132,11 @@ if (program.boring) {
 
 if (program.debug) {
   debug = true;
+}
+
+if (program.remote) {
+  remote = true;
+  log.setRemote();
 }
 
 if (program.examples) {
@@ -252,6 +259,7 @@ case 'war': // hidden menu
   utilities.timeTracker('start');
   log.echo();
   build.run(program.debug, {
+    remote: remote,
     username: program.username,
     wriaBranch: program.wriaBranch,
     yuiBranch: program.yuiBranch,
