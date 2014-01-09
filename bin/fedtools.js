@@ -272,10 +272,12 @@ case 'war': // hidden menu
       log.echo(err);
       process.exit(127);
     }
-    if (!err) {
-      utilities.timeTracker('stop');
+    if (!remote) {
+      if (!err) {
+        utilities.timeTracker('stop');
+      }
+      log.echo();
     }
-    log.echo();
   });
   break;
 
