@@ -39,7 +39,6 @@
     "path": "~0.4.9",
     "promptly": "~0.2.0",
     "rimraf": "~2.2.2",
-    "scp2": "~0.1.4",
     "shelljs": "~0.2.6",
     "simple-boilerplate": "~0.0.1",
     "sprintf": "~0.1.3",
