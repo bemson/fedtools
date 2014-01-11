@@ -332,10 +332,6 @@ case 'wm': // hidden menu
 case 'wt':
   log.blue('==> this is a b-b-blue test');
 
-  console.log('==> program.username: ', program.username);
-  console.log('==> program.wria-branch: ', program.wriaBranch);
-  console.log('==> program.yui-branch: ', program.yuiBranch);
-
   break;
 
 default:
