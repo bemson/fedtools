@@ -281,3 +281,24 @@ Release 0.0.44
 * [ Arno V ] webapp: updating jshint and calling it from &#39;build&#39;
 * [ Arno V ] webapp: i18n java side
 * [ Arno V ] webapp: first pass at README.md
+
+##Release 0.0.70 ~ Jan 10 2014 18:29
+* [ Arno V ] remove test
+* [ Arno V ] war: fix display issue for ... windows!
+* [ Arno V ] war: do not scp on freaking windows, it doesn&#39;t work
+* [ Arno V ] war: missing package dependency
+* [ Arno V ] war: fix typo
+* [ Arno V ] WAR: using own version of scp (using ssh2) instead of scp2 which is buggy
+* [ Arno V ] WAR: cleanup
+* [ Arno V ] WAR: the name of the local WAR file has changed
+* [ Arno V ] WAR: sh* load of changes
+* [ Arno V ] WAR: prevent remote and local build from reporting elapsed time twice
+* [ Arno V ] Fix prompt of type &#39;password&#39; to prevent empty password
+* [ Arno V ] war: setting remote flag
+* [ Arno V ] war: update
+* [ Arno V ] war: update
+* [ Arno V ] war: update to use home directory if on remote
+* [ Arno V ] war: still work in progress :)
+* [ Arno V ] war: moar work in progress
+* [ Arno V ] war: work in progress
+* [ Arno V ] war: first pass at remote ssh fedtools
