@@ -83,10 +83,15 @@ program
   .option('-b, --boring', 'do not use color output')
   .option('-d, --debug', 'display extra information')
   .option('-e, --examples', 'print out usage examples of this tool')
-  .option('-r, --remote [flag]', 'flag to indicate if running remotely or not')
+  .option('-r, --remote', 'flag to indicate if running remotely')
   .option('-u, --username [name]', 'username - if provided, will not be prompted')
   .option('-w, --wria-branch [branch]', 'branch - if provided, will not be prompted')
-  .option('-y, --yui-branch [branch]', 'wf2-yui3 branch - if provided, will not be prompted');
+  .option('-y, --yui-branch [branch]', 'wf2-yui3 branch - if provided, will not be prompted')
+  .option('-S, --status-job', 'if remote, print the status of the jenkins WAR jobs')
+  .option('-A, --add-job', 'if remote, add a jenkins WAR job to the queue')
+  .option('-R, --remove-job', 'if remote, remove a jenkins WAR job from the queue')
+  .option('-P, --process-job', 'if remote, execute the oldest WAR job from the queue');
+
 
 program.on('--help', function () {
   console.log('  Parameters:');
@@ -263,6 +268,10 @@ case 'war': // hidden menu
     username: program.username,
     wriaBranch: program.wriaBranch,
     yuiBranch: program.yuiBranch,
+    statusJob: program.statusJob,
+    addJob: program.addJob,
+    removeJob: program.removeJob,
+    processJob: program.processJob,
     pkgConfig: pkgConfig,
     cwd: process.cwd(),
     prompt: true,
