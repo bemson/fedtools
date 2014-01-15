@@ -339,7 +339,14 @@ case 'wm': // hidden menu
 
   // case 'test':
 case 'wt':
-  log.blue('==> this is a b-b-blue test');
+  log.blue('==> this is a b-b-blue test ');
+
+
+  utilities.sendEmail({
+    to: 'versini@gmail.com',
+    subject: 'this is just a test',
+    htmlBody: '<strong>Hello!</strong>'
+  }, function () {});
 
   break;
 
