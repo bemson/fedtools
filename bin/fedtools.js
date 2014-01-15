@@ -276,13 +276,16 @@ case 'war': // hidden menu
     cwd: process.cwd(),
     prompt: true,
     type: build.TYPE_WAR
-  }, function (err) {
+  }, function (err, data) {
     if (err && err !== -1) {
       log.echo(err);
       process.exit(127);
     }
     if (!remote) {
       if (!err) {
+        if (data) {
+          console.log('==> data:', data);
+        }
         utilities.timeTracker('stop');
       }
       log.echo();
