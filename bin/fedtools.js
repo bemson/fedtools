@@ -20,7 +20,6 @@ var program = require('commander'),
   packageFileJson = JSON.parse(fs.readFileSync(path.join(__dirname, '../package.json'), 'utf8')),
   pkgVersion = packageFileJson.version,
   pkgConfig = packageFileJson.config,
-  binaryName = path.basename(process.argv[1]),
 
   commandList = [],
   fedToolsCommands = {
@@ -82,8 +81,8 @@ program
   .usage('[options] ' + commandList.join('|'))
   .option('-b, --boring', 'do not use color output')
   .option('-d, --debug', 'display extra information')
-  .option('-e, --examples', 'print out usage examples of this tool')
   .option('-r, --remote', 'flag to indicate if running remotely')
+  .option('-e, --email [email]', 'email - if provided, will not be prompted')
   .option('-u, --username [name]', 'username - if provided, will not be prompted')
   .option('-w, --wria-branch [branch]', 'branch - if provided, will not be prompted')
   .option('-y, --yui-branch [branch]', 'wf2-yui3 branch - if provided, will not be prompted')
@@ -142,33 +141,6 @@ if (program.debug) {
 if (program.remote) {
   remote = true;
   log.setRemote();
-}
-
-if (program.examples) {
-  log.echo();
-  log.title('EXAMPLE 1:');
-  log.blue('Starts the process of cloning and bootstrapping a wria2 repository.');
-  log.blue('It relies on user input though default options are always offered.');
-  log.blue('Cloning can be bypassed if a valid existing repository is provided.');
-  log.echo(' $ cd ~/projects');
-  log.echo(' $ ' + binaryName + ' wria2-init');
-  log.echo('');
-  log.title('EXAMPLE 2:');
-  log.blue('Starts a complete build of the framework. This command relies on the');
-  log.blue('current directory. ' + binaryName + ' will detect if the current path');
-  log.blue('is a valid wria2 path.');
-  log.echo(' $ cd wria2git');
-  log.echo(' $ ' + binaryName + ' wria2-build');
-  log.echo('');
-  log.title('EXAMPLE 3:');
-  log.blue('Starts a build of a single component. This command relies on the');
-  log.blue('current directory. ' + binaryName + ' will detect if the current path');
-  log.blue('is a valid wria2 path AND a component path. It will not only run shifter');
-  log.blue('for the component but also for yui and loader, to maintain dependencies.');
-  log.echo(' $ cd wria2git/wf2/src/wf2-simplemenu');
-  log.echo(' $ ' + binaryName + ' wria2-build');
-  log.echo('');
-  process.exit(0);
 }
 
 if (program.args.length !== 1) {
@@ -266,6 +238,7 @@ case 'war': // hidden menu
   build.run(program.debug, {
     remote: remote,
     username: program.username,
+    useremail: program.email,
     wriaBranch: program.wriaBranch,
     yuiBranch: program.yuiBranch,
     statusJob: program.statusJob,

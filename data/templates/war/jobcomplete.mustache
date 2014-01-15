@@ -4,13 +4,17 @@
     <meta content='text/html; charset=UTF-8' http-equiv='Content-Type' />
   </head>
   <body>
-    <h3>Your job request has been scheduled successfully!</h3>
+    <h3>Your job request is complete</h3>
     <p>Here is a summary of this request:</p>
     <p><strong>User fork</strong>: {{username}}</p>
     <p><strong>WF-RIA branch</strong>: {{wriaBranch}}</p>
     <p><strong>YUI branch</strong>: {{yuiBranch}}</p>
-    <p>{{msg}}</p>
-    <p>You will receive a confirmation email once the job is complete.</p>
+    <p>You should be able to find the file on the Jenkins server here:</p>
+    <pre>{{srcWar}}</pre>
+    <p>You have to download it to your local machine so that you can upload it to the ABC server.</p>
+    <p>Here is the command line to download it via scp:</p>
+    <pre>scp {{jenkinsusername}}@{{jenkinshostname}}:{{srcWar}} .</pre>
+
     <p>Thanks!</p>
     <p>The Fedtools team</p>
   </body>
