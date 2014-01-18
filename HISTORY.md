@@ -309,3 +309,7 @@ Release 0.0.44
 ##Release 0.0.72 ~ Jan 17 2014 16:49
 * [ Arno V ] Remembering user name, user email and user branch for next time WAR build is run
 * [ Arno V ] Fixing history file...
+
+##Release 0.0.73 ~ Jan 17 2014 18:50
+* [ Arno V ] webapp: minor typos
+* [ Arno V ] Moving jshint from shifter to grunt
