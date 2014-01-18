@@ -1,10 +1,10 @@
 /*
  * This file is used to load modules that are needed
- * for the flow called {{appName}}
+ * for the flow called {{flowName}}
  */
 
 YUI().use('wf2-gridsmanager', 'wf2-container', 'wf2-button', 'wf2-cssrgrids','{{appName}}', function (Y) {
-  var i,
+  var i, gridManager,
     containerNodes = ['#ipp', '#ach', '#rpp'],
     len = containerNodes.length;
 
@@ -18,9 +18,11 @@ YUI().use('wf2-gridsmanager', 'wf2-container', 'wf2-button', 'wf2-cssrgrids','{{
   Y.one('.container-body-content-alert').addClass(Y.WF2.ICONS.SMALL.WARNING.className);
 
   // Instantiate 'GridsManager' for auto height-adjustment.
-  new Y.WF2.GridsManager({
+  gridManager = new Y.WF2.GridsManager({
     gridsContainer: '#grids'
   });
 
-  Y.one('.{{appName}}').setStyle('visibility', 'visible');
+  if (gridManager) {
+    Y.one('.{{appName}}').setStyle('visibility', 'visible');
+  }
 });
