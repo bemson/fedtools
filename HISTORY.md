@@ -304,24 +304,4 @@ Release 0.0.44
 * [ Arno V ] war: first pass at remote ssh fedtools
 
 ##Release 0.0.71 ~ Jan 17 2014 12:05
-* [ Arno V ] war: final cleanup
-* [ Arno V ] war
-* [ Arno V ] war
-* [ Arno V ] war
-* [ Arno V ] war
-* [ Arno V ] waar
-* [ Arno V ] war: final pass?
-* [ Arno V ] war
-* [ Arno V ] war
-* [ Arno V ] waaarzaza
-* [ Arno V ] war: debugging
-* [ Arno V ] wwwaaarr
-* [ Arno V ] warrr
-* [ Arno V ] waar
-* [ Arno V ] war war war
-* [ Arno V ] War...
-* [ Arno V ] war: wip
-* [ Arno V ] war update
-* [ Arno V ] war: wip
-* [ Arno V ] war: fixes
-* [ Arno V ] war: work in progress
+* [ Arno V ] war: Move to a queue system for windows user
