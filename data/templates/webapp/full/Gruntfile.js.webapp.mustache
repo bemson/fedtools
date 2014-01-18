@@ -240,6 +240,7 @@ module.exports = function (grunt) {
 
   grunt.registerTask('build', 'Running a full build ', function () {
     grunt.log.subhead('Grunt [ ' + this.name.cyan + ' ]');
+    grunt.task.run('jshint');
     grunt.task.run('fedtools-shifter');
     grunt.task.run('fedtools-min');
     grunt.task.run('fedtools-debug');
