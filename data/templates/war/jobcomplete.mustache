@@ -2,20 +2,35 @@
 <html>
   <head>
     <meta content='text/html; charset=UTF-8' http-equiv='Content-Type' />
+    <style>
+      .code {
+        display: block;
+        padding: 0.5em;
+        color: #000;
+        background-color: #f8f8ff;
+        font-family: monospace;
+      }
+    </style>
   </head>
   <body>
+    {{> header}}
     <h3>Your job request is complete</h3>
     <p>Here is a summary of this request:</p>
-    <p><strong>User fork</strong>: {{username}}</p>
-    <p><strong>WF-RIA branch</strong>: {{wriaBranch}}</p>
-    <p><strong>YUI branch</strong>: {{yuiBranch}}</p>
-    <p>You should be able to find the file on the Jenkins server here:</p>
-    <pre>{{srcWar}}</pre>
-    <p>You have to download it to your local machine so that you can upload it to the ABC server.</p>
-    <p>Here is the command line to download it via scp:</p>
-    <pre>scp {{jenkinsusername}}@{{jenkinshostname}}:{{srcWar}} .</pre>
 
-    <p>Thanks!</p>
-    <p>The Fedtools team</p>
+    <div class='code'>
+      <p><strong>User fork</strong>: {{username}}</p>
+      <p><strong>WF-RIA branch</strong>: {{wriaBranch}}</p>
+      <p><strong>YUI branch</strong>: {{yuiBranch}}</p>
+    </div>
+
+    <p>You should<sup>&#8224;</sup> be able to find the file on the Jenkins server here:</p>
+    <div class='code'>{{srcWar}}</div>
+    <p>You have to download it to your local machine so that you can then upload it to the ABC server.</p>
+
+    <p>Here is the command line to download it via scp:</p>
+    <div class='code'>scp {{jenkinsusername}}@{{jenkinshostname}}:{{srcWar}} {{war}}</div>
+
+    <p style='font-size: 0.9em'>note: the location of the war file may not be exact. This is due to a bug that may still be present in your local branch. To make sure you can find the war file, please have you local branch up to date with the 'develop' branch.</p>
+    {{> footer}}
   </body>
 </html>
