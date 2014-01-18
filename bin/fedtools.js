@@ -33,7 +33,7 @@ var program = require('commander'),
     },
     'war': {
       'full': 'wria2-war',
-      'description': 'Generate a local wria2 WAR file ready to be deployed to a CI server or to your own JSP container.'
+      'description': 'Generate a wria2 WAR file ready to be deployed to a CI server or to your own JSP container.'
     },
     'wss': {
       'full': 'wria2-sel',
