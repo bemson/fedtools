@@ -305,3 +305,7 @@ Release 0.0.44
 
 ##Release 0.0.71 ~ Jan 17 2014 12:05
 * [ Arno V ] war: Move to a queue system for windows user
+
+##Release 0.0.72 ~ Jan 17 2014 16:49
+* [ Arno V ] Remembering user name, user email and user branch for next time WAR build is run
+* [ Arno V ] Fixing history file...
