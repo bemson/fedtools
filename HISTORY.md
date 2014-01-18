@@ -313,3 +313,9 @@ Release 0.0.44
 ##Release 0.0.73 ~ Jan 17 2014 18:50
 * [ Arno V ] webapp: minor typos
 * [ Arno V ] Moving jshint from shifter to grunt
+
+##Release 0.0.74 ~ Jan 18 2014 13:27
+* [ Arno V ] Ooops, adding back maven build!
+* [ Arno V ] war: add completion time to notification
+* [ Arno V ] war: fix email &#39;from&#39; for WF rules
+* [ Arno V ] war: better notifications
