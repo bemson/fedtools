@@ -319,3 +319,6 @@ Release 0.0.44
 * [ Arno V ] war: add completion time to notification
 * [ Arno V ] war: fix email &#39;from&#39; for WF rules
 * [ Arno V ] war: better notifications
+
+##Release 0.0.75 ~ Jan 18 2014 17:25
+* [ Arno V ] war: make sure the file is where it&#39;s supposed to be...
