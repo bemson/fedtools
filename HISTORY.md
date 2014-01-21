@@ -326,3 +326,6 @@ Release 0.0.44
 ##Release 0.0.76 ~ Jan 19 2014 08:05
 * [ Arno V ] remote war: instead of trying (and failing) to move the war file to the home folder of the war builder, leave it in the tmp dir which will be automatically removed after a while.
 * [ Arno V ] war: replacing fs.renameSync with own version to prevent error on linux and renaming on different partitions
+
+##Release 0.0.77 ~ Jan 20 2014 21:22
+* [ Arno V ] Command line optimization: delaying &#39;requires&#39; until they&#39;re needed
