@@ -7,11 +7,8 @@ var program = require('commander'),
   path = require('path'),
   log = require('fedtools-logs'),
 
-  bootstrap = require('../lib/wria2-bootstrap'),
   build = require('../lib/wria2-build'),
-  mods = require('../lib/wria2-modules'),
   app = require('../lib/app-bootstrap'),
-  yui3Utils = require('../lib/yui3-utils'),
   utilities = require('../lib/utilities'),
 
   debug = false,
@@ -285,7 +282,7 @@ case 'wb': // hidden menu
 case 'wria2-init':
 case 'wi': // hidden menu
   log.echo();
-  bootstrap.run(program.debug, pkgConfig, function (err) {
+  require('../lib/wria2-bootstrap').run(program.debug, pkgConfig, function (err) {
     if (err) {
       log.error(err);
     }
@@ -296,7 +293,7 @@ case 'wi': // hidden menu
 case 'wria2-yui3':
 case 'wy': // hidden menu
   log.echo();
-  yui3Utils.run(program.debug, pkgConfig, {}, function (err) {
+  require('../lib/yui3-utils').run(program.debug, pkgConfig, {}, function (err) {
     if (err) {
       log.error(err);
     }
@@ -307,19 +304,13 @@ case 'wy': // hidden menu
 case 'wria2-mod':
 case 'wm': // hidden menu
   log.echo();
-  mods.run(function () {});
+  require('../lib/wria2-modules').run(function () {});
   break;
 
   // case 'test':
 case 'wt':
   log.blue('==> this is a b-b-blue test ');
-
-
-  utilities.sendEmail({
-    to: 'versini@gmail.com',
-    subject: 'this is just a test',
-    htmlBody: '<strong>Hello!</strong>'
-  }, function () {});
+  log.yellow('==> this is a y-y-yellow test ');
 
   break;
 
