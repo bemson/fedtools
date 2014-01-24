@@ -329,3 +329,9 @@ Release 0.0.44
 
 ##Release 0.0.77 ~ Jan 20 2014 21:22
 * [ Arno V ] Command line optimization: delaying &#39;requires&#39; until they&#39;re needed
+
+##Release 0.0.78 ~ Jan 24 2014 07:32
+* [ Arno V ] More explicit prompt for &#39;git username&#39;
+* [ Arno V ] Relaxing jshint requirements for single vs double quotes
+* [ Arno V ] Relaxing Jshint for single vs double quotes: now it&#39;s only checking for mixed
+* [ Arno V ] Small update for App bootstrap (remove extra navigation for basic flow)
