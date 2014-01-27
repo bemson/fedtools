@@ -33,7 +33,7 @@ module.exports = function (grunt) {
       });
     }
 
-    if (target === 'flows') {
+    if (target === 'flows' || target === 'complete') {
       dst = _.keys(files)[0];
       srcArray = files[dst];
       cfg = {};

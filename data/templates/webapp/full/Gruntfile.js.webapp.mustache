@@ -111,6 +111,14 @@ module.exports = function (grunt) {
             '<%=pkg.paths.bootstrap%>/{{FLOWNAME}}.js'
           ]
         }
+      },
+      complete: {
+        files: {
+          '<%=pkg.paths.build%>/{{FLOWNAME}}-complete-min.js': [
+            '<%=pkg.paths.build%>/common-bootstrap-min.js',
+            '<%=pkg.paths.build%>/{{FLOWNAME}}-bootstrap-min.js'
+          ]
+        }
       }
     },
     'fedtools-debug': {
@@ -129,6 +137,14 @@ module.exports = function (grunt) {
             '<%=pkg.paths.shifterbuild%>/{{FLOWNAME}}/lang/{{FLOWNAME}}_en.js',
             '<%=pkg.paths.shifterbuild%>/{{FLOWNAME}}/{{FLOWNAME}}.js',
             '<%=pkg.paths.bootstrap%>/{{FLOWNAME}}.js'
+          ]
+        }
+      },
+      complete: {
+        files: {
+          '<%=pkg.paths.build%>/{{FLOWNAME}}-complete-debug.js': [
+            '<%=pkg.paths.build%>/common-bootstrap-debug.js',
+            '<%=pkg.paths.build%>/{{FLOWNAME}}-bootstrap-debug.js'
           ]
         }
       }
