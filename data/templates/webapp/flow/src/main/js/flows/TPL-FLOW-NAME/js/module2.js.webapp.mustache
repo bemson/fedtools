@@ -1,14 +1,14 @@
 /**
- * Provides the `fedtools-webapp.module2` module.
+ * Provides the `Y.{{namespace}}.module2` module.
  *
  * @class Module2
  * @extends Y.Base
- * @module webapp-module2
- * @namespace fedtools-webapp
+ * @module {{namespaceLower}}-module2
+ * @namespace {{namespace}}
  */
 
-Y.namespace('fedtools-webapp').Module2 = Y.Base.create(
-  'webappModule2', Y.Base, [ /* array of mixins */ ], {
+Y.namespace('{{namespace}}').Module2 = Y.Base.create(
+  '{{namespaceLower}}Module2', Y.Base, [ /* array of mixins */ ], {
     initializer: function() {
       /*
        * Base's init method, which is invoked by Base's constructor, will invoke

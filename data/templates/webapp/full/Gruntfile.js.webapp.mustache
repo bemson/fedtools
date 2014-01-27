@@ -105,6 +105,8 @@ module.exports = function (grunt) {
       flows: {
         files: {
           '<%=pkg.paths.build%>/{{FLOWNAME}}-bootstrap-min.js': [
+            '<%=pkg.paths.shifterbuild%>/{{FLOWNAME}}/lang/{{FLOWNAME}}.js',
+            '<%=pkg.paths.shifterbuild%>/{{FLOWNAME}}/lang/{{FLOWNAME}}_en.js',
             '<%=pkg.paths.shifterbuild%>/{{FLOWNAME}}/{{FLOWNAME}}.js',
             '<%=pkg.paths.bootstrap%>/{{FLOWNAME}}.js'
           ]
@@ -123,6 +125,8 @@ module.exports = function (grunt) {
       flows: {
         files: {
           '<%=pkg.paths.build%>/{{FLOWNAME}}-bootstrap-debug.js': [
+            '<%=pkg.paths.shifterbuild%>/{{FLOWNAME}}/lang/{{FLOWNAME}}.js',
+            '<%=pkg.paths.shifterbuild%>/{{FLOWNAME}}/lang/{{FLOWNAME}}_en.js',
             '<%=pkg.paths.shifterbuild%>/{{FLOWNAME}}/{{FLOWNAME}}.js',
             '<%=pkg.paths.bootstrap%>/{{FLOWNAME}}.js'
           ]

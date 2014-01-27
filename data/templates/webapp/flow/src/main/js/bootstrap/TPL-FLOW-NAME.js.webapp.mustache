@@ -3,7 +3,16 @@
  * for the flow called {{flowName}}
  */
 
-YUI().use('{{flowName}}', function (Y) {
+YUI({
+  modules: {
+    '{{flowName}}': {
+      lang: ['en'],
+      requires: [
+        'base-build'
+      ]
+    }
+  }
+}).use('{{flowName}}', function (Y) {
   // ready to use {{flowName}}
   Y.log('ready...');
 });

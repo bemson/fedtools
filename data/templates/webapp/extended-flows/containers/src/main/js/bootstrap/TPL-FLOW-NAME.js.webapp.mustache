@@ -3,7 +3,16 @@
  * for the flow called {{flowName}}
  */
 
-YUI().use('wf2-gridsmanager', 'wf2-container', 'wf2-button', 'wf2-cssrgrids','{{appName}}', function (Y) {
+YUI({
+  modules: {
+    '{{flowName}}': {
+      lang: ['en'],
+      requires: [
+        'base-build'
+      ]
+    }
+  }
+}).use('wf2-gridsmanager', 'wf2-container', 'wf2-button', 'wf2-cssrgrids','{{appName}}', function (Y) {
   var i, gridManager,
     containerNodes = ['#ipp', '#ach', '#rpp'],
     len = containerNodes.length;
