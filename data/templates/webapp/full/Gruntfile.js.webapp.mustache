@@ -149,7 +149,14 @@ module.exports = function (grunt) {
         }
       }
     },
-
+    'fedtools-lang': {
+      lang: {
+        files: {
+          src: '<%=pkg.paths.flows%>/{{FLOWNAME}}/lang/{{FLOWNAME}}_en.js',
+          dest: '<%=pkg.paths.flows%>/{{FLOWNAME}}/lang/{{FLOWNAME}}.js'
+        }
+      }
+    },
     watch: {
       flows: {
         files: ['<%=pkg.paths.flows%>/**/*.js',
@@ -263,6 +270,7 @@ module.exports = function (grunt) {
   grunt.registerTask('build', 'Running a full build ', function () {
     grunt.log.subhead('Grunt [ ' + this.name.cyan + ' ]');
     grunt.task.run('jshint');
+    grunt.task.run('fedtools-lang');
     grunt.task.run('fedtools-shifter');
     grunt.task.run('fedtools-min');
     grunt.task.run('fedtools-debug');
