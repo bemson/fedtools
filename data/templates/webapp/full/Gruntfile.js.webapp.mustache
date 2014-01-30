@@ -288,6 +288,7 @@ module.exports = function (grunt) {
     cfg = {
       cwd: path.join(process.cwd(), pkg.paths.flows),
       walk: true,
+      lint: false,
       'build-dir': path.join(process.cwd(), pkg.paths.shifterbuild)
     };
     shifter.init(cfg, function () {
