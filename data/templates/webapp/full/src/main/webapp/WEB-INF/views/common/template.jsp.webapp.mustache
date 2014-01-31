@@ -3,8 +3,10 @@
 <%@ taglib uri="http://tiles.apache.org/tags-tiles-extras" prefix="tilesx"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <%@ taglib uri="http://www.springframework.org/tags" prefix="s"%>
 <%@ taglib uri="http://wellsfargo.com/wt2" prefix="wt2"%>
+<jsp:useBean id="date" class="java.util.Date" />
 
 <wt2:page title="{{appName}}-{{appVersion}}">
 
@@ -22,6 +24,8 @@
 
   <wt2:appnav-main>
     <tiles:insertAttribute name="body" defaultValue="" />
+    <fmt:formatDate value="${date}" pattern="yyyy" var="currentYear" />
+      <wt2:footer srcNode="{{appName}}-footer" beginYear="2000" endYear="${currentYear}"></wt2:footer>
   </wt2:appnav-main>
 
 </wt2:page>
