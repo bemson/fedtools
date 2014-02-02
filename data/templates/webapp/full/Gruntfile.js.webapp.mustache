@@ -35,11 +35,7 @@ module.exports = function (grunt) {
     pkg: grunt.file.readJSON('package.json'),
 
     clean: ['<%=pkg.paths.shifterbuild%>', '<%=pkg.paths.build%>'],
-    /**
-     * TODO: This is a palceholder task for the 'fedtools' linter task.
-     * Currently, this task is checking all src and test src js files and
-     * the Grunt build file.
-     */
+
     jshint: {
       options: {
         'bitwise': true,
@@ -169,14 +165,7 @@ module.exports = function (grunt) {
         }
       }
     },
-    /**
-     * TODO: This is a placeholder for the 'fedtools' concatination task.
-     * Currently this task is treating each directory under the src/main/js
-     * directory as a module, and will procide a concatinated version of
-     * all js files within the 'module' directory.
-     *
-     * This approach is not robust/flexible, but works for demo.
-     */
+
     concat: {
       options: {
         stripBanners: true,
@@ -289,6 +278,7 @@ module.exports = function (grunt) {
       cwd: path.join(process.cwd(), pkg.paths.flows),
       walk: true,
       lint: false,
+      csslint: false,
       'build-dir': path.join(process.cwd(), pkg.paths.shifterbuild)
     };
     shifter.init(cfg, function () {
