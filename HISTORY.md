@@ -335,3 +335,17 @@ Release 0.0.44
 * [ Arno V ] Relaxing jshint requirements for single vs double quotes
 * [ Arno V ] Relaxing Jshint for single vs double quotes: now it&#39;s only checking for mixed
 * [ Arno V ] Small update for App bootstrap (remove extra navigation for basic flow)
+
+##Release 0.0.79 ~ Feb 02 2014 14:12
+* [ Arno V ] Moving from commanderjs to optimist
+* [ Arno V ] Typo fix
+* [ Arno V ] webapp: Gruntfile cleanup
+* [ Arno V ] webapp: adding wf2-footer to main template
+* [ Arno V ] webapp: bypass shifter lint
+* [ Arno V ] WAR: sending more error email notifications
+* [ Arno V ] webapp: automatically generates lang&#x2F;flow.js from lang&#x2F;flow_en.js
+* [ Arno V ] webapp: producing prod ready js files if needed
+* [ Arno V ] webapp: adding lang support on the js side
+* [ Arno V ] app: fix incorrect name spacing for code css
+* [ Arno V ] app: update to latest jetty plugin
+* [ Arno V ] app: add extra comment to tell &#39;do not modify, automatically generated file...&#39;
