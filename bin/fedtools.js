@@ -2,8 +2,7 @@
 
 /*jshint node:true, unused:true*/
 
-var program = require('commander'),
-  fs = require('fs'),
+var fs = require('fs'),
   path = require('path'),
   log = require('fedtools-logs'),
 
@@ -11,12 +10,15 @@ var program = require('commander'),
   app = require('../lib/app-bootstrap'),
   utilities = require('../lib/utilities'),
 
+  program,
+  argv,
   debug = false,
   remote = false,
   command = '',
   packageFileJson = JSON.parse(fs.readFileSync(path.join(__dirname, '../package.json'), 'utf8')),
   pkgVersion = packageFileJson.version,
   pkgConfig = packageFileJson.config,
+  pkgName = packageFileJson.name,
 
   commandList = [],
   fedToolsCommands = {
@@ -27,6 +29,9 @@ var program = require('commander'),
     'ai': {
       'full': 'app-init',
       'description': 'Generates a full webapp skeleton from scratch.'
+    },
+    'bump': {
+      'description': 'Update the version of the WF-RIA2 framework in all the files (pom.xml, shifter, etc)'
     },
     'war': {
       'full': 'wria2-war',
@@ -73,23 +78,7 @@ for (var prop in fedToolsCommands) {
 }
 commandList.sort();
 
-program
-  .version(pkgVersion)
-  .usage('[options] ' + commandList.join('|'))
-  .option('-b, --boring', 'do not use color output')
-  .option('-d, --debug', 'display extra information')
-  .option('-r, --remote', 'flag to indicate if running remotely')
-  .option('-e, --email [email]', 'email - if provided, will not be prompted')
-  .option('-u, --username [name]', 'username - if provided, will not be prompted')
-  .option('-w, --wria-branch [branch]', 'branch - if provided, will not be prompted')
-  .option('-y, --yui-branch [branch]', 'wf2-yui3 branch - if provided, will not be prompted')
-  .option('-S, --status-job', 'if remote, print the status of the jenkins WAR jobs')
-  .option('-A, --add-job', 'if remote, add a jenkins WAR job to the queue')
-  .option('-R, --remove-job', 'if remote, remove a jenkins WAR job from the queue')
-  .option('-P, --process-job', 'if remote, execute the oldest WAR job from the queue');
-
-
-program.on('--help', function () {
+function showParametersHelp() {
   console.log('  Parameters:');
 
   var cmdtmp, cmdtmplen, cmdt, cmdl, cmdd, cmddlen, i, j,
@@ -106,7 +95,11 @@ program.on('--help', function () {
     cmdl = fedToolsCommands[commandList[i]].full;
     cmdd = fedToolsCommands[commandList[i]].description;
 
-    cmdtmp = CMD_PRE_BUFFER + cmdt + ' (' + cmdl + ')';
+    if (cmdl) {
+      cmdtmp = CMD_PRE_BUFFER + cmdt + ' (' + cmdl + ')';
+    } else {
+      cmdtmp = CMD_PRE_BUFFER + cmdt;
+    }
     cmdtmplen = cmdtmp.length;
     cmddlen = cmdd.length;
 
@@ -120,13 +113,40 @@ program.on('--help', function () {
     }
     console.log(new Array(CMD_MAX_LEN + CMD_DESC_MAX + 1).join('─'));
   }
-});
+}
 
-program.parse(process.argv);
+function displayHelp() {
+  console.log(argv.help());
+  showParametersHelp();
+  process.exit(0);
+}
+
+argv = require('optimist')
+  .usage('\nUsage: ' + pkgName + ' [options] ' + commandList.join('|'))
+  .alias('h', 'help')
+  .describe('h', 'output usage information')
+  .alias('v', 'version')
+  .describe('v', 'output the version number')
+  .alias('b', 'boring')
+  .describe('b', 'do not use color output')
+  .alias('d', 'debug')
+  .describe('d', 'display extra information')
+  .boolean(['b', 'd', 'V', 'v', 'h']);
+
+program = argv.argv;
 
 /*******************/
 /* Parsing options */
 /*******************/
+if (program.help) {
+  displayHelp();
+}
+
+if (program.version || program.V) {
+  console.log(pkgVersion);
+  process.exit(0);
+}
+
 if (program.boring) {
   log.setBoring();
 }
@@ -135,15 +155,34 @@ if (program.debug) {
   debug = true;
 }
 
-if (program.remote) {
+/**************************/
+/* Parsing hidden options */
+/**************************/
+if (program.r || program.remote) {
   remote = true;
   log.setRemote();
 }
 
-if (program.args.length !== 1) {
-  program.help();
+// Other hidden options for remote action (building a WAR file).
+// These options are hidden because users should not use them.
+// They are only intended for the remote fedtools job that runs on
+// the Jenkins server.
+// -e [email]       The email where notifications should be sent
+// -u [username]    The username (fork) of the repository to extract
+// -w [wria-branch] The WF-RIA2 branch to build
+// -y [yui-branch]  The YUI3 branch to use for the build
+// -S               Prints the status of all current WAR jobs
+// -A               Adds a jenkins WAR job to the queue
+// -R               Removes a jenkins WAR job from the queue
+// -P               Runs the oldest WAR job from the queue if no other is running
+
+/********************/
+/* Parsing comamnds */
+/********************/
+if (program._.length === 0 || program._.length > 1) {
+  displayHelp();
 } else {
-  command = program.args[0];
+  command = program._[0];
 }
 
 /*******************/
@@ -178,14 +217,14 @@ case 'wria2-bump':
 case 'bump':
 case 'wbp': // hidden menu
   log.echo();
-  utilities.wria2bump(program.debug, function () {});
+  utilities.wria2bump(debug, function () {});
   break;
 
 case 'wria2-selleck':
 case 'wria2-sel':
 case 'wss': // hidden menu
   log.echo();
-  build.run(program.debug, {
+  build.run(debug, {
     type: build.TYPE_SERVER,
     server: build.SERVER_TYPE_SELLECK
   }, function () {});
@@ -194,7 +233,7 @@ case 'wss': // hidden menu
 case 'wria2-api':
 case 'wa': // hidden menu
   log.echo();
-  build.run(program.debug, {
+  build.run(debug, {
     type: build.TYPE_SERVER,
     server: build.SERVER_TYPE_YUIDOC
   }, function () {});
@@ -203,7 +242,7 @@ case 'wa': // hidden menu
 case 'wria2-soy':
 case 'ws': // hidden menu
   log.echo();
-  build.run(program.debug, {
+  build.run(debug, {
     cwd: process.cwd(),
     prompt: true,
     type: build.TYPE_SOY
@@ -217,7 +256,7 @@ case 'ws': // hidden menu
 case 'wria2-watch':
 case 'ww': // hidden menu
   log.echo();
-  build.run(program.debug, {
+  build.run(debug, {
     cwd: process.cwd(),
     prompt: true,
     type: build.TYPE_WATCH
@@ -232,16 +271,16 @@ case 'wria2-war':
 case 'war': // hidden menu
   utilities.timeTracker('start');
   log.echo();
-  build.run(program.debug, {
+  build.run(debug, {
     remote: remote,
-    username: program.username,
-    useremail: program.email,
-    wriaBranch: program.wriaBranch,
-    yuiBranch: program.yuiBranch,
-    statusJob: program.statusJob,
-    addJob: program.addJob,
-    removeJob: program.removeJob,
-    processJob: program.processJob,
+    username: program.u,
+    useremail: program.e,
+    wriaBranch: program.w,
+    yuiBranch: program.y,
+    statusJob: program.S,
+    addJob: program.A,
+    removeJob: program.R,
+    processJob: program.P,
     pkgConfig: pkgConfig,
     cwd: process.cwd(),
     prompt: true,
@@ -264,7 +303,7 @@ case 'wria2-build':
 case 'wb': // hidden menu
   utilities.timeTracker('start');
   log.echo();
-  build.run(program.debug, {
+  build.run(debug, {
     cwd: process.cwd(),
     prompt: true,
     type: build.TYPE_BUILD
@@ -282,7 +321,7 @@ case 'wb': // hidden menu
 case 'wria2-init':
 case 'wi': // hidden menu
   log.echo();
-  require('../lib/wria2-bootstrap').run(program.debug, pkgConfig, function (err) {
+  require('../lib/wria2-bootstrap').run(debug, pkgConfig, function (err) {
     if (err) {
       log.error(err);
     }
@@ -293,7 +332,7 @@ case 'wi': // hidden menu
 case 'wria2-yui3':
 case 'wy': // hidden menu
   log.echo();
-  require('../lib/yui3-utils').run(program.debug, pkgConfig, {}, function (err) {
+  require('../lib/yui3-utils').run(debug, pkgConfig, {}, function (err) {
     if (err) {
       log.error(err);
     }
@@ -315,6 +354,6 @@ case 'wt':
   break;
 
 default:
-  program.help();
+  displayHelp();
   break;
 }

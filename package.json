@@ -26,7 +26,6 @@
   "dependencies": {
     "async": "~0.2.9",
     "cli-color": "~0.2.3",
-    "commander": "~2.0.0",
     "fedtools-commands": "*",
     "fedtools-logs": "*",
     "findit": "~1.1.0",
@@ -37,6 +36,7 @@
     "nodemailer": "~0.6.0",
     "ncp": "~0.4.2",
     "osenv": "~0.0.3",
+    "optimist": "~0.6.0",
     "path": "~0.4.9",
     "promptly": "~0.2.0",
     "rimraf": "~2.2.2",
