@@ -1,4 +1,4 @@
-YUI().use('wf2-app-nav', function (Y) {
+YUI().use('wf2-app-nav','wf2-footer', 'wf2-session-manager', function (Y) {
 
   var appNav = new Y.WF2.AppNav({
     srcNode: '#app-nav-container'
@@ -6,6 +6,10 @@ YUI().use('wf2-app-nav', function (Y) {
     footer = new Y.WF2.Footer({
       srcNode: '#{{appName}}-footer'
     });
+
+  Y.WF2.SessionManager.getManager({
+    pingUrl: '/{{appName}}-{{appVersion}}/ping.do'
+  });
 
   appNav.render('#app-nav');
   footer.render();
