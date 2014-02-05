@@ -35,7 +35,19 @@ module.exports = function (grunt) {
     pkg: grunt.file.readJSON('package.json'),
 
     clean: ['<%=pkg.paths.shifterbuild%>', '<%=pkg.paths.build%>'],
-
+    notify: {
+      build: {
+        options: {
+          title: 'build',
+          message: 'task complete'
+        }
+      },
+      jshint: {
+        options: {
+          title: 'jshint'
+        }
+      }
+    },
     jshint: {
       options: {
         'bitwise': true,
@@ -265,6 +277,8 @@ module.exports = function (grunt) {
     grunt.task.run('fedtools-debug');
     grunt.task.run('compass');
     grunt.task.run('cssmin');
+    grunt.task.run('notify:build'); // display success
+    grunt.task.run('notify_hooks'); // display errors
   });
 
   grunt.registerTask('fedtools-shifter', 'Running shifter build ', function () {
