@@ -349,3 +349,11 @@ Release 0.0.44
 * [ Arno V ] app: fix incorrect name spacing for code css
 * [ Arno V ] app: update to latest jetty plugin
 * [ Arno V ] app: add extra comment to tell &#39;do not modify, automatically generated file...&#39;
+
+##Release 0.0.82 ~ Feb 09 2014 10:55
+* [ Arno V ] Attaching logs to war builds - fixes issue #23
+* [ Arno V ] war: adding log file output
+* [ Arno V ] Update content
+* [ Arno V ] webapp: adding notification system for build system
+* [ Arno V ] fixing session manager ping url
+* [ Arno V ] webapp: adding session manager to common pages
