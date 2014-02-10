@@ -357,3 +357,8 @@ Release 0.0.44
 * [ Arno V ] webapp: adding notification system for build system
 * [ Arno V ] fixing session manager ping url
 * [ Arno V ] webapp: adding session manager to common pages
+
+##Release 0.0.83 ~ Feb 10 2014 15:31
+* [ Arno V ] build: adding &#39;wf2&#39; module special build - if needed
+* [ Arno V ] war: Add upload url to success message for war build - fixes issue #24
+* [ Arno V ] WAR: replacing &#39;custom-&#39; with git short sha as a unique identifier
