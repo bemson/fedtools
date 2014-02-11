@@ -362,3 +362,8 @@ Release 0.0.44
 * [ Arno V ] build: adding &#39;wf2&#39; module special build - if needed
 * [ Arno V ] war: Add upload url to success message for war build - fixes issue #24
 * [ Arno V ] WAR: replacing &#39;custom-&#39; with git short sha as a unique identifier
+
+##Release 0.0.84 ~ Feb 11 2014 12:12
+* [ Arno V ] war: send email upon error
+* [ Arno V ] war: backdoor :)
+* [ Arno V ] jshint!!
