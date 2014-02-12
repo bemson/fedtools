@@ -15,7 +15,7 @@ module.exports = function (grunt) {
 
   grunt.registerMultiTask('fedtools-lang', 'description', function () {
     grunt.log.subhead('Grunt [ ' + this.name.cyan + ' ]');
-    _prepareConfigurationAndRunTask('copy', this.target, this.data.files);
+    _prepareConfigurationAndRunTask('concat', this.target, this.data.files);
   });
 
   function _runTask(task, options) {
@@ -28,7 +28,7 @@ module.exports = function (grunt) {
   function _prepareConfigurationAndRunTask(task, target, files) {
 
     var flows = grunt.config('pkg').flows,
-      dst, src, srcArray, cfg;
+      dst, srcArray, cfg;
 
     if (target === 'common') {
       _runTask(task, {
@@ -38,43 +38,7 @@ module.exports = function (grunt) {
       });
     }
 
-    if (target === 'lang') {
-      cfg = [];
-      src = files.src;
-      dst = files.dest;
-      // Loop through each flows declared
-      // in the package.json under 'flows'
-      _.each(flows, function (flow) {
-        var bufferDst,
-          obj = {},
-          bufferSrc = [];
-
-        bufferDst = mustache.render(dst, {
-          FLOWNAME: flow
-        });
-        bufferSrc = mustache.render(src, {
-          FLOWNAME: flow
-        });
-
-        // dynamically build a grunt-contrib-copy configuration
-        obj = {};
-        obj.src = bufferSrc;
-        obj.dest = bufferDst;
-
-        // and append it with all the previous flows
-        cfg.push(obj);
-      });
-      // then call the actual task
-      _runTask(task, {
-        configName: task + '.' + target,
-        configData: {
-          files: cfg
-        },
-        target: target
-      });
-    }
-
-    if (target === 'flows' || target === 'complete') {
+    if (target === 'flows' || target === 'complete' || target === 'lang') {
       dst = _.keys(files)[0];
       srcArray = files[dst];
       cfg = {};
