@@ -24,6 +24,7 @@
   },
   "preferGlobal": true,
   "dependencies": {
+    "salt": "~0.5",
     "async": "~0.2.9",
     "cli-color": "~0.2.3",
     "fedtools-commands": "*",
