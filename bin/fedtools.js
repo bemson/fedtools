@@ -683,7 +683,7 @@ var master = new Salt({
   },
 
   _out: function () {
-    var code = this.data.err || 0;
+    var code = this.data.err;
     process.exit(code);
   }
 
