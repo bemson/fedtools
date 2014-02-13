@@ -12,11 +12,8 @@ var
   app = require('../lib/app-bootstrap'),
   utilities = require('../lib/utilities'),
 
-  program,
-  argv,
   debug = false,
   remote = false,
-  command = '',
   packageFileJson = JSON.parse(fs.readFileSync(path.join(__dirname, '../package.json'), 'utf8')),
   pkgVersion = packageFileJson.version,
   pkgConfig = packageFileJson.config,
@@ -71,13 +68,69 @@ var
       'full': 'wria2-mod',
       'description': 'Create a new module (skeleton code, including unit tests and documentation).'
     }
-  };
+  },
+  commandList = Object.keys(fedToolsCommands),
+  baseCommandBranch = {
 
-for (var prop in fedToolsCommands) {
-  if (fedToolsCommands.hasOwnProperty(prop) && prop) {
-    commandList.push(prop);
-  }
-}
+    _root: true,
+
+    _data: {
+      logTime: true,
+      exitCode: 0,
+      isAsync: true
+    },
+
+    _in: function () {
+      log.echo();
+    },
+
+    _on: function () {
+      var salt = this;
+      // invoke action and pass callback
+      salt.get('action', salt.callbacks('/result'));
+    },
+
+    // will compile as "//run/command/<command-name>/action/"
+    action: {
+
+      _in: function () {
+        utilities.timeTracker('start');
+      },
+
+      // "_on" will come from the branch copying this template
+
+      _out: function () {
+        var salt = this;
+
+        if (salt.data.isAsync) {
+          // don't exit until directed elsewhere
+          // like the callback, passed to "action"
+          this.wait();
+        }
+      }
+
+    },
+
+    // will compile as "//run/command/<command-name>/result/"
+    result: function (err) {
+      var data = this.data;
+
+      if (err && err !== -1) {
+        log.echo(err);
+      }
+
+      if (data.logTime) {
+        utilities.timeTracker('stop');
+      }
+
+      // copy action-result as error code
+      data.err = data.exitCode;
+
+      log.echo();
+    }
+
+   };
+
 commandList.sort();
 
 // Other hidden options for remote action (building a WAR file).
@@ -93,221 +146,442 @@ commandList.sort();
 // -R               Removes a jenkins WAR job from the queue
 // -P               Runs the oldest WAR job from the queue if no other is running
 
-var commandSrc = {
-  _in: function () {
-    log.echo();
-  }
-};
-
 var master = new Salt({
 
   // destroy these on exit
-  _data: {
-    // default key/values
-    err: 0
-  },
+  _data: [
+    'program',
+    'stdin',
+    // objects set default key/values
+    {
+      err: 0
+    }
+  ],
 
   // exit when done navigating
   _tail: '..//',
 
-  // redirect to "//command/run/"
-  _on: 'command/run',
+  // route to "//run/command/"
+  _on: 'run/command',
 
-  //command/
-  command: {
+  //parse/
+  parse: {
 
-    // destroys these on exit
-    _data: ['program', 'stdin'],
+    // this captures when salt bypasses this state
+    _over: '@self',
 
-    //command/parse/
-    parse: {
+    _in: function () {
 
-      // dont skip me
-      _over: '@self',
+      var data = this.data,
+        stdin = require('optimist')
+          .usage('\nUsage: ' + pkgName + ' [options] ' + commandList.join('|'))
+          .alias('h', 'help')
+          .describe('h', 'output usage information')
+          .alias('v', 'version')
+          .describe('v', 'output the version number')
+          .alias('b', 'boring')
+          .describe('b', 'do not use color output')
+          .alias('d', 'debug')
+          .describe('d', 'display extra information')
+          .boolean(['b', 'd', 'V', 'v', 'h']);
 
-      _in: function () {
+      data.stdin = stdin;
+      data.program = stdin.argv;
 
-        var data = this.data,
-          stdin = require('optimist')
-            .usage('\nUsage: ' + pkgName + ' [options] ' + commandList.join('|'))
-            .alias('h', 'help')
-            .describe('h', 'output usage information')
-            .alias('v', 'version')
-            .describe('v', 'output the version number')
-            .alias('b', 'boring')
-            .describe('b', 'do not use color output')
-            .alias('d', 'debug')
-            .describe('d', 'display extra information')
-            .boolean(['b', 'd', 'V', 'v', 'h']);
+      // ensure "V" matches "v"
+      data.program.V = data.program.v;
+    },
 
-        data.stdin = stdin;
-        data.program = stdin.argv;
-        // console.log(data.program);
-        // this.get(0);
+    _on: function () {
+      var salt = this,
+        program = salt.data.program;
+
+      // route options from lowest to highest priority
+      // this is because `.go()` *prepends* navigation targets
+
+      if (program.boring) {
+        salt.go('option/boring');
+      }
+
+      if (program.remote || program.r) {
+        salt.go('option/remote');
+      }
+
+      if (program.debug) {
+        salt.go('option/debug');
+      }
+
+      if (program.help) {
+        salt.go('option/help');
+      }
+
+      if (program.version || program.V || program.v) {
+        salt.go('option/version');
+      }
+
+    },
+
+    //parse/option/
+    option: {
+
+      //parse/option/help/
+      help: {
+
+        // clear existing waypoints and set new navigation destination
+        _in: '>@self',
+
+        // route to command/help
+        _on: '//run/help'
+
       },
+
+      //parse/option/version/
+      version: {
+
+        // use state as a branch template
+        _import: '//parse/option/help/',
+
+        _on: function () {
+          console.log(pkgVersion);
+        }
+
+      },
+
+      //parse/option/boring/
+      boring: function () {
+        log.setBoring();
+      },
+
+      //parse/option/debug/
+      debug: function () {
+        debug = true;
+      },
+
+      //parse/option/remote/
+      remote: function () {
+        remote = true;
+        log.setRemote();
+      }
+
+    }
+
+  },
+
+  //run/
+  run: {
+
+    //run/command/
+    command: {
 
       _on: function () {
         var salt = this,
-          program = salt.data.program;
+          program = salt.data.program,
+          cmd = program._.length < 2 && program._[0];
 
-        // route options from lowest to highest priority
-        // this is because `.go()` *prepends* navigation targets
-
-        if (program.boring) {
-          salt.go('option/boring');
+        // only run known command
+        if (salt.query(cmd)) {
+          salt.go(cmd);
+        } else {
+          // else show help
+          salt.go('../help');
         }
+      },
 
-        if (program.remote || program.r) {
-          salt.go('option/remote');
-        }
+      //run/command/app-flow
+      'app-flow': {
 
-        if (program.debug) {
-          salt.go('option/debug');
-        }
+        // use object as a branch template
+        _import: baseCommandBranch,
 
-        if (program.help) {
-          salt.go('option/help');
-        }
-
-        if (program.version || program.V) {
-          salt.go('option/version');
+        //run/command/app-flow/action/
+        action: function (done) {
+          app.run(app.TYPE_FLOW, done);
         }
 
       },
 
-      //command/parse/option/
-      option: {
+      //run/command/af/
+      af: {
 
-        //command/parse/option/help/
-        help: {
+        // routes to previous sibling
+        _on: '@previous'
 
-          // clear existing waypoints and set new navigation destination
-          _in: '>@self',
+      },
 
-          // redirect to command/help
-          _on: '//command/help'
+      //run/command/app-init/
+      'app-init': {
 
+        // use object as a branch template
+        _import: baseCommandBranch,
+
+        //run/command/app-init/action/
+        action: function (done) {
+          app.run(app.TYPE_APP, done);
+        }
+
+      },
+
+      //run/command/ai/
+        // this short-form imports "//run/command/af/"
+      ai: '//run/command/af/',
+
+      //run/command/wria2-bump/
+      'wria2-bump': {
+
+        // use object as a branch template
+        _import: baseCommandBranch,
+
+        //run/command/wria2-bump/action/
+        action: function (done) {
+          utilities.wria2bump(debug, done);
+        }
+
+      },
+
+      //run/command/bump/
+        // this short-form imports "//run/command/af/"
+      bump: '//run/command/af/',
+
+      //run/command/wbp/
+        // this short-form imports "//run/command/af/"
+      wbp: '//run/command/af/',
+
+      //run/command/wria2-selleck/
+      'wria2-selleck': {
+
+        // use object as a branch template
+        _import: baseCommandBranch,
+
+        //run/command/wria2-selleck/action/
+        action: function (done) {
+          build.run(debug, {
+            type: build.TYPE_SERVER,
+            server: build.SERVER_TYPE_SELLECK
+          }, done);
+        }
+
+      },
+
+      //run/command/wria2-sel/
+        // this short-form imports "//run/command/af/"
+      'wria2-sel': '//run/command/af/',
+
+      //run/command/wss/
+        // this short-form imports "//run/command/af/"
+      wss: '//run/command/af/',
+
+      //run/command/wria2-api/
+      'wria2-api': {
+
+        // use object as a branch template
+        _import: baseCommandBranch,
+
+        //run/command/wria2-api/action/
+        action: function (done) {
+          build.run(debug, {
+            type: build.TYPE_SERVER,
+            server: build.SERVER_TYPE_YUIDOC
+          }, done);
+        }
+
+      },
+
+      //run/command/wa/
+        // this short-form imports "//run/command/af/"
+      wa: '//run/command/af/',
+
+      //run/command/wria2-soy
+      'wria2-soy': {
+
+        // use object as a branch template
+        _import: baseCommandBranch,
+
+        //run/command/wria2-soy/action/
+        action: function(done) {
+          build.run(debug, {
+            cwd: process.cwd(),
+            prompt: true,
+            type: build.TYPE_SOY
+          }, done);
+        }
+      },
+
+      //run/command/ws/
+        // this short-form imports "//run/command/af/"
+      ws: '//run/command/af/',
+
+      //run/command/wria2-watch
+      'wria2-watch': {
+
+        // use object as a branch template
+        _import: baseCommandBranch,
+
+        //run/command/wria2-watch/action/
+        action: function(done) {
+          build.run(debug, {
+            cwd: process.cwd(),
+            prompt: true,
+            type: build.TYPE_SOY
+          }, done);
+        }
+
+      },
+
+      //run/command/ww/
+        // this short-form imports "//run/command/af/"
+      ww: '//run/command/af/',
+
+      //run/command/wria2-war
+      'wria2-war': {
+
+        // use object as a branch template
+        _import: baseCommandBranch,
+
+        //run/command/wria2-war/action/
+        action: function(done) {
+          var program = this.data.program;
+
+          build.run(debug, {
+            remote: remote,
+            username: program.u,
+            useremail: program.e,
+            wriaBranch: program.w,
+            yuiBranch: program.y,
+            statusJob: program.S,
+            addJob: program.A,
+            removeJob: program.R,
+            processJob: program.P,
+            pkgConfig: pkgConfig,
+            cwd: process.cwd(),
+            prompt: true,
+            type: build.TYPE_WAR
+          }, done);
         },
 
-        //command/parse/option/version/
-        version: {
+        //run/command/wria2-war/result
+        result: {
 
-          // use this state as a template
-          _import: '//command/parse/option/help/',
+          _in: function () {
+            var salt = this,
+              data = salt.data,
+              errArg = salt.args[0];
 
-          _on: function () {
-            console.log(pkgVersion);
+            if (errArg && errArg !== -1) {
+              // set exit code
+              data.exitCode = 127;
+            }
+            if (!remote && !errArg) {
+              // ignore timer since we've errored out
+              data.ignoreTimer = true;
+            }
           }
 
-        },
+        }
 
-        //command/parse/option/boring/
-        boring: function () {
-          log.setBoring();
-        },
+      },
 
-        //command/parse/option/debug/
-        debug: function () {
-          debug = true;
-        },
+      //run/command/war/
+        // this short-form imports "//run/command/af/"
+      war: '//run/command/af/',
 
-        //command/parse/option/remote/
-        remote: function () {
-          remote = true;
-          log.setRemote();
+      //run/command/wria2-build/
+      'wria2-build': {
+
+        // use object as a branch template
+        _import: baseCommandBranch,
+
+        //run/command/wria2-build/action/
+        action: function (done) {
+          build.run(debug, {
+            cwd: process.cwd(),
+            prompt: true,
+            type: build.TYPE_BUILD
+          }, done);
+        }
+
+      },
+
+      //run/command/wb/
+        // this short-form imports "//run/command/af/"
+      wb: '//run/command/af/',
+
+      //run/command/wria2-init
+      'wria2-init': {
+
+        // use object as a branch template
+        _import: baseCommandBranch,
+
+        //run/command/wria2-init/action/
+        action: function (done) {
+          require('../lib/wria2-bootstrap').run(debug, pkgConfig, done);
+        }
+
+      },
+
+      //run/command/wi/
+        // this short-form imports "//run/command/af/"
+      wi: '//run/command/af/',
+
+      //run/command/wria2-yui3
+      'wria2-yui3': {
+
+        // use object as a branch template
+        _import: baseCommandBranch,
+
+        //run/command/wria2-yui3/action/
+        action: function (done) {
+          require('../lib/yui3-utils').run(debug, pkgConfig, {}, done);
+        }
+
+      },
+
+      //run/command/wy/
+        // this short-form imports "//run/command/af/"
+      wy: '//run/command/af/',
+
+      //run/command/wria2-mod
+      'wria2-mod': {
+
+        // use object as a branch template
+        _import: baseCommandBranch,
+
+        //run/command/wria2-mod/action/
+        action: function (done) {
+          require('../lib/yui3-utils').run(debug, pkgConfig, {}, done);
+        }
+
+      },
+
+      //run/command/wm/
+        // this short-form imports "//run/command/af/"
+      wm: '//run/command/af/',
+
+      //run/command/wt
+      wt: {
+
+        // use object as a branch template
+        _import: baseCommandBranch,
+
+        //run/command/wt/action/
+        action: function () {
+          log.blue('==> this is a b-b-blue test ');
+          log.yellow('==> this is a y-y-yellow test ');
+
+          // flag that this command is not blocking
+          this.data.isAsync = false;
         }
 
       }
 
     },
 
-    //command/run/
-    run: {
-
-      // make local root
-      _root: true,
-
-      _on: function () {
-        var salt = this,
-          program = salt.data.program,
-          command = program._.length < 2 && program._[0];
-
-        if (salt.query(command)) {
-
-          // run (known) command
-          salt.go(command);
-
-        } else {
-
-          // else show help
-          salt.go('../help');
-
-        }
-      },
-
-      //command/run/app-flow
-      'app-flow': {
-
-        // use this object as a branch template
-        _import: commandSrc,
-
-        _on: function () {
-          var salt = this;
-
-          // pass callback that sends the result to "//command/result/" 
-          app.run(app.TYPE_FLOW, salt.callbacks('../result'));
-
-          // wait for callback, since this is asyncronous
-          salt.wait();
-        }
-
-      },
-
-      //command/run/af/
-      af: {
-
-        // redirects to previous sibling
-        _on: '@previous'
-
-      },
-
-      //command/run/app-init/
-      'app-init': {
-
-        // use this object as a branch template
-        _import: commandSrc,
-
-        _on: function () {
-          var salt = this;
-
-          utilities.timeTracker('start');
-
-          // pass callback that sends the result to "//command/result/" 
-          app.run(app.TYPE_APP, salt.callbacks('../result'));
-
-          // wait for callback, since this is asyncronous
-          salt.wait();
-        },
-
-        _out: function () {
-          var err = this.args[0];
-          if (err !== -1) {
-            utilities.timeTracker('stop');
-          }
-        }
-      },
-
-      //command/run/ai/
-      // short-form for importing //command/run/af/
-      ai: '//command/run/af/'
-
-    },
-
-    //commmand/help/
+    //run/help/
     help: {
+
       _in: function () {
         console.log(this.data.stdin.help());
       },
+
       _on: function () {
         console.log('  Parameters:');
 
@@ -345,13 +619,7 @@ var master = new Salt({
           console.log(new Array(CMD_MAX_LEN + CMD_DESC_MAX + 1).join('─'));
         }
       }
-    },
 
-    //command/result/
-    result: function (err) {
-      if (err && err !== -1) {
-        log.echo(err);
-      }
     }
 
   },
@@ -360,6 +628,7 @@ var master = new Salt({
     var code = this.data.err || 0;
     process.exit(code);
   }
+
 });
 
 master.go(1);
