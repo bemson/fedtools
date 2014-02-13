@@ -7,19 +7,10 @@ var
   fs = require('fs'),
   path = require('path'),
   log = require('fedtools-logs'),
-
   build = require('../lib/wria2-build'),
   app = require('../lib/app-bootstrap'),
   utilities = require('../lib/utilities'),
 
-  debug = false,
-  remote = false,
-  packageFileJson = JSON.parse(fs.readFileSync(path.join(__dirname, '../package.json'), 'utf8')),
-  pkgVersion = packageFileJson.version,
-  pkgConfig = packageFileJson.config,
-  pkgName = packageFileJson.name,
-
-  commandList = [],
   fedToolsCommands = {
     'af': {
       'full': 'app-flow',
@@ -72,9 +63,12 @@ var
   commandList = Object.keys(fedToolsCommands),
   baseCommandBranch = {
 
+    // defines local root for this branch
     _root: true,
 
+    // discard these keys on exit
     _data: {
+      // default key/values
       logTime: true,
       exitCode: 0,
       isAsync: true
@@ -152,17 +146,31 @@ var master = new Salt({
   _data: [
     'program',
     'stdin',
-    // objects set default key/values
+    'pkg',
+    // default key/values
     {
-      err: 0
+      err: 0,
+      remote: false,
+      debug: false
     }
   ],
 
-  // exit when done navigating
-  _tail: '..//',
+  _in: function () {
+    var packageFileJson = JSON.parse(fs.readFileSync(path.join(__dirname, '../package.json'), 'utf8'));
+
+    // set default pkg value
+    this.data.pkg = {
+      version: packageFileJson.version,
+      config: packageFileJson.config,
+      name: packageFileJson.name
+    };
+  },
 
   // route to "//run/command/"
   _on: 'run/command',
+
+  // exit when done navigating
+  _tail: '..//',
 
   //parse/
   parse: {
@@ -174,10 +182,12 @@ var master = new Salt({
 
       var data = this.data,
         stdin = require('optimist')
-          .usage('\nUsage: ' + pkgName + ' [options] ' + commandList.join('|'))
+          .usage('\nUsage: ' + data.pkg.name + ' [options] ' + commandList.join('|'))
           .alias('h', 'help')
           .describe('h', 'output usage information')
           .alias('v', 'version')
+          .alias('V', 'version')
+          // .describe('v', 'output the version number')
           .describe('v', 'output the version number')
           .alias('b', 'boring')
           .describe('b', 'do not use color output')
@@ -242,7 +252,7 @@ var master = new Salt({
         _import: '//parse/option/help/',
 
         _on: function () {
-          console.log(pkgVersion);
+          console.log(this.data.pkg.version);
         }
 
       },
@@ -254,12 +264,12 @@ var master = new Salt({
 
       //parse/option/debug/
       debug: function () {
-        debug = true;
+        this.data.debug = true;
       },
 
       //parse/option/remote/
       remote: function () {
-        remote = true;
+        this.data.remote = true;
         log.setRemote();
       }
 
@@ -333,7 +343,7 @@ var master = new Salt({
 
         //run/command/wria2-bump/action/
         action: function (done) {
-          utilities.wria2bump(debug, done);
+          utilities.wria2bump(this.data.debug, done);
         }
 
       },
@@ -354,7 +364,7 @@ var master = new Salt({
 
         //run/command/wria2-selleck/action/
         action: function (done) {
-          build.run(debug, {
+          build.run(this.data.debug, {
             type: build.TYPE_SERVER,
             server: build.SERVER_TYPE_SELLECK
           }, done);
@@ -378,7 +388,7 @@ var master = new Salt({
 
         //run/command/wria2-api/action/
         action: function (done) {
-          build.run(debug, {
+          build.run(this.data.debug, {
             type: build.TYPE_SERVER,
             server: build.SERVER_TYPE_YUIDOC
           }, done);
@@ -398,7 +408,7 @@ var master = new Salt({
 
         //run/command/wria2-soy/action/
         action: function(done) {
-          build.run(debug, {
+          build.run(this.data.debug, {
             cwd: process.cwd(),
             prompt: true,
             type: build.TYPE_SOY
@@ -418,7 +428,7 @@ var master = new Salt({
 
         //run/command/wria2-watch/action/
         action: function(done) {
-          build.run(debug, {
+          build.run(this.data.debug, {
             cwd: process.cwd(),
             prompt: true,
             type: build.TYPE_SOY
@@ -439,10 +449,11 @@ var master = new Salt({
 
         //run/command/wria2-war/action/
         action: function(done) {
-          var program = this.data.program;
+          var data = this.data,
+            program = data.program;
 
-          build.run(debug, {
-            remote: remote,
+          build.run(data.debug, {
+            remote: data.remote,
             username: program.u,
             useremail: program.e,
             wriaBranch: program.w,
@@ -451,7 +462,7 @@ var master = new Salt({
             addJob: program.A,
             removeJob: program.R,
             processJob: program.P,
-            pkgConfig: pkgConfig,
+            pkgConfig: data.pkg.config,
             cwd: process.cwd(),
             prompt: true,
             type: build.TYPE_WAR
@@ -470,7 +481,7 @@ var master = new Salt({
               // set exit code
               data.exitCode = 127;
             }
-            if (!remote && !errArg) {
+            if (!data.remote && !errArg) {
               // ignore timer since we've errored out
               data.ignoreTimer = true;
             }
@@ -492,7 +503,7 @@ var master = new Salt({
 
         //run/command/wria2-build/action/
         action: function (done) {
-          build.run(debug, {
+          build.run(this.data.debug, {
             cwd: process.cwd(),
             prompt: true,
             type: build.TYPE_BUILD
@@ -513,7 +524,9 @@ var master = new Salt({
 
         //run/command/wria2-init/action/
         action: function (done) {
-          require('../lib/wria2-bootstrap').run(debug, pkgConfig, done);
+          var data = this.data;
+
+          require('../lib/wria2-bootstrap').run(data.debug, data.pkg.config, done);
         }
 
       },
@@ -530,7 +543,9 @@ var master = new Salt({
 
         //run/command/wria2-yui3/action/
         action: function (done) {
-          require('../lib/yui3-utils').run(debug, pkgConfig, {}, done);
+          var data = this.data;
+
+          require('../lib/yui3-utils').run(data.debug, data.pkg.config, {}, done);
         }
 
       },
@@ -547,7 +562,9 @@ var master = new Salt({
 
         //run/command/wria2-mod/action/
         action: function (done) {
-          require('../lib/yui3-utils').run(debug, pkgConfig, {}, done);
+          var data = this.data;
+
+          require('../lib/yui3-utils').run(data.debug, data.pkg.config, {}, done);
         }
 
       },
@@ -631,4 +648,5 @@ var master = new Salt({
 
 });
 
-master.go(1);
+// run master program
+master.go('@program');
