@@ -428,10 +428,15 @@ var master = new Salt({
 
         //run/command/wria2-watch/action/
         action: function(done) {
-          build.run(this.data.debug, {
+          var data = this.data;
+
+          // omit time for this action
+          data.logTime = false;
+
+          build.run(data.debug, {
             cwd: process.cwd(),
             prompt: true,
-            type: build.TYPE_SOY
+            type: build.TYPE_WATCH
           }, done);
         }
 
