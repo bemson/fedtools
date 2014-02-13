@@ -107,9 +107,10 @@ var
 
     // will compile as "//run/command/<command-name>/result/"
     result: function (err) {
-      var data = this.data;
+      var data = this.data,
+        isError = err && err !== -1;
 
-      if (err && err !== -1) {
+      if (isError) {
         log.echo(err);
       }
 
@@ -305,6 +306,9 @@ var master = new Salt({
 
         //run/command/app-flow/action/
         action: function (done) {
+          // omit time for this action
+          this.data.logTime = false;
+
           app.run(app.TYPE_FLOW, done);
         }
 
@@ -343,6 +347,9 @@ var master = new Salt({
 
         //run/command/wria2-bump/action/
         action: function (done) {
+          // omit time for this action
+          this.data.logTime = false;
+
           utilities.wria2bump(this.data.debug, done);
         }
 
@@ -368,6 +375,9 @@ var master = new Salt({
             type: build.TYPE_SERVER,
             server: build.SERVER_TYPE_SELLECK
           }, done);
+
+          // omit time for this action
+          this.data.logTime = false;
         }
 
       },
@@ -392,6 +402,9 @@ var master = new Salt({
             type: build.TYPE_SERVER,
             server: build.SERVER_TYPE_YUIDOC
           }, done);
+
+          // omit time for this action
+          this.data.logTime = false;
         }
 
       },
@@ -488,7 +501,7 @@ var master = new Salt({
             }
             if (!data.remote && !errArg) {
               // ignore timer since we've errored out
-              data.ignoreTimer = true;
+              data.logTime = false;
             }
           }
 
@@ -542,6 +555,9 @@ var master = new Salt({
         action: function (done) {
           var data = this.data;
 
+          // omit time for this action
+          data.logTime = false;
+
           require('../lib/wria2-bootstrap').run(data.debug, data.pkg.config, done);
         }
 
@@ -561,6 +577,9 @@ var master = new Salt({
         action: function (done) {
           var data = this.data;
 
+          // omit time for this action
+          data.logTime = false;
+
           require('../lib/yui3-utils').run(data.debug, data.pkg.config, {}, done);
         }
 
@@ -579,6 +598,9 @@ var master = new Salt({
         //run/command/wria2-mod/action/
         action: function (done) {
           var data = this.data;
+
+          // omit time for this action
+          data.logTime = false;
 
           require('../lib/yui3-utils').run(data.debug, data.pkg.config, {}, done);
         }
