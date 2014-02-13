@@ -513,6 +513,17 @@ var master = new Salt({
             prompt: true,
             type: build.TYPE_BUILD
           }, done);
+        },
+
+        result: {
+          _in: function () {
+            var salt = this;
+
+            if (!salt.args[0]) {
+              // ignore timer since we've errored
+              salt.data.logTime = false;
+            }
+          }
         }
 
       },
