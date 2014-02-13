@@ -2,7 +2,9 @@
 
 /*jshint node:true, unused:true*/
 
-var fs = require('fs'),
+var
+  Salt = require('salt'),
+  fs = require('fs'),
   path = require('path'),
   log = require('fedtools-logs'),
 
@@ -78,91 +80,6 @@ for (var prop in fedToolsCommands) {
 }
 commandList.sort();
 
-function showParametersHelp() {
-  console.log('  Parameters:');
-
-  var cmdtmp, cmdtmplen, cmdt, cmdl, cmdd, cmddlen, i, j,
-    len = commandList.length,
-    descArray, descArrayLen,
-    buffer = '',
-    CMD_PRE_BUFFER = '    ',
-    CMD_MAX_LEN = 22,
-    CMD_DESC_MAX = 50;
-  console.log(new Array(CMD_MAX_LEN + CMD_DESC_MAX + 1).join('─'));
-
-  for (i = 0; i < len; i += 1) {
-    cmdt = commandList[i];
-    cmdl = fedToolsCommands[commandList[i]].full;
-    cmdd = fedToolsCommands[commandList[i]].description;
-
-    if (cmdl) {
-      cmdtmp = CMD_PRE_BUFFER + cmdt + ' (' + cmdl + ')';
-    } else {
-      cmdtmp = CMD_PRE_BUFFER + cmdt;
-    }
-    cmdtmplen = cmdtmp.length;
-    cmddlen = cmdd.length;
-
-    buffer = cmdtmp + new Array(CMD_MAX_LEN - cmdtmplen + 1).join(' ');
-    descArray = utilities.wordWrap(cmdd, CMD_DESC_MAX);
-
-    console.log(log.strToColor('cyan', buffer) + descArray[0]);
-    descArrayLen = descArray.length;
-    for (j = 1; j < descArrayLen; j += 1) {
-      console.log(new Array(CMD_MAX_LEN + 1).join(' ') + descArray[j]);
-    }
-    console.log(new Array(CMD_MAX_LEN + CMD_DESC_MAX + 1).join('─'));
-  }
-}
-
-function displayHelp() {
-  console.log(argv.help());
-  showParametersHelp();
-  process.exit(0);
-}
-
-argv = require('optimist')
-  .usage('\nUsage: ' + pkgName + ' [options] ' + commandList.join('|'))
-  .alias('h', 'help')
-  .describe('h', 'output usage information')
-  .alias('v', 'version')
-  .describe('v', 'output the version number')
-  .alias('b', 'boring')
-  .describe('b', 'do not use color output')
-  .alias('d', 'debug')
-  .describe('d', 'display extra information')
-  .boolean(['b', 'd', 'V', 'v', 'h']);
-
-program = argv.argv;
-
-/*******************/
-/* Parsing options */
-/*******************/
-if (program.help) {
-  displayHelp();
-}
-
-if (program.version || program.V) {
-  console.log(pkgVersion);
-  process.exit(0);
-}
-
-if (program.boring) {
-  log.setBoring();
-}
-
-if (program.debug) {
-  debug = true;
-}
-
-/**************************/
-/* Parsing hidden options */
-/**************************/
-if (program.r || program.remote) {
-  remote = true;
-  log.setRemote();
-}
-
 // Other hidden options for remote action (building a WAR file).
 // These options are hidden because users should not use them.
 // They are only intended for the remote fedtools job that runs on
@@ -176,184 +93,273 @@ if (program.r || program.remote) {
 // -R               Removes a jenkins WAR job from the queue
 // -P               Runs the oldest WAR job from the queue if no other is running
 
-/********************/
-/* Parsing comamnds */
-/********************/
-if (program._.length === 0 || program._.length > 1) {
-  displayHelp();
-} else {
-  command = program._[0];
-}
+var commandSrc = {
+  _in: function () {
+    log.echo();
+  }
+};
 
-/*******************/
-/* Geronimo!       */
-/*******************/
-switch (command) {
-case 'app-flow':
-case 'af': // hidden menu
-  log.echo();
-  app.run(app.TYPE_FLOW, function (err) {
-    if (err && err !== -1) {
-      log.echo(err);
-    }
-  });
-  break;
+var master = new Salt({
 
-case 'app-init':
-case 'ai': // hidden menu
-  utilities.timeTracker('start');
-  log.echo();
-  app.run(app.TYPE_APP, function (err) {
-    if (err && err !== -1) {
-      log.echo(err);
-    }
-    if (err !== -1) {
-      utilities.timeTracker('stop');
-    }
-  });
-  break;
+  // destroy these on exit
+  _data: {
+    // default key/values
+    err: 0
+  },
 
-case 'wria2-bump':
-case 'bump':
-case 'wbp': // hidden menu
-  log.echo();
-  utilities.wria2bump(debug, function () {});
-  break;
+  // exit when done navigating
+  _tail: '..//',
 
-case 'wria2-selleck':
-case 'wria2-sel':
-case 'wss': // hidden menu
-  log.echo();
-  build.run(debug, {
-    type: build.TYPE_SERVER,
-    server: build.SERVER_TYPE_SELLECK
-  }, function () {});
-  break;
+  // redirect to "//command/run/"
+  _on: 'command/run',
 
-case 'wria2-api':
-case 'wa': // hidden menu
-  log.echo();
-  build.run(debug, {
-    type: build.TYPE_SERVER,
-    server: build.SERVER_TYPE_YUIDOC
-  }, function () {});
-  break;
+  //command/
+  command: {
 
-case 'wria2-soy':
-case 'ws': // hidden menu
-  log.echo();
-  build.run(debug, {
-    cwd: process.cwd(),
-    prompt: true,
-    type: build.TYPE_SOY
-  }, function (err) {
-    if (err && err !== -1) {
-      log.echo(err);
-    }
-  });
-  break;
+    // destroys these on exit
+    _data: ['program', 'stdin'],
 
-case 'wria2-watch':
-case 'ww': // hidden menu
-  log.echo();
-  build.run(debug, {
-    cwd: process.cwd(),
-    prompt: true,
-    type: build.TYPE_WATCH
-  }, function (err) {
-    if (err && err !== -1) {
-      log.echo(err);
-    }
-  });
-  break;
+    //command/parse/
+    parse: {
 
-case 'wria2-war':
-case 'war': // hidden menu
-  utilities.timeTracker('start');
-  log.echo();
-  build.run(debug, {
-    remote: remote,
-    username: program.u,
-    useremail: program.e,
-    wriaBranch: program.w,
-    yuiBranch: program.y,
-    statusJob: program.S,
-    addJob: program.A,
-    removeJob: program.R,
-    processJob: program.P,
-    pkgConfig: pkgConfig,
-    cwd: process.cwd(),
-    prompt: true,
-    type: build.TYPE_WAR
-  }, function (err) {
-    if (err && err !== -1) {
-      log.echo(err);
-      process.exit(127);
-    }
-    if (!remote) {
-      if (!err) {
-        utilities.timeTracker('stop');
+      // dont skip me
+      _over: '@self',
+
+      _in: function () {
+
+        var data = this.data,
+          stdin = require('optimist')
+            .usage('\nUsage: ' + pkgName + ' [options] ' + commandList.join('|'))
+            .alias('h', 'help')
+            .describe('h', 'output usage information')
+            .alias('v', 'version')
+            .describe('v', 'output the version number')
+            .alias('b', 'boring')
+            .describe('b', 'do not use color output')
+            .alias('d', 'debug')
+            .describe('d', 'display extra information')
+            .boolean(['b', 'd', 'V', 'v', 'h']);
+
+        data.stdin = stdin;
+        data.program = stdin.argv;
+        // console.log(data.program);
+        // this.get(0);
+      },
+
+      _on: function () {
+        var salt = this,
+          program = salt.data.program;
+
+        // route options from lowest to highest priority
+        // this is because `.go()` *prepends* navigation targets
+
+        if (program.boring) {
+          salt.go('option/boring');
+        }
+
+        if (program.remote || program.r) {
+          salt.go('option/remote');
+        }
+
+        if (program.debug) {
+          salt.go('option/debug');
+        }
+
+        if (program.help) {
+          salt.go('option/help');
+        }
+
+        if (program.version || program.V) {
+          salt.go('option/version');
+        }
+
+      },
+
+      //command/parse/option/
+      option: {
+
+        //command/parse/option/help/
+        help: {
+
+          // clear existing waypoints and set new navigation destination
+          _in: '>@self',
+
+          // redirect to command/help
+          _on: '//command/help'
+
+        },
+
+        //command/parse/option/version/
+        version: {
+
+          // use this state as a template
+          _import: '//command/parse/option/help/',
+
+          _on: function () {
+            console.log(pkgVersion);
+          }
+
+        },
+
+        //command/parse/option/boring/
+        boring: function () {
+          log.setBoring();
+        },
+
+        //command/parse/option/debug/
+        debug: function () {
+          debug = true;
+        },
+
+        //command/parse/option/remote/
+        remote: function () {
+          remote = true;
+          log.setRemote();
+        }
+
       }
-      log.echo();
+
+    },
+
+    //command/run/
+    run: {
+
+      // make local root
+      _root: true,
+
+      _on: function () {
+        var salt = this,
+          program = salt.data.program,
+          command = program._.length < 2 && program._[0];
+
+        if (salt.query(command)) {
+
+          // run (known) command
+          salt.go(command);
+
+        } else {
+
+          // else show help
+          salt.go('../help');
+
+        }
+      },
+
+      //command/run/app-flow
+      'app-flow': {
+
+        // use this object as a branch template
+        _import: commandSrc,
+
+        _on: function () {
+          var salt = this;
+
+          // pass callback that sends the result to "//command/result/" 
+          app.run(app.TYPE_FLOW, salt.callbacks('../result'));
+
+          // wait for callback, since this is asyncronous
+          salt.wait();
+        }
+
+      },
+
+      //command/run/af/
+      af: {
+
+        // redirects to previous sibling
+        _on: '@previous'
+
+      },
+
+      //command/run/app-init/
+      'app-init': {
+
+        // use this object as a branch template
+        _import: commandSrc,
+
+        _on: function () {
+          var salt = this;
+
+          utilities.timeTracker('start');
+
+          // pass callback that sends the result to "//command/result/" 
+          app.run(app.TYPE_APP, salt.callbacks('../result'));
+
+          // wait for callback, since this is asyncronous
+          salt.wait();
+        },
+
+        _out: function () {
+          var err = this.args[0];
+          if (err !== -1) {
+            utilities.timeTracker('stop');
+          }
+        }
+      },
+
+      //command/run/ai/
+      // short-form for importing //command/run/af/
+      ai: '//command/run/af/'
+
+    },
+
+    //commmand/help/
+    help: {
+      _in: function () {
+        console.log(this.data.stdin.help());
+      },
+      _on: function () {
+        console.log('  Parameters:');
+
+        var cmdtmp, cmdtmplen, cmdt, cmdl, cmdd, cmddlen, i, j,
+          len = commandList.length,
+          descArray, descArrayLen,
+          buffer = '',
+          CMD_PRE_BUFFER = '    ',
+          CMD_MAX_LEN = 22,
+          CMD_DESC_MAX = 50;
+
+        console.log(new Array(CMD_MAX_LEN + CMD_DESC_MAX + 1).join('─'));
+
+        for (i = 0; i < len; i += 1) {
+          cmdt = commandList[i];
+          cmdl = fedToolsCommands[commandList[i]].full;
+          cmdd = fedToolsCommands[commandList[i]].description;
+
+          if (cmdl) {
+            cmdtmp = CMD_PRE_BUFFER + cmdt + ' (' + cmdl + ')';
+          } else {
+            cmdtmp = CMD_PRE_BUFFER + cmdt;
+          }
+          cmdtmplen = cmdtmp.length;
+          cmddlen = cmdd.length;
+
+          buffer = cmdtmp + new Array(CMD_MAX_LEN - cmdtmplen + 1).join(' ');
+          descArray = utilities.wordWrap(cmdd, CMD_DESC_MAX);
+
+          console.log(log.strToColor('cyan', buffer) + descArray[0]);
+          descArrayLen = descArray.length;
+          for (j = 1; j < descArrayLen; j += 1) {
+            console.log(new Array(CMD_MAX_LEN + 1).join(' ') + descArray[j]);
+          }
+          console.log(new Array(CMD_MAX_LEN + CMD_DESC_MAX + 1).join('─'));
+        }
+      }
+    },
+
+    //command/result/
+    result: function (err) {
+      if (err && err !== -1) {
+        log.echo(err);
+      }
     }
-  });
-  break;
 
-case 'wria2-build':
-case 'wb': // hidden menu
-  utilities.timeTracker('start');
-  log.echo();
-  build.run(debug, {
-    cwd: process.cwd(),
-    prompt: true,
-    type: build.TYPE_BUILD
-  }, function (err) {
-    if (err && err !== -1) {
-      log.echo(err);
-    }
-    if (!err) {
-      utilities.timeTracker('stop');
-    }
-    log.echo();
-  });
-  break;
+  },
 
-case 'wria2-init':
-case 'wi': // hidden menu
-  log.echo();
-  require('../lib/wria2-bootstrap').run(debug, pkgConfig, function (err) {
-    if (err) {
-      log.error(err);
-    }
-    log.echo();
-  });
-  break;
+  _out: function () {
+    var code = this.data.err || 0;
+    process.exit(code);
+  }
+});
 
-case 'wria2-yui3':
-case 'wy': // hidden menu
-  log.echo();
-  require('../lib/yui3-utils').run(debug, pkgConfig, {}, function (err) {
-    if (err) {
-      log.error(err);
-    }
-    log.echo();
-  });
-  break;
-
-case 'wria2-mod':
-case 'wm': // hidden menu
-  log.echo();
-  require('../lib/wria2-modules').run(function () {});
-  break;
-
-  // case 'test':
-case 'wt':
-  log.blue('==> this is a b-b-blue test ');
-  log.yellow('==> this is a y-y-yellow test ');
-
-  break;
-
-default:
-  displayHelp();
-  break;
-}
+master.go(1);
