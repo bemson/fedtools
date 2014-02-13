@@ -82,6 +82,9 @@ var
       var salt = this;
       // invoke action and pass callback
       salt.get('action', salt.callbacks('/result'));
+
+      // uncomment below if you want confirmation of the executing job
+      // console.log('executing', salt.state.name);
     },
 
     // will compile as "//run/command/<command-name>/action/"
