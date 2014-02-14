@@ -80,6 +80,7 @@ var
 
     _on: function () {
       var salt = this;
+
       // invoke action and pass callback
       salt.get('action', salt.callbacks('/result'));
 
@@ -127,7 +128,7 @@ var
       log.echo();
     }
 
-   };
+  };
 
 commandList.sort();
 
@@ -170,20 +171,19 @@ var master = new Salt({
     };
   },
 
-  // route to "//run/command/"
+  // route to "//run/command/" when targeted
   _on: 'run/command',
 
-  // exit when done navigating
+  // route to null/exit when done navigating within this branch
   _tail: '..//',
 
   //parse/
   parse: {
 
-    // this captures when salt bypasses this state
+    // route to self when bypassed
     _over: '@self',
 
     _in: function () {
-
       var data = this.data,
         stdin = require('optimist')
           .usage('\nUsage: ' + data.pkg.name + ' [options] ' + commandList.join('|'))
@@ -210,7 +210,7 @@ var master = new Salt({
       var salt = this,
         program = salt.data.program;
 
-      // route options from lowest to highest priority
+      // add waypoints from lowest to highest priority
       // this is because `.go()` *prepends* navigation targets
 
       if (program.boring) {
@@ -241,10 +241,10 @@ var master = new Salt({
       //parse/option/help/
       help: {
 
-        // clear existing waypoints and set new navigation destination
+        // route to self when entered (">" clears existing waypoints)
         _in: '>@self',
 
-        // route to command/help
+        // route to "//run/help" when targeted
         _on: '//run/help'
 
       },
@@ -252,7 +252,7 @@ var master = new Salt({
       //parse/option/version/
       version: {
 
-        // use state as a branch template
+        // use this state as a branch template
         _import: '//parse/option/help/',
 
         _on: function () {
@@ -292,8 +292,9 @@ var master = new Salt({
           program = salt.data.program,
           cmd = program._.length < 2 && program._[0];
 
-        // only run known command
+        // #query() returns false for invalid paths
         if (salt.query(cmd)) {
+          // only run known command
           salt.go(cmd);
         } else {
           // else show help
@@ -301,7 +302,7 @@ var master = new Salt({
         }
       },
 
-      //run/command/app-flow
+      //run/command/app-flow/
       'app-flow': {
 
         // use object as a branch template
@@ -320,7 +321,7 @@ var master = new Salt({
       //run/command/af/
       af: {
 
-        // routes to previous sibling
+        // route to previous (sibling) state, when targeted
         _on: '@previous'
 
       },
@@ -339,7 +340,7 @@ var master = new Salt({
       },
 
       //run/command/ai/
-        // this short-form imports "//run/command/af/"
+      // short-form for `_import: '//run/command/af/'`
       ai: '//run/command/af/',
 
       //run/command/wria2-bump/
@@ -350,20 +351,22 @@ var master = new Salt({
 
         //run/command/wria2-bump/action/
         action: function (done) {
-          // omit time for this action
-          this.data.logTime = false;
+          var data = this.data;
 
-          utilities.wria2bump(this.data.debug, done);
+          // omit time for this action
+          data.logTime = false;
+
+          utilities.wria2bump(data.debug, done);
         }
 
       },
 
       //run/command/bump/
-        // this short-form imports "//run/command/af/"
+      // short-form for `_import: '//run/command/af/'`
       bump: '//run/command/af/',
 
       //run/command/wbp/
-        // this short-form imports "//run/command/af/"
+      // short-form for `_import: '//run/command/af/'`
       wbp: '//run/command/af/',
 
       //run/command/wria2-selleck/
@@ -374,23 +377,25 @@ var master = new Salt({
 
         //run/command/wria2-selleck/action/
         action: function (done) {
-          build.run(this.data.debug, {
+          var data = this.data;
+
+          // omit time for this action
+          data.logTime = false;
+
+          build.run(data.debug, {
             type: build.TYPE_SERVER,
             server: build.SERVER_TYPE_SELLECK
           }, done);
-
-          // omit time for this action
-          this.data.logTime = false;
         }
 
       },
 
       //run/command/wria2-sel/
-        // this short-form imports "//run/command/af/"
+      // short-form for `_import: '//run/command/af/'`
       'wria2-sel': '//run/command/af/',
 
       //run/command/wss/
-        // this short-form imports "//run/command/af/"
+      // short-form for `_import: '//run/command/af/'`
       wss: '//run/command/af/',
 
       //run/command/wria2-api/
@@ -401,22 +406,24 @@ var master = new Salt({
 
         //run/command/wria2-api/action/
         action: function (done) {
-          build.run(this.data.debug, {
+          var data = this.data;
+
+          // omit time for this action
+          data.logTime = false;
+
+          build.run(data.debug, {
             type: build.TYPE_SERVER,
             server: build.SERVER_TYPE_YUIDOC
           }, done);
-
-          // omit time for this action
-          this.data.logTime = false;
         }
 
       },
 
       //run/command/wa/
-        // this short-form imports "//run/command/af/"
+      // short-form for `_import: '//run/command/af/'`
       wa: '//run/command/af/',
 
-      //run/command/wria2-soy
+      //run/command/wria2-soy/
       'wria2-soy': {
 
         // use object as a branch template
@@ -433,10 +440,10 @@ var master = new Salt({
       },
 
       //run/command/ws/
-        // this short-form imports "//run/command/af/"
+      // short-form for `_import: '//run/command/af/'`
       ws: '//run/command/af/',
 
-      //run/command/wria2-watch
+      //run/command/wria2-watch/
       'wria2-watch': {
 
         // use object as a branch template
@@ -459,10 +466,10 @@ var master = new Salt({
       },
 
       //run/command/ww/
-        // this short-form imports "//run/command/af/"
+      // short-form for `_import: '//run/command/af/'`
       ww: '//run/command/af/',
 
-      //run/command/wria2-war
+      //run/command/wria2-war/
       'wria2-war': {
 
         // use object as a branch template
@@ -490,7 +497,7 @@ var master = new Salt({
           }, done);
         },
 
-        //run/command/wria2-war/result
+        //run/command/wria2-war/result/
         result: {
 
           _in: function () {
@@ -502,6 +509,7 @@ var master = new Salt({
               // set exit code
               data.exitCode = 127;
             }
+
             if (!data.remote && errArg) {
               // ignore timer since we've errored out
               data.logTime = false;
@@ -513,7 +521,7 @@ var master = new Salt({
       },
 
       //run/command/war/
-        // this short-form imports "//run/command/af/"
+      // short-form for `_import: '//run/command/af/'`
       war: '//run/command/af/',
 
       //run/command/wria2-build/
@@ -531,7 +539,9 @@ var master = new Salt({
           }, done);
         },
 
+        //run/command/wria2-build/result/
         result: {
+
           _in: function () {
             var salt = this;
 
@@ -540,12 +550,13 @@ var master = new Salt({
               salt.data.logTime = false;
             }
           }
+
         }
 
       },
 
       //run/command/wb/
-        // this short-form imports "//run/command/af/"
+      // short-form for `_import: '//run/command/af/'`
       wb: '//run/command/af/',
 
       //run/command/wria2-init
@@ -567,10 +578,10 @@ var master = new Salt({
       },
 
       //run/command/wi/
-        // this short-form imports "//run/command/af/"
+      // short-form for `_import: '//run/command/af/'`
       wi: '//run/command/af/',
 
-      //run/command/wria2-yui3
+      //run/command/wria2-yui3/
       'wria2-yui3': {
 
         // use object as a branch template
@@ -589,10 +600,10 @@ var master = new Salt({
       },
 
       //run/command/wy/
-        // this short-form imports "//run/command/af/"
+      // short-form for `_import: '//run/command/af/'`
       wy: '//run/command/af/',
 
-      //run/command/wria2-mod
+      //run/command/wria2-mod/
       'wria2-mod': {
 
         // use object as a branch template
@@ -611,10 +622,10 @@ var master = new Salt({
       },
 
       //run/command/wm/
-        // this short-form imports "//run/command/af/"
+      // short-form for `_import: '//run/command/af/'`
       wm: '//run/command/af/',
 
-      //run/command/wt
+      //run/command/wt/
       wt: {
 
         // use object as a branch template
@@ -683,8 +694,7 @@ var master = new Salt({
   },
 
   _out: function () {
-    var code = this.data.err;
-    process.exit(code);
+    process.exit(this.data.err);
   }
 
 });
