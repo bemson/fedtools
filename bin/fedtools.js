@@ -502,7 +502,7 @@ var master = new Salt({
               // set exit code
               data.exitCode = 127;
             }
-            if (!data.remote && !errArg) {
+            if (!data.remote && errArg) {
               // ignore timer since we've errored out
               data.logTime = false;
             }
