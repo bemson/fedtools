@@ -70,8 +70,7 @@ var
     _data: {
       // default key/values
       logTime: true,
-      exitCode: 0,
-      isAsync: true
+      exitCode: 0
     },
 
     _in: function () {
@@ -97,15 +96,11 @@ var
 
       // "_on" will come from the branch copying this template
 
-      _out: function () {
-        var salt = this;
+      // pause on this state (after executing "on" callback)
+      _wait: true,
 
-        if (salt.data.isAsync) {
-          // don't exit until directed elsewhere
-          // like the callback, passed to "action"
-          this.wait();
-        }
-      }
+      // direct flow to result state when complete
+      _next: '/result'
 
     },
 
@@ -632,12 +627,12 @@ var master = new Salt({
         _import: baseCommandBranch,
 
         //run/command/wt/action/
-        action: function () {
+        action: function (done) {
           log.blue('==> this is a b-b-blue test ');
           log.yellow('==> this is a y-y-yellow test ');
 
-          // flag that this command is not blocking
-          this.data.isAsync = false;
+          // note that we're done now (versus waiting)
+          done();
         }
 
       }
